@@ -1,53 +1,378 @@
-/* Dinocademy profile redesign — editorial dashboard, responsive and isolated from legacy rules */
+/* ==========================================================================
+   DINOCADEMY — PROFIL BADACZA
+   Kompletny redesign na CSS Grid + skalowalna typografia (clamp).
+   Paleta i promienie zgodne z systemem Dinocademy (recovery.css / index.css):
+   --accent, --line, --text-muted, color-mix(in srgb, currentColor X%, transparent)
+   ========================================================================== */
+
 :root{
-  --profile-ink:#152232;
-  --profile-muted:#607084;
-  --profile-paper:#f5f7fa;
-  --profile-card:#ffffff;
-  --profile-line:#dce3eb;
-  --profile-blue:#1f5a88;
-  --profile-blue-deep:#132b42;
-  --profile-green:#2f825e;
-  --profile-gold:#d69a24;
-  --profile-radius:20px;
-  --profile-shadow:0 18px 48px rgba(21,34,50,.09);
+  --pf-radius-sm: 10px;
+  --pf-radius-md: 16px;
+  --pf-radius-lg: 24px;
+  --pf-radius-pill: 999px;
+  --pf-gap: clamp(14px, 2vw, 24px);
+  --pf-pad: clamp(18px, 2.4vw, 32px);
+  --pf-border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  --pf-border-strong: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  --pf-shadow-sm: 0 1px 2px rgba(20,20,20,.04), 0 6px 18px -12px rgba(20,20,20,.12);
+  --pf-shadow-md: 0 10px 30px -16px rgba(20,20,20,.22);
+  --pf-shadow-lg: 0 24px 60px -24px rgba(20,20,20,.28);
+  --pf-surface: color-mix(in srgb, currentColor 3%, #fff);
+  --pf-surface-2: color-mix(in srgb, currentColor 6%, #fff);
 }
 
-.profile-app-shell{max-width:1180px;margin:0 auto;padding:40px 24px 88px;color:var(--profile-ink);font-size:16px}
-.profile-app-shell *{box-sizing:border-box}
-.profile-app-shell h1,.profile-app-shell h2,.profile-app-shell h3,.profile-app-shell p{margin:0}
-.profile-app-shell button,.profile-app-shell input,.profile-app-shell select{font:inherit}
-.profile-app-shell .button{min-height:42px;padding:10px 16px;border:0;border-radius:10px;background:var(--profile-blue);color:#fff;font-size:14px;font-weight:800;cursor:pointer;box-shadow:none}
-.profile-app-shell .button:hover{background:var(--profile-blue-deep)}
-.profile-app-shell .button.secondary{background:#edf3f8;color:var(--profile-blue)}
-.profile-app-shell .button.secondary:hover{background:#dce9f2}
+/* --------------------------------------------------------------------
+   FLUID TYPE SCALE (clamp) — jeden system dla całego profilu
+   -------------------------------------------------------------------- */
+.profile-shell{
+  --fs-2xs: clamp(.68rem, .64rem + .1vw, .72rem);
+  --fs-xs:  clamp(.75rem, .72rem + .12vw, .82rem);
+  --fs-sm:  clamp(.85rem, .82rem + .18vw, .95rem);
+  --fs-md:  clamp(.98rem, .93rem + .25vw, 1.05rem);
+  --fs-lg:  clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
+  --fs-xl:  clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --fs-2xl: clamp(2rem, 1.5rem + 2vw, 3.1rem);
+  --fs-hero-num: clamp(2.6rem, 1.9rem + 3vw, 4.2rem);
 
-.profile-skeleton{display:grid;gap:18px}.profile-skeleton div{height:170px;border-radius:20px;background:linear-gradient(90deg,#edf1f5,#f8fafc,#edf1f5);background-size:200% 100%;animation:profile-shimmer 1.5s infinite}@keyframes profile-shimmer{to{background-position:-200% 0}}
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 40px) clamp(16px, 3vw, 24px) 80px;
+  display: grid;
+  gap: clamp(20px, 2.6vw, 32px);
+  animation: pf-rise .5s cubic-bezier(.22,.8,.3,1);
+}
 
-.profile-hero{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:24px;padding:30px;border-radius:var(--profile-radius);overflow:hidden;background:linear-gradient(125deg,#132b42 0%,#1c496b 66%,#276386 100%);color:#fff;box-shadow:var(--profile-shadow)}
-.profile-hero:after{content:"";position:absolute;right:-112px;bottom:-160px;width:370px;height:370px;border:1px solid rgba(255,255,255,.13);border-radius:50%;box-shadow:0 0 0 38px rgba(255,255,255,.035),0 0 0 84px rgba(255,255,255,.025);pointer-events:none}
-.profile-avatar{position:relative;width:106px;height:106px;z-index:1;border-radius:26px;background:#dfe9ee;border:3px solid rgba(255,255,255,.7);overflow:hidden;box-shadow:0 12px 26px rgba(0,0,0,.25)}
-.profile-avatar img{width:100%;height:100%;object-fit:cover}
-.profile-identity{position:relative;z-index:1}.profile-eyebrow{display:block;margin-bottom:7px;color:#9fc9df;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.profile-identity h1{font-size:clamp(28px,4vw,43px);line-height:1.05;letter-spacing:-.035em}.profile-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;color:#d5e4ed;font-size:14px}.profile-meta span{display:inline-flex;align-items:center;gap:5px}.profile-pro-pill{padding:4px 9px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:800;letter-spacing:.05em}
-.profile-hero-actions{position:relative;z-index:1;display:flex;gap:9px;align-self:start}.profile-icon-button{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.24);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-size:18px}.profile-icon-button:hover{background:rgba(255,255,255,.2)}
+@keyframes pf-rise{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:translateY(0); }
+}
 
-.profile-overview{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.75fr);gap:18px;margin-top:18px}
-.profile-level-panel,.profile-streak-panel,.profile-card{border:1px solid var(--profile-line);border-radius:var(--profile-radius);background:var(--profile-card);box-shadow:0 7px 20px rgba(32,56,77,.045)}
-.profile-level-panel{display:flex;align-items:center;gap:22px;padding:24px 28px;--level-color:#6f8394;--level-tint:#edf2f5}
-.profile-level-badge{position:relative;width:86px;height:86px;flex:0 0 auto;display:grid;place-items:center}.profile-level-badge .level-star{font-size:87px;line-height:1;color:var(--level-color);filter:drop-shadow(0 8px 12px rgba(21,34,50,.14))}.profile-level-number{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);color:#fff;font-size:25px;font-weight:900;text-shadow:0 2px 3px rgba(0,0,0,.22)}
-.profile-level-copy{min-width:0;flex:1}.profile-level-copy h2{font-size:13px;font-weight:850;letter-spacing:.11em;text-transform:uppercase;color:var(--level-color)}.profile-xp{display:flex;align-items:baseline;gap:8px;margin-top:4px}.profile-xp strong{font-size:31px;letter-spacing:-.04em}.profile-xp span{color:var(--profile-muted);font-size:14px}.profile-stars{display:flex;align-items:center;gap:2px;margin-top:7px}.profile-stars span{font-size:17px;color:#d7dee5}.profile-stars span.on{color:var(--level-color)}.profile-tier{margin-left:8px;color:var(--level-color);font-size:12px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.profile-progress-track{height:9px;margin-top:13px;border-radius:99px;overflow:hidden;background:var(--level-tint)}.profile-progress-track i{display:block;height:100%;border-radius:99px;background:var(--level-color);transition:width .55s cubic-bezier(.2,.8,.2,1)}.profile-progress-caption{display:block;margin-top:8px;color:var(--profile-muted);font-size:13px}.profile-rank-link{align-self:flex-start;color:var(--profile-blue);font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}.profile-rank-link:hover{text-decoration:underline}
+@media (prefers-reduced-motion: reduce){
+  .profile-shell{ animation:none; }
+}
 
-.profile-streak-panel{padding:22px 24px;background:linear-gradient(135deg,#fff8eb,#fff);border-color:#f1dfbd}.streak-top{display:flex;align-items:center;gap:12px}.streak-flame{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:#fff0d4;color:#d97712;font-size:27px}.streak-top strong{display:block;font-size:29px;line-height:1;letter-spacing:-.04em}.streak-top span{display:block;margin-top:4px;color:#8a7144;font-size:13px;font-weight:700}.streak-status{margin:18px 0 11px;color:#765a2a;font-size:13px}.streak-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.streak-day{display:grid;gap:5px;justify-items:center;color:#a79069;font-size:11px;font-weight:800}.streak-day i{display:block;width:9px;height:9px;border-radius:50%;background:#eadfcd}.streak-day.done{color:#d77f17}.streak-day.done i{background:#e8952d;box-shadow:0 0 0 4px #fff0d4}.streak-day.today i{outline:2px solid #d77f17;outline-offset:2px}
+/* ======================================================================
+   1. HERO — grid: avatar | identity | streak
+   ====================================================================== */
+.pf-hero{
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  align-items:center;
+  gap: var(--pf-gap);
+  padding: var(--pf-pad);
+  border-radius: var(--pf-radius-lg);
+  border: var(--pf-border);
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--accent,#1f4e79) 10%, transparent), transparent 60%),
+    var(--pf-surface);
+  box-shadow: var(--pf-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
 
-.profile-dashboard{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.profile-card{padding:24px;min-width:0}.profile-card.wide{grid-column:span 2}.profile-section-kicker{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;color:var(--profile-blue);font-size:12px;font-weight:850;letter-spacing:.11em;text-transform:uppercase}.profile-card h2{font-size:22px;letter-spacing:-.025em}.profile-description{margin-top:7px;color:var(--profile-muted);font-size:14px;line-height:1.55}.profile-card-action{color:var(--profile-blue);font-size:13px;font-weight:800;text-decoration:none}.profile-card-action:hover{text-decoration:underline}
+.pf-avatar-wrap{
+  position:relative;
+  width: clamp(72px, 8vw, 100px);
+  height: clamp(72px, 8vw, 100px);
+  flex: none;
+}
+.pf-avatar-wrap img{
+  width:100%; height:100%; border-radius:50%; object-fit:cover;
+  border: 3px solid #fff;
+  box-shadow: var(--pf-shadow-sm);
+  background: var(--pf-surface-2);
+}
+.pf-avatar-upload{
+  position:absolute; bottom:-2px; right:-2px;
+  width: 30px; height: 30px; border-radius:50%;
+  display:grid; place-items:center;
+  background: var(--accent,#1f4e79); color:#fff;
+  border: 2px solid #fff; cursor:pointer;
+  font-size: 13px;
+  box-shadow: var(--pf-shadow-sm);
+  transition: transform .15s ease;
+}
+.pf-avatar-upload:hover{ transform: scale(1.08); }
+.pf-avatar-upload:active{ transform: scale(.96); }
 
-.profile-country-row{display:flex;align-items:end;gap:10px;margin-top:18px}.profile-field{display:block;flex:1;min-width:0}.profile-field label{display:block;margin-bottom:6px;color:var(--profile-muted);font-size:12px;font-weight:750}.profile-field input,.profile-field select{width:100%;min-height:44px;padding:10px 12px;border:1px solid #cdd8e2;border-radius:10px;background:#fff;color:var(--profile-ink);font-size:14px}.profile-field input:focus,.profile-field select:focus{outline:2px solid #8fc0dc;outline-offset:1px;border-color:#467fa6}.country-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.country-dino{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center;padding:10px;border:1px solid #e0e7ee;border-radius:14px;background:#fafcfd}.country-dino img{width:58px;height:58px;object-fit:cover;border-radius:10px;background:#eef3f6}.country-dino strong{display:block;font-size:14px}.country-dino span{display:block;margin-top:3px;color:var(--profile-muted);font-size:12px;line-height:1.35}
+.pf-identity{ min-width:0; }
+.pf-kicker{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size: var(--fs-2xs); font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  color: var(--accent,#1f4e79); opacity:.85; margin-bottom:6px;
+}
+.pf-name{
+  font-size: var(--fs-2xl); font-weight:800; letter-spacing:-.01em; line-height:1.05;
+  margin-bottom: 4px;
+  overflow-wrap: anywhere;
+}
+.pf-meta{
+  display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;
+  font-size: var(--fs-sm); color: var(--text-muted,#666);
+}
+.pf-meta .pf-dot{ opacity:.4; }
+.pf-pro-badge{
+  display:inline-flex; align-items:center; gap:4px;
+  font-size: var(--fs-2xs); font-weight:800; letter-spacing:.06em;
+  padding: 3px 9px; border-radius: var(--pf-radius-pill);
+  background: color-mix(in srgb, var(--accent,#1f4e79) 14%, transparent);
+  color: var(--accent,#1f4e79);
+}
 
-.profile-favorites{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}.favorite-dino{position:relative;display:block;min-height:178px;overflow:hidden;border-radius:14px;background:#e9eef1;color:#fff;text-decoration:none}.favorite-dino img{width:100%;height:178px;object-fit:cover;transition:transform .25s ease}.favorite-dino:after{content:"";position:absolute;inset:38% 0 0;background:linear-gradient(transparent,rgba(9,23,35,.84))}.favorite-dino:hover img{transform:scale(1.05)}.favorite-dino-copy{position:absolute;z-index:1;right:11px;bottom:11px;left:11px}.favorite-dino-copy strong{display:block;font-size:14px}.favorite-dino-copy span{display:block;margin-top:2px;font-size:11px;opacity:.86}.empty-profile-state{display:flex;flex-direction:column;align-items:flex-start;gap:9px;margin-top:18px;padding:19px;border-radius:14px;background:#f3f7fa;color:var(--profile-muted);font-size:14px}.empty-profile-state a{color:var(--profile-blue);font-weight:800}
+/* --- streak module inside hero --- */
+.pf-streak{
+  display:grid; justify-items:center; text-align:center; gap:2px;
+  padding: clamp(14px,1.8vw,20px) clamp(18px,2.2vw,26px);
+  border-radius: var(--pf-radius-md);
+  background: linear-gradient(160deg, color-mix(in srgb, #ff8a1e 14%, #fff), #fff);
+  border: 1px solid color-mix(in srgb, #ff8a1e 26%, transparent);
+  min-width: clamp(120px, 14vw, 168px);
+  position: relative;
+}
+.pf-streak.is-cold{
+  background: linear-gradient(160deg, color-mix(in srgb, currentColor 6%, #fff), #fff);
+  border-color: color-mix(in srgb, currentColor 16%, transparent);
+}
+.pf-streak-flame{ font-size: clamp(22px,2.6vw,30px); line-height:1; }
+.pf-streak-num{ font-size: var(--fs-xl); font-weight:800; color:#c8570f; line-height:1.1; }
+.pf-streak.is-cold .pf-streak-num{ color: var(--text-muted,#666); }
+.pf-streak-label{ font-size: var(--fs-2xs); font-weight:800; text-transform:uppercase; letter-spacing:.08em; opacity:.7; }
+.pf-streak-week{ display:flex; gap:4px; margin-top:8px; }
+.pf-streak-day{
+  width: 16px; height:16px; border-radius:5px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  display:grid; place-items:center; font-size:9px;
+}
+.pf-streak-day.is-active{ background:#ff8a1e; color:#fff; }
+.pf-streak-day.is-today{ box-shadow: 0 0 0 2px color-mix(in srgb, #ff8a1e 60%, transparent); }
 
-.profile-activity{display:grid;margin-top:15px}.activity-line{display:grid;grid-template-columns:38px 1fr auto;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid #edf1f4}.activity-line:last-child{border:0}.activity-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#eaf2f8;color:var(--profile-blue);font-size:16px}.activity-line strong{display:block;font-size:14px}.activity-line small{display:block;margin-top:2px;color:var(--profile-muted);font-size:12px}.activity-xp{color:var(--profile-green);font-size:13px;font-weight:850;white-space:nowrap}
+/* ======================================================================
+   2. LEVEL CARD — big showpiece, grid: star badge | stats | link
+   ====================================================================== */
+.pf-level{
+  --tier-color: #7d8a97;
+  --tier-glow: rgba(125,138,151,.35);
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  align-items:center;
+  gap: clamp(18px, 3vw, 36px);
+  padding: var(--pf-pad);
+  border-radius: var(--pf-radius-lg);
+  border: 1px solid color-mix(in srgb, var(--tier-color) 30%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--tier-color) 12%, #fff), #fff 70%);
+  box-shadow: 0 20px 46px -30px var(--tier-glow);
+  position:relative;
+  overflow:hidden;
+}
+.pf-level::before{
+  content:'';
+  position:absolute; inset:-40% -10% auto auto; width:280px; height:280px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tier-color) 22%, transparent), transparent 70%);
+  pointer-events:none;
+}
 
-.profile-settings{margin-top:18px}.profile-settings summary{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;list-style:none}.profile-settings summary::-webkit-details-marker{display:none}.profile-settings summary h2{font-size:18px}.profile-settings summary span{color:var(--profile-blue);font-size:13px;font-weight:800}.profile-settings[open] summary{border-bottom:1px solid var(--profile-line)}.profile-settings-content{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;padding:24px}.profile-settings h3{margin-bottom:14px;font-size:15px}.field-stack{display:grid;gap:11px}.avatar-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.avatar-choice{padding:4px;border:2px solid transparent;border-radius:10px;background:#f1f5f7;cursor:pointer}.avatar-choice img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px}.avatar-choice.active{border-color:var(--profile-blue);background:#dcebf4}.avatar-choice span{display:block;overflow:hidden;margin-top:4px;color:var(--profile-muted);font-size:11px;line-height:1.1;text-overflow:ellipsis;white-space:nowrap}.profile-form-note{min-height:20px;margin-top:8px;color:var(--profile-muted);font-size:12px}.profile-form-note.success{color:var(--profile-green)}.profile-form-note.error{color:#b63e3e}
+.pf-star-badge{
+  position:relative; width: clamp(84px,9vw,110px); height:clamp(84px,9vw,110px);
+  display:grid; place-items:center;
+}
+.pf-star-icon{
+  font-size: clamp(84px,9vw,110px); line-height:1; color: var(--tier-color);
+  filter: drop-shadow(0 8px 16px var(--tier-glow));
+}
+.pf-star-num{
+  position:absolute; font-size: var(--fs-xl); font-weight:800; color:#fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.45);
+}
 
-@media(max-width:860px){.profile-overview,.profile-dashboard{grid-template-columns:1fr}.profile-card.wide{grid-column:auto}.profile-settings-content{grid-template-columns:1fr}.profile-hero{grid-template-columns:auto 1fr}.profile-hero-actions{grid-column:2;justify-self:end;grid-row:1}.profile-rank-link{display:none}}
-@media(max-width:620px){.profile-app-shell{padding:24px 15px 58px}.profile-hero{grid-template-columns:72px 1fr;gap:14px;padding:20px;border-radius:17px}.profile-avatar{width:72px;height:72px;border-radius:18px}.profile-identity h1{font-size:27px}.profile-meta{gap:6px;font-size:12px}.profile-hero-actions{grid-column:2}.profile-overview{gap:14px;margin-top:14px}.profile-level-panel{gap:13px;padding:18px}.profile-level-badge{width:61px;height:61px}.profile-level-badge .level-star{font-size:63px}.profile-level-number{font-size:18px}.profile-xp strong{font-size:25px}.profile-level-copy h2{font-size:11px}.profile-dashboard{gap:14px;margin-top:14px}.profile-card{padding:18px;border-radius:17px}.profile-card h2{font-size:19px}.country-results{grid-template-columns:1fr}.profile-favorites{grid-template-columns:repeat(2,1fr)}.favorite-dino,.favorite-dino img{min-height:145px;height:145px}.profile-country-row{align-items:stretch;flex-direction:column}.profile-settings summary{padding:18px}.profile-settings-content{padding:18px}.avatar-picker{grid-template-columns:repeat(4,1fr)}.streak-week{gap:4px}.streak-day{font-size:10px}}
+.pf-level-stats{ min-width:0; }
+.pf-level-kicker{
+  font-size: var(--fs-2xs); font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  color: var(--tier-color); margin-bottom:4px; display:block;
+}
+.pf-level-xp{
+  font-size: var(--fs-2xl); font-weight:800; letter-spacing:-.01em; color: var(--tier-color);
+  margin-bottom:10px; line-height:1;
+}
+.pf-stars-row{ display:flex; align-items:center; gap:3px; margin-bottom:10px; flex-wrap:wrap; }
+.pf-star{ font-size: var(--fs-lg); opacity:.25; }
+.pf-star.is-on{ opacity:1; color: var(--tier-color); }
+.pf-tier-label{
+  margin-left:6px; font-size: var(--fs-2xs); font-weight:800; text-transform:uppercase;
+  letter-spacing:.08em; color: var(--tier-color); opacity:.9;
+}
+.pf-bar{
+  height:10px; border-radius: var(--pf-radius-pill); background: color-mix(in srgb, currentColor 8%, transparent);
+  overflow:hidden; max-width: 460px; margin-bottom:8px;
+}
+.pf-bar i{ display:block; height:100%; border-radius: var(--pf-radius-pill); background: var(--tier-color); transition: width .5s cubic-bezier(.22,.8,.3,1); }
+.pf-level-sub{ font-size: var(--fs-sm); color: var(--text-muted,#666); }
+.pf-level-link{
+  font-size: var(--fs-sm); font-weight:700; color: var(--tier-color); text-decoration:none;
+  white-space:nowrap; padding: 8px 16px; border-radius: var(--pf-radius-pill);
+  border: 1px solid color-mix(in srgb, var(--tier-color) 40%, transparent);
+  transition: background .18s ease;
+}
+.pf-level-link:hover{ background: color-mix(in srgb, var(--tier-color) 10%, transparent); }
+
+/* ======================================================================
+   3. MAIN GRID — 12-column responsive grid for the content sections
+   ====================================================================== */
+.pf-grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--pf-gap);
+}
+.pf-col-7{ grid-column: span 7; }
+.pf-col-5{ grid-column: span 5; }
+.pf-col-12{ grid-column: span 12; }
+.pf-col-4{ grid-column: span 4; }
+.pf-col-8{ grid-column: span 8; }
+
+@media (max-width: 900px){
+  .pf-col-7, .pf-col-5, .pf-col-4, .pf-col-8{ grid-column: span 12; }
+  .pf-hero{ grid-template-columns: auto 1fr; grid-template-areas: "avatar identity" "streak streak"; }
+  .pf-hero .pf-avatar-wrap{ grid-area: avatar; }
+  .pf-hero .pf-identity{ grid-area: identity; }
+  .pf-hero .pf-streak{ grid-area: streak; margin-top: 8px; justify-self:start; }
+  .pf-level{ grid-template-columns: auto 1fr; grid-template-areas: "badge stats" "link link"; }
+  .pf-level .pf-star-badge{ grid-area: badge; }
+  .pf-level .pf-level-stats{ grid-area: stats; }
+  .pf-level .pf-level-link{ grid-area: link; justify-self:start; margin-top:8px; }
+}
+
+/* --------------------------------------------------------------------
+   Section card: consistent header pattern for all cards
+   -------------------------------------------------------------------- */
+.pf-card{
+  border: var(--pf-border);
+  border-radius: var(--pf-radius-lg);
+  background: var(--pf-surface);
+  padding: var(--pf-pad);
+  box-shadow: var(--pf-shadow-sm);
+  display:flex; flex-direction:column;
+  min-width:0;
+}
+.pf-card-head{ margin-bottom: clamp(12px,1.6vw,18px); }
+.pf-card-kicker{
+  font-size: var(--fs-2xs); font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+  color: var(--accent,#1f4e79); opacity:.8; display:block; margin-bottom:6px;
+}
+.pf-card-title{ font-size: var(--fs-lg); font-weight:800; letter-spacing:-.01em; margin-bottom:4px; }
+.pf-card-sub{ font-size: var(--fs-sm); color: var(--text-muted,#666); }
+
+/* --------------------------------------------------------------------
+   Country selector + country dino cards (internal grid)
+   -------------------------------------------------------------------- */
+.pf-field{ display:grid; gap:6px; margin-top: 14px; }
+.pf-field span{ font-size: var(--fs-xs); color: var(--text-muted,#666); font-weight:600; }
+.pf-field select, .pf-field input{
+  width:100%; padding: 10px 14px; border-radius: var(--pf-radius-sm);
+  border: var(--pf-border-strong); background:#fff; font-size: var(--fs-sm);
+  font-family: inherit; color: inherit;
+}
+.pf-field select:focus, .pf-field input:focus{ outline: 2px solid var(--accent,#1f4e79); outline-offset: 1px; }
+
+.pf-btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding: 10px 18px; border-radius: var(--pf-radius-pill);
+  background: var(--accent,#1f4e79); color:#fff; font-weight:700; font-size: var(--fs-sm);
+  border:none; cursor:pointer; margin-top:14px; width: fit-content;
+  transition: filter .15s ease, transform .1s ease;
+}
+.pf-btn:hover{ filter: brightness(1.08); }
+.pf-btn:active{ transform: scale(.97); }
+.pf-btn-ghost{
+  background: transparent; color: var(--accent,#1f4e79);
+  border: 1px solid color-mix(in srgb, var(--accent,#1f4e79) 40%, transparent);
+}
+
+.pf-dino-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.pf-dino-card{
+  display:grid; grid-template-rows:auto auto auto 1fr;
+  text-decoration:none; color:inherit;
+  border: var(--pf-border); border-radius: var(--pf-radius-md);
+  padding: 12px; background: var(--pf-surface-2);
+  transition: transform .18s cubic-bezier(.22,.8,.3,1), border-color .18s ease, box-shadow .18s ease;
+}
+.pf-dino-card:hover{ transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent,#1f4e79) 40%, transparent); box-shadow: var(--pf-shadow-md); }
+.pf-dino-card img{
+  width:100%; aspect-ratio:1; object-fit:cover; border-radius: var(--pf-radius-sm);
+  margin-bottom:8px; background:#eee;
+}
+.pf-dino-name{ font-size: var(--fs-sm); font-weight:800; }
+.pf-dino-latin{ font-size: var(--fs-2xs); color: var(--text-muted,#666); font-style:italic; margin-top:1px; }
+.pf-dino-note{ font-size: var(--fs-2xs); color: var(--text-muted,#666); margin-top:6px; line-height:1.4; }
+
+.pf-empty{
+  display:grid; justify-items:center; text-align:center; gap:6px;
+  padding: clamp(20px,3vw,32px) 12px; color: var(--text-muted,#666);
+  font-size: var(--fs-sm);
+}
+.pf-empty-icon{ font-size: 28px; opacity:.5; }
+
+/* --------------------------------------------------------------------
+   Activity timeline
+   -------------------------------------------------------------------- */
+.pf-timeline{ display:grid; gap:2px; }
+.pf-timeline-row{
+  display:grid; grid-template-columns: 1fr auto; align-items:center; gap:10px;
+  padding: 12px 4px; border-bottom: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+  font-size: var(--fs-sm);
+}
+.pf-timeline-row:last-child{ border-bottom:none; }
+.pf-timeline-xp{ color:#2f8a5b; font-weight:800; font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------------
+   Account settings — internal 3-column grid
+   -------------------------------------------------------------------- */
+.pf-settings-grid{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px,2.6vw,32px);
+  margin-top: 6px;
+}
+@media (max-width: 900px){ .pf-settings-grid{ grid-template-columns: 1fr; } }
+.pf-settings-block h4{ font-size: var(--fs-md); font-weight:800; margin-bottom:6px; }
+
+.pf-avatar-grid{
+  display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:10px;
+}
+.pf-avatar-choice{
+  display:grid; gap:4px; justify-items:center;
+  border: 2px solid transparent; border-radius: var(--pf-radius-sm); padding:5px;
+  background:none; cursor:pointer; transition: border-color .18s ease;
+}
+.pf-avatar-choice img{ width:100%; border-radius: 6px; aspect-ratio:1; object-fit:cover; }
+.pf-avatar-choice small{ font-size: var(--fs-2xs); }
+.pf-avatar-choice.active{ border-color: var(--accent,#1f4e79); }
+.pf-avatar-choice:hover{ border-color: color-mix(in srgb, var(--accent,#1f4e79) 40%, transparent); }
+
+/* --------------------------------------------------------------------
+   Dark theme adjustments (site uses data-theme, e.g. "noc")
+   -------------------------------------------------------------------- */
+[data-theme="noc"] .pf-hero,
+[data-theme="noc"] .pf-level,
+[data-theme="noc"] .pf-card,
+[data-theme="noc"] .pf-dino-card,
+[data-theme="noc"] .pf-streak{
+  background: #16202b; color:#e8eef5;
+  border-color: rgba(255,255,255,.12);
+}
+[data-theme="noc"] .pf-field select,
+[data-theme="noc"] .pf-field input{
+  background:#1c2733; color:#e8eef5; border-color: rgba(255,255,255,.16);
+}
+[data-theme="noc"] .pf-avatar-wrap img{ border-color:#16202b; }
+[data-theme="noc"] .pf-streak-day{ background: rgba(255,255,255,.08); }
+
+/* --------------------------------------------------------------------
+   Responsive polish
+   -------------------------------------------------------------------- */
+@media (max-width: 560px){
+  .pf-hero, .pf-level, .pf-card{ padding: 18px; }
+  .pf-avatar-grid{ grid-template-columns: repeat(4, 1fr); }
+  .pf-settings-grid{ gap:24px; }
+}

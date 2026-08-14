@@ -26,24 +26,28 @@
     {code:'ES',name:'Hiszpania',flag:'🇪🇸'},{code:'RU',name:'Rosja',flag:'🇷🇺'},
     {code:'MX',name:'Meksyk',flag:'🇲🇽'},{code:'ZA',name:'RPA',flag:'🇿🇦'},
     {code:'MN',name:'Mongolia',flag:'🇲🇳'},{code:'PT',name:'Portugalia',flag:'🇵🇹'},
-    {code:'NL',name:'Holandia',flag:'🇳🇱'},{code:'CZ',name:'Czechy',flag:'🇨🇿'}
+    {code:'NL',name:'Holandia',flag:'🇳🇱'},{code:'CZ',name:'Czechy',flag:'🇨🇿'},
+    {code:'AT',name:'Austria',flag:'🇦🇹'}
   ];
 
-  // Krajowe zestawy dinozaurów — znaleziska powiązane z regionem/kraju profilu.
-  // Dla Polski uwzględniamy realne polskie znaleziska (Silesaurus, Smok, Lisowicia)
-  // korzystając z obrazów już dostępnych w encyklopedii/kursie.
   const COUNTRY_DINOS = {
     PL: [
-      {id:'silesaurus', name:'Silezaur', latin:'Silesaurus opolensis', img:'encyclopedia/silesaurus.webp', note:'Odkryty w Krasiejowie na Opolszczyźnie — jeden z najsłynniejszych triasowych znalezisk w Polsce.'},
+      {id:'silesaurus', name:'Silezaur', latin:'Silesaurus opolensis', img:'encyclopedia/silesaurus.webp', note:'Odkryty w Krasiejowie na Opolszczyźnie — jedno z najsłynniejszych triasowych znalezisk w Polsce.'}
     ],
     US: [
       {id:'trex', name:'Tyranozaur', latin:'Tyrannosaurus rex', img:'memory/trex.webp', note:'Formacja Hell Creek, Montana/Dakota.'},
       {id:'triceratops', name:'Triceratops', latin:'Triceratops horridus', img:'memory/triceratops.webp', note:'Późna kreda Ameryki Północnej.'},
-      {id:'stegosaurus', name:'Stegozaur', latin:'Stegosaurus stenops', img:'memory/stegosaurus.webp', note:'Formacja Morrison.'}
+      {id:'stegosaurus', name:'Stegozaur', latin:'Stegosaurus stenops', img:'memory/stegosaurus.webp', note:'Formacja Morrison.'},
+      {id:'diplodocus', name:'Diplodok', latin:'Diplodocus carnegii', img:'memory/diplodocus.webp', note:'Formacja Morrison, USA.'},
+      {id:'ankylosaurus', name:'Ankylozaur', latin:'Ankylosaurus magniventris', img:'memory/ankylosaurus.webp', note:'Koniec kredy, Ameryka Północna.'},
+      {id:'anzu', name:'Anzu', latin:'Anzu wyliei', img:'memory/anzu.webp', note:'Formacja Hell Creek.'}
     ],
     MN: [
       {id:'velociraptor', name:'Welociraptor', latin:'Velociraptor mongoliensis', img:'memory/velociraptor.webp', note:'Pustynia Gobi, Mongolia.'},
-      {id:'therizinosaurus', name:'Terizinozaur', latin:'Therizinosaurus cheloniformis', img:'memory/therizinosaurus.webp', note:'Późna kreda Mongolii.'}
+      {id:'therizinosaurus', name:'Terizinozaur', latin:'Therizinosaurus cheloniformis', img:'memory/therizinosaurus.webp', note:'Późna kreda Mongolii.'},
+      {id:'yi', name:'Yi qi', latin:'Yi qi', img:'memory/yi.webp', note:'Jura, region graniczący z Mongolią.'},
+      {id:'linhenykus', name:'Linhenykus', latin:'Linhenykus monodactylus', img:'memory/linhenykus.webp', note:'Późna kreda Mongolii.'},
+      {id:'natovenator', name:'Natovenator', latin:'Natovenator polydontus', img:'memory/natovenator.webp', note:'Późna kreda Mongolii.'}
     ],
     ES: [
       {id:'concavenator', name:'Concavenator', latin:'Concavenator corcovatus', img:'memory/concavenator.webp', note:'Las Hoyas, Hiszpania.'}
@@ -56,11 +60,11 @@
     ],
     CN: [
       {id:'yi', name:'Yi qi', latin:'Yi qi', img:'memory/yi.webp', note:'Jura, Chiny.'},
-      {id:'qianzhousaurus', name:'Qianzhousaurus', latin:'Qianzhousaurus sinensis', img:'memory/qianzhousaurus.webp', note:'Chiny.'}
+      {id:'qianzhousaurus', name:'Qianzhousaurus', latin:'Qianzhousaurus sinensis', img:'memory/qianzhousaurus.webp', note:'Chiny.'},
+      {id:'linhenykus', name:'Linhenykus', latin:'Linhenykus monodactylus', img:'memory/linhenykus.webp', note:'Chiny.'}
     ]
   };
 
-  // Kolory i liczba gwiazdek zależne od poziomu — im wyżej, tym bardziej "legendarny" wygląd.
   function levelTier(level){
     if(level >= 13) return {stars:5, color:'#c9962c', glow:'rgba(201,150,44,.45)', label:'Legenda'};
     if(level >= 10) return {stars:4, color:'#8b46c9', glow:'rgba(139,70,201,.4)', label:'Mistrz'};
@@ -71,39 +75,26 @@
 
   function starsHtml(tier){
     let out = '';
-    for(let i=0;i<5;i++){
-      out += `<span class="lvl-star ${i<tier.stars?'is-on':''}" style="${i<tier.stars?`color:${tier.color}`:''}">★</span>`;
-    }
+    for(let i=0;i<5;i++) out += `<span class="pf-star ${i<tier.stars?'is-on':''}">★</span>`;
     return out;
   }
 
-  // ---- Seria dziennych lekcji (streak) ----
   const STREAK_KEY = 'dinocademy-streak';
-  function loadStreakLocal(){
-    try { return JSON.parse(localStorage.getItem(STREAK_KEY)) || {count:0,last:null}; }
-    catch(e){ return {count:0,last:null}; }
-  }
+  function loadStreakLocal(){ try{ return JSON.parse(localStorage.getItem(STREAK_KEY)) || {count:0,last:null}; } catch(e){ return {count:0,last:null}; } }
   function saveStreakLocal(v){ localStorage.setItem(STREAK_KEY, JSON.stringify(v)); }
-
   function todayStr(){ return new Date().toISOString().slice(0,10); }
   function daysBetween(a,b){ return Math.round((new Date(b) - new Date(a)) / 86400000); }
 
   function computeStreakFromActivity(activity){
-    // Fallback: liczymy serię na podstawie dat aktywności (lekcje/gry) zwróconych z API.
     const days = new Set(activity.map(a => (a.date||'').slice(0,10)).filter(Boolean));
     const local = loadStreakLocal();
     const today = todayStr();
-    days.add(today && local.last === today ? today : null);
     let count = 0;
-    let cursor = today;
-    // dzień dzisiejszy liczy się jeśli była aktywność dziś LUB lokalny licznik już go zaznaczył
     let d = new Date();
     while(true){
       const key = d.toISOString().slice(0,10);
-      if(days.has(key) || (key===today && local.last===today)){
-        count++;
-        d.setDate(d.getDate()-1);
-      } else break;
+      if(days.has(key) || (key===today && local.last===today)){ count++; d.setDate(d.getDate()-1); }
+      else break;
     }
     return count;
   }
@@ -112,14 +103,25 @@
     const local = loadStreakLocal();
     const today = todayStr();
     if(local.last === today) return local;
-    if(local.last && daysBetween(local.last, today) === 1){
-      local.count = (local.count||0) + 1;
-    } else {
-      local.count = 1;
-    }
+    if(local.last && daysBetween(local.last, today) === 1) local.count = (local.count||0) + 1;
+    else local.count = 1;
     local.last = today;
     saveStreakLocal(local);
     return local;
+  }
+
+  function weekStrip(streakDays){
+    const today = new Date();
+    const localLast = loadStreakLocal().last;
+    let cells = '';
+    for(let i=6;i>=0;i--){
+      const d = new Date(today); d.setDate(d.getDate()-i);
+      const key = d.toISOString().slice(0,10);
+      const isToday = i===0;
+      const isActive = i < streakDays || (isToday && localLast===key);
+      cells += `<span class="pf-streak-day ${isActive?'is-active':''} ${isToday?'is-today':''}" title="${key}">${isActive?'✓':''}</span>`;
+    }
+    return cells;
   }
 
   async function api(path, method='GET', body=null) {
@@ -132,21 +134,6 @@
 
   function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
-  async function load() {
-    try {
-      const profile = await api('/api/profile');
-      const activity = await api('/api/activity');
-      let favorites = [];
-      try { const f = await api('/api/favorites'); favorites = f.favorites || []; } catch(e){}
-      // Aktualizuj serię dzienną, jeśli użytkownik jest aktywny na profilu.
-      const localStreak = markTodayActive();
-      const streakDays = Math.max(localStreak.count, computeStreakFromActivity(activity.activity||[]));
-      renderProfile(profile, activity.activity || [], favorites, streakDays);
-    } catch(e) {
-      $('#profile-page').innerHTML = `<p style="padding:40px;text-align:center">Błąd: ${esc(e.message)}. <a href="logowanie.html">Zaloguj się ponownie</a></p>`;
-    }
-  }
-
   function dinoLookup(id){
     const list = (window.DINO_DATA && window.DINO_DATA.dino && window.DINO_DATA.dino.e) || [];
     return list.find(d => d.id === id);
@@ -154,15 +141,15 @@
 
   function favoritesHtml(favorites){
     if(!favorites.length){
-      return `<p class="profile-empty">Nie masz jeszcze ulubionych taksonów. Odwiedź <a href="encyklopedia.html">encyklopedię</a> i kliknij „Dodaj do ulubionych”.</p>`;
+      return `<div class="pf-empty"><span class="pf-empty-icon">☆</span><p>Nie masz jeszcze ulubionych taksonów.<br/>Odwiedź <a href="encyklopedia.html">encyklopedię</a> i dodaj pierwszy.</p></div>`;
     }
-    return `<div class="fav-grid">${favorites.map(id => {
+    return `<div class="pf-dino-grid">${favorites.map(id => {
       const d = dinoLookup(id);
-      if(!d) return `<div class="fav-card"><strong>${esc(id)}</strong></div>`;
-      return `<a class="fav-card" href="encyklopedia.html">
-        <img src="${d.image.replace(/^\//,'')}" alt="${esc(d.common)}"/>
-        <strong>${esc(d.common)}</strong>
-        <small><i>${esc(d.scientific)}</i></small>
+      if(!d) return '';
+      return `<a class="pf-dino-card" href="encyklopedia.html">
+        <img src="${d.image.replace(/^\//,'')}" alt="${esc(d.common)}" loading="lazy"/>
+        <span class="pf-dino-name">${esc(d.common)}</span>
+        <span class="pf-dino-latin">${esc(d.scientific)}</span>
       </a>`;
     }).join('')}</div>`;
   }
@@ -170,15 +157,29 @@
   function countryDinosHtml(countryCode){
     const list = COUNTRY_DINOS[countryCode];
     if(!list){
-      return `<p class="profile-empty">Brak jeszcze udokumentowanych znalezisk z Twojego kraju w naszej bazie. Spróbuj wybrać inny kraj profilu lub przeglądaj <a href="encyklopedia.html">pełną encyklopedię</a>.</p>`;
+      return `<div class="pf-empty"><span class="pf-empty-icon">🌍</span><p>Brak jeszcze udokumentowanych znalezisk z tego kraju.<br/>Przeglądaj <a href="encyklopedia.html">pełną encyklopedię</a>.</p></div>`;
     }
-    return `<div class="fav-grid">${list.map(d => `
-      <div class="fav-card">
-        <img src="${d.img}" alt="${esc(d.name)}"/>
-        <strong>${esc(d.name)}</strong>
-        <small><i>${esc(d.latin)}</i></small>
-        <p class="fav-note">${esc(d.note)}</p>
+    return `<div class="pf-dino-grid">${list.map(d => `
+      <div class="pf-dino-card">
+        <img src="${d.img}" alt="${esc(d.name)}" loading="lazy"/>
+        <span class="pf-dino-name">${esc(d.name)}</span>
+        <span class="pf-dino-latin">${esc(d.latin)}</span>
+        <span class="pf-dino-note">${esc(d.note)}</span>
       </div>`).join('')}</div>`;
+  }
+
+  async function load() {
+    try {
+      const profile = await api('/api/profile');
+      const activity = await api('/api/activity');
+      let favorites = [];
+      try { const f = await api('/api/favorites'); favorites = f.favorites || []; } catch(e){}
+      const localStreak = markTodayActive();
+      const streakDays = Math.max(localStreak.count, computeStreakFromActivity(activity.activity || []));
+      renderProfile(profile, activity.activity || [], favorites, streakDays);
+    } catch(e) {
+      $('#profile-page').innerHTML = `<div class="profile-shell"><div class="pf-card"><p>Błąd: ${esc(e.message)}. <a href="logowanie.html">Zaloguj się ponownie</a></p></div></div>`;
+    }
   }
 
   function renderProfile(p, activity, favorites, streakDays) {
@@ -186,163 +187,169 @@
     const avatar = AVATARS.find(a=>a.id===p.avatar) || AVATARS[0];
     const tier = levelTier(p.level);
     const country = COUNTRIES.find(c=>c.code===p.country) || COUNTRIES[0];
+    const isCold = streakDays === 0;
 
     $('#profile-page').innerHTML = `
-      <div class="profile-top-row">
-        <div class="profile-card-badge">
-          <div class="profile-avatar-wrap">
-            <img id="profile-avatar-img" src="${avatar.img.replace(/^\//,'')}" alt="${esc(avatar.name)}"/>
-            <label class="avatar-upload-btn" title="Zmień zdjęcie profilowe">
-              📷
-              <input type="file" id="avatar-upload-input" accept="image/*" hidden/>
-            </label>
-          </div>
-          <div class="profile-card-badge-body">
-            <span class="profile-kicker">PROFIL BADACZA</span>
-            <h1>${esc(p.name)}</h1>
-            <p>${country.flag} ${esc(country.name)} · ${p.is_pro ? 'PRO' : 'Free'} · konto Dinocademy</p>
+    <div class="profile-shell">
+
+      <div class="pf-hero">
+        <div class="pf-avatar-wrap">
+          <img id="pf-avatar-img" src="${avatar.img.replace(/^\//,'')}" alt="${esc(avatar.name)}"/>
+          <label class="pf-avatar-upload" title="Zmień zdjęcie profilowe">📷<input type="file" id="pf-avatar-input" accept="image/*" hidden/></label>
+        </div>
+        <div class="pf-identity">
+          <span class="pf-kicker">Profil badacza</span>
+          <h1 class="pf-name">${esc(p.name)}</h1>
+          <div class="pf-meta">
+            <span>${country.flag} ${esc(country.name)}</span>
+            <span class="pf-dot">·</span>
+            <span class="${p.is_pro ? 'pf-pro-badge' : ''}">${p.is_pro ? 'PRO' : 'Free'}</span>
+            <span class="pf-dot">·</span>
+            <span>konto Dinocademy</span>
           </div>
         </div>
-        <div class="streak-card">
-          <div class="streak-flame">🔥</div>
-          <div class="streak-count">${streakDays}</div>
-          <div class="streak-label">dni serii</div>
-          <small>Aktywność dzisiaj podtrzymuje serię. Bez powiadomień.</small>
+        <div class="pf-streak ${isCold?'is-cold':''}">
+          <span class="pf-streak-flame">${isCold?'💤':'🔥'}</span>
+          <span class="pf-streak-num">${streakDays}</span>
+          <span class="pf-streak-label">${streakDays===1?'dzień serii':'dni serii'}</span>
+          <div class="pf-streak-week">${weekStrip(streakDays)}</div>
         </div>
       </div>
 
-      <div class="profile-level-card" style="--tier-color:${tier.color};--tier-glow:${tier.glow}">
-        <div class="level-star-badge">
-          <span class="level-star-icon" style="color:${tier.color}">★</span>
-          <span class="level-star-num">${p.level}</span>
+      <div class="pf-level" style="--tier-color:${tier.color};--tier-glow:${tier.glow}">
+        <div class="pf-star-badge">
+          <span class="pf-star-icon">★</span>
+          <span class="pf-star-num">${p.level}</span>
         </div>
-        <div class="profile-level-body">
-          <span class="profile-kicker">ŁOWCA SKAMIENIAŁOŚCI</span>
-          <h2>${p.xp} XP</h2>
-          <div class="lvl-stars-row">${starsHtml(tier)}<span class="lvl-tier-label">${tier.label}</span></div>
-          <div class="profile-progress-bar"><i style="width:${pct}%;background:${tier.color}"></i></div>
-          <small>${p.xpToNext} XP do kolejnego poziomu · każdy próg rośnie szybciej.</small>
+        <div class="pf-level-stats">
+          <span class="pf-level-kicker">Łowca skamieniałości</span>
+          <div class="pf-level-xp">${p.xp} XP</div>
+          <div class="pf-stars-row">${starsHtml(tier)}<span class="pf-tier-label">${tier.label}</span></div>
+          <div class="pf-bar"><i style="width:${pct}%"></i></div>
+          <div class="pf-level-sub">${p.xpToNext} XP do kolejnego poziomu · każdy próg rośnie szybciej</div>
         </div>
-        <a class="quiet-link" href="ranking.html">Ranking Pro →</a>
+        <a class="pf-level-link" href="ranking.html">Ranking Pro →</a>
       </div>
 
-      <div class="profile-grid">
-        <section class="recovery-lesson-card profile-section">
-          <header><small>SKĄD JESTEŚ?</small></header>
-          <h3>Twój kraj i lokalne dinozaury</h3>
-          <p class="profile-section-sub">Wybierz kraj, aby zobaczyć znaleziska powiązane z Twoim regionem.</p>
-          <label class="profile-field">
+      <div class="pf-grid">
+        <section class="pf-card pf-col-7">
+          <div class="pf-card-head">
+            <span class="pf-card-kicker">Skąd jesteś?</span>
+            <h2 class="pf-card-title">Dinozaury z Twojego kraju</h2>
+            <p class="pf-card-sub">Wybierz kraj, aby zobaczyć znaleziska powiązane z Twoim regionem.</p>
+          </div>
+          <label class="pf-field">
             <span>Kraj profilu</span>
-            <select id="profile-country">
+            <select id="pf-country">
               ${COUNTRIES.map(c=>`<option value="${c.code}" ${c.code===p.country?'selected':''}>${c.flag} ${c.name}</option>`).join('')}
             </select>
           </label>
-          <button class="button" id="save-country">Zapisz kraj</button>
-          <div class="country-dinos" id="country-dinos">${countryDinosHtml(p.country)}</div>
+          <button class="pf-btn" id="pf-save-country">Zapisz kraj</button>
+          <div id="pf-country-dinos">${countryDinosHtml(p.country)}</div>
         </section>
 
-        <section class="recovery-lesson-card profile-section">
-          <header><small>ULUBIONE</small></header>
-          <h3>Twoje ulubione taksony</h3>
-          <p class="profile-section-sub">Dodane z encyklopedii — kliknij ☆ przy dinozaurze, by go tu zobaczyć.</p>
+        <section class="pf-card pf-col-5">
+          <div class="pf-card-head">
+            <span class="pf-card-kicker">Ulubione</span>
+            <h2 class="pf-card-title">Twój prywatny atlas</h2>
+            <p class="pf-card-sub">Dodane z encyklopedii — kliknij ☆ przy dinozaurze.</p>
+          </div>
           ${favoritesHtml(favorites)}
         </section>
-      </div>
 
-      <section class="recovery-lesson-card profile-section" style="margin-top:20px">
-        <header><small>OSTATNIE XP</small></header>
-        <h3>Ślad aktywności</h3>
-        ${activity.length ? `<div class="activity-list">${activity.map(a=>`
-          <div class="activity-row">
-            <span>${esc(a.label)} ${a.score?`(${a.score} pkt)`:''}</span>
-            <strong class="activity-xp">+${a.xp} XP</strong>
+        <section class="pf-card pf-col-12">
+          <div class="pf-card-head">
+            <span class="pf-card-kicker">Ostatnie XP</span>
+            <h2 class="pf-card-title">Ślad aktywności</h2>
           </div>
-        `).join('')}</div>` : '<p class="profile-empty">Brak aktywności. Zagraj w grę lub ukończ lekcję.</p>'}
-      </section>
-
-      <section class="recovery-lesson-card profile-section" style="margin-top:20px">
-        <header><small>DANE KONTA</small></header>
-        <h3>Ustawienia profilu i logowania</h3>
-        <div class="profile-grid" style="margin-top:16px">
-          <div>
-            <h4>Profil publiczny</h4>
-            <label class="profile-field"><span>Nazwa profilu</span><input id="profile-name" value="${esc(p.name)}" maxlength="40"/></label>
-            <p class="profile-section-sub" style="margin-top:12px">Avatar</p>
-            <div class="avatar-grid">
-              ${AVATARS.map(a=>`<button class="avatar-choice ${a.id===p.avatar?'active':''}" data-avatar="${a.id}">
-                <img src="${a.img.replace(/^\//,'')}" alt="${esc(a.name)}"/>
-                <small>${esc(a.name)}</small>
-              </button>`).join('')}
+          ${activity.length ? `<div class="pf-timeline">${activity.map(a=>`
+            <div class="pf-timeline-row">
+              <span>${esc(a.label)} ${a.score?`(${a.score} pkt)`:''}</span>
+              <span class="pf-timeline-xp">+${a.xp} XP</span>
             </div>
-            <button class="button" id="save-profile-btn" style="margin-top:12px">Zapisz profil</button>
+          `).join('')}</div>` : `<div class="pf-empty"><span class="pf-empty-icon">📭</span><p>Brak aktywności. Zagraj w grę lub ukończ lekcję.</p></div>`}
+        </section>
+
+        <section class="pf-card pf-col-12">
+          <div class="pf-card-head">
+            <span class="pf-card-kicker">Dane konta</span>
+            <h2 class="pf-card-title">Ustawienia profilu i logowania</h2>
           </div>
-          <div>
-            <h4>Adres e-mail</h4>
-            <label class="profile-field"><span>Nowy e-mail</span><input id="new-email" value="${esc(p.email)}" type="email"/></label>
-            <label class="profile-field" style="margin-top:8px"><span>Obecne hasło</span><input id="email-password" type="password"/></label>
-            <button class="button" id="change-email-btn" style="margin-top:12px">Zmień e-mail</button>
+          <div class="pf-settings-grid">
+            <div class="pf-settings-block">
+              <h4>Profil publiczny</h4>
+              <label class="pf-field"><span>Nazwa profilu</span><input id="pf-name" value="${esc(p.name)}" maxlength="40"/></label>
+              <p class="pf-card-sub" style="margin-top:12px">Avatar</p>
+              <div class="pf-avatar-grid">
+                ${AVATARS.map(a=>`<button class="pf-avatar-choice ${a.id===p.avatar?'active':''}" data-avatar="${a.id}">
+                  <img src="${a.img.replace(/^\//,'')}" alt="${esc(a.name)}"/>
+                  <small>${esc(a.name)}</small>
+                </button>`).join('')}
+              </div>
+              <button class="pf-btn" id="pf-save-profile">Zapisz profil</button>
+            </div>
+            <div class="pf-settings-block">
+              <h4>Adres e-mail</h4>
+              <label class="pf-field"><span>Nowy e-mail</span><input id="pf-email" value="${esc(p.email)}" type="email"/></label>
+              <label class="pf-field"><span>Obecne hasło</span><input id="pf-email-pw" type="password"/></label>
+              <button class="pf-btn pf-btn-ghost" id="pf-change-email">Zmień e-mail</button>
+            </div>
+            <div class="pf-settings-block">
+              <h4>Nowe hasło</h4>
+              <label class="pf-field"><span>Obecne hasło</span><input id="pf-current-pw" type="password"/></label>
+              <label class="pf-field"><span>Nowe hasło</span><input id="pf-new-pw" type="password" minlength="8"/></label>
+              <label class="pf-field"><span>Powtórz nowe hasło</span><input id="pf-repeat-pw" type="password"/></label>
+              <button class="pf-btn pf-btn-ghost" id="pf-change-pw">Zmień hasło</button>
+            </div>
           </div>
-          <div>
-            <h4>Nowe hasło</h4>
-            <label class="profile-field"><span>Obecne hasło</span><input id="current-pw" type="password"/></label>
-            <label class="profile-field" style="margin-top:8px"><span>Nowe hasło</span><input id="new-pw" type="password" minlength="8"/></label>
-            <label class="profile-field" style="margin-top:8px"><span>Powtórz nowe hasło</span><input id="repeat-pw" type="password"/></label>
-            <button class="button" id="change-pw-btn" style="margin-top:12px">Zmień hasło</button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
+    </div>
     `;
 
-    // ---- Event handlers ----
-    $('#save-country')?.addEventListener('click', async () => {
-      const code = $('#profile-country').value;
-      try {
-        await api('/api/profile/country', 'POST', {country: code});
-        $('#country-dinos').innerHTML = countryDinosHtml(code);
-        alert('Kraj zapisany');
-      } catch(e) { alert(e.message); }
+    $('#pf-save-country')?.addEventListener('click', async () => {
+      const code = $('#pf-country').value;
+      try { await api('/api/profile/country', 'POST', {country: code}); $('#pf-country-dinos').innerHTML = countryDinosHtml(code); }
+      catch(e) { alert(e.message); }
     });
 
-    $$('.avatar-choice').forEach(btn => btn.addEventListener('click', async () => {
+    $$('.pf-avatar-choice').forEach(btn => btn.addEventListener('click', async () => {
       try {
         await api('/api/profile/avatar', 'POST', {avatar: btn.dataset.avatar});
-        $$('.avatar-choice').forEach(b=>b.classList.remove('active'));
+        $$('.pf-avatar-choice').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
         const chosen = AVATARS.find(a=>a.id===btn.dataset.avatar);
-        if(chosen) $('#profile-avatar-img').src = chosen.img.replace(/^\//,'');
+        if(chosen) $('#pf-avatar-img').src = chosen.img.replace(/^\//,'');
+        localStorage.removeItem('dinocademy-custom-avatar');
       } catch(e) { alert(e.message); }
     }));
 
-    // Działające zdjęcie profilowe: podgląd natychmiastowy + zapis jako custom avatar (data URL w localStorage).
-    $('#avatar-upload-input')?.addEventListener('change', (e) => {
+    $('#pf-avatar-input')?.addEventListener('change', (e) => {
       const file = e.target.files && e.target.files[0];
       if(!file) return;
       if(file.size > 2*1024*1024){ alert('Zdjęcie jest za duże (max 2MB).'); return; }
       const reader = new FileReader();
       reader.onload = () => {
-        $('#profile-avatar-img').src = reader.result;
+        $('#pf-avatar-img').src = reader.result;
         localStorage.setItem('dinocademy-custom-avatar', reader.result);
       };
       reader.readAsDataURL(file);
     });
 
-    // Jeśli użytkownik ma wcześniej zapisane zdjęcie profilowe lokalnie, użyj go.
     const customAvatar = localStorage.getItem('dinocademy-custom-avatar');
-    if(customAvatar) $('#profile-avatar-img').src = customAvatar;
+    if(customAvatar) $('#pf-avatar-img').src = customAvatar;
 
-    $('#save-profile-btn')?.addEventListener('click', async () => {
-      try { await api('/api/profile/name', 'POST', {name: $('#profile-name').value}); alert('Profil zapisany'); } catch(e) { alert(e.message); }
+    $('#pf-save-profile')?.addEventListener('click', async () => {
+      try { await api('/api/profile/name', 'POST', {name: $('#pf-name').value}); alert('Profil zapisany'); } catch(e) { alert(e.message); }
     });
-
-    $('#change-email-btn')?.addEventListener('click', async () => {
-      try { await api('/api/profile/email', 'POST', {email: $('#new-email').value, password: $('#email-password').value}); alert('E-mail zmieniony'); } catch(e) { alert(e.message); }
+    $('#pf-change-email')?.addEventListener('click', async () => {
+      try { await api('/api/profile/email', 'POST', {email: $('#pf-email').value, password: $('#pf-email-pw').value}); alert('E-mail zmieniony'); } catch(e) { alert(e.message); }
     });
-
-    $('#change-pw-btn')?.addEventListener('click', async () => {
-      const npw = $('#new-pw').value, rpw = $('#repeat-pw').value;
+    $('#pf-change-pw')?.addEventListener('click', async () => {
+      const npw = $('#pf-new-pw').value, rpw = $('#pf-repeat-pw').value;
       if(npw !== rpw) { alert('Hasła nie są zgodne'); return; }
       if(npw.length < 8) { alert('Hasło min. 8 znaków'); return; }
-      try { await api('/api/profile/password', 'POST', {currentPassword: $('#current-pw').value, newPassword: npw}); alert('Hasło zmienione'); } catch(e) { alert(e.message); }
+      try { await api('/api/profile/password', 'POST', {currentPassword: $('#pf-current-pw').value, newPassword: npw}); alert('Hasło zmienione'); } catch(e) { alert(e.message); }
     });
   }
 
