@@ -1,0 +1,137 @@
+/* ============================================================
+   Dinocademy — animacje i style dla strony głównej (home.js)
+   Podłącz w public/index.html w <head>, po innych arkuszach:
+   <link href="assets/home.css" rel="stylesheet">
+   ============================================================ */
+
+/* --- Reveal-on-scroll --- */
+.home-hero,
+.home-path article,
+.home-destination-grid a,
+.home-facts {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.home-hero.is-visible,
+.home-path article.is-visible,
+.home-destination-grid a.is-visible,
+.home-facts.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home-path article {
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* --- Karty ścieżki nauki: hover --- */
+.home-path article {
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.home-path article.is-hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Destination cards: lekkie skalowanie --- */
+.home-destination-grid a {
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.25s ease;
+}
+.home-destination-grid a:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
+}
+
+/* --- Przycisk odpowiedzi: "pop" po kliknięciu --- */
+.home-starter-options button {
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.home-starter-options button.is-pop {
+  transform: scale(0.94);
+}
+.home-starter-options button[aria-pressed="true"] {
+  border-color: currentColor;
+  font-weight: 600;
+}
+
+/* --- Hero: subtelny 3D tilt na mysz (desktop) --- */
+.home-hero-grid {
+  --tiltX: 0deg;
+  --tiltY: 0deg;
+  perspective: 1200px;
+}
+.home-hero-copy,
+.home-starter {
+  transition: transform 0.15s ease-out;
+  transform: rotateX(var(--tiltX)) rotateY(var(--tiltY));
+  transform-style: preserve-3d;
+}
+
+/* --- Sekcja ciekawostek --- */
+.home-facts {
+  padding: 48px 0;
+}
+.home-facts .page-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+#home-fact-text {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  min-height: 3.2em;
+  opacity: 0;
+  transform: translateY(6px);
+}
+#home-fact-text.is-in {
+  animation: factFadeIn 0.5s ease forwards;
+}
+@keyframes factFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#home-fact-dots {
+  display: flex;
+  gap: 8px;
+}
+.home-fact-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.home-fact-dot.is-active {
+  background: currentColor;
+  transform: scale(1.3);
+}
+
+/* --- Redukcja animacji dla użytkowników preferujących mniej ruchu --- */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero,
+  .home-path article,
+  .home-destination-grid a,
+  .home-facts,
+  .home-starter-options button,
+  .home-hero-copy,
+  .home-starter,
+  #home-fact-text {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* --- Responsywność drobiazgów --- */
+@media (max-width: 720px) {
+  .home-facts .page-shell { padding-inline: 20px; }
+  #home-fact-text { font-size: 1.05rem; }
+}
