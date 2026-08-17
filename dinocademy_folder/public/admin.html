@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html data-theme="atlas" lang="pl"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Panel admina · Dinocademy</title><meta content="Panel administracyjny Dinocademy" name="description"/><link href="favicon.svg" rel="icon"/><link href="assets/style.css" rel="stylesheet"/></head><body data-page="admin"><a class="skip-link" href="#main-content">Przejdź do treści</a><header class="site-header"><div class="header-inner"><a aria-label="Dinocademy — strona główna" class="brand" href="index.html"><span aria-hidden="true" class="brand-mark"><span class="brand-eye"></span><span class="brand-tooth brand-tooth-one"></span><span class="brand-tooth brand-tooth-two"></span></span><span>dinocademy</span></a><nav aria-label="Główna nawigacja" class="desktop-nav"><a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a><a href="forum.html">Forum</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a><a href="pro.html">Plan Pro</a></nav><details class="mobile-menu"><summary aria-label="Otwórz menu">Menu</summary><nav aria-label="Nawigacja mobilna"><a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a><a href="forum.html">Forum</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a><a href="pro.html">Plan Pro</a></nav></details><div class="header-actions"><details class="preferences-menu"><summary aria-label="Wygląd i język">Aa</summary><div class="preferences-popover"><section><span>Kolor strony</span><div class="theme-grid"><button aria-pressed="true" type="button"><i style="background:#1f4e79"></i><b>Atlas</b></button><button aria-pressed="false" type="button"><i style="background:#315e4c"></i><b>Teren</b></button><button aria-pressed="false" type="button"><i style="background:#713447"></i><b>Archiwum</b></button><button aria-pressed="false" type="button"><i style="background:#75afd0"></i><b>Noc</b></button></div></section><section><span>Język interfejsu</span><div class="language-choice"><button class="active" type="button">Polski</button><button class="" type="button">English</button></div><small>Nazwy naukowe pozostają po łacinie.</small></section></div></details><a class="header-register" data-auth-register="1" href="rejestracja.html">Załóż konto</a><a class="button button-small" data-auth-login="1" href="logowanie.html?next=%2Flearn">Zaloguj się</a></div></div></header><main class="admin-page" id="main-content"><div class="page-shell">
+<div id="admin-guard">
+<header class="forum-hero"><span class="app-kicker">DINOCADEMY / PANEL ADMINA</span><h1>Panel administratora</h1><p id="admin-guard-msg">Sprawdzanie uprawnień…</p></header>
+</div>
+
+<div id="admin-content" style="display:none">
+<header class="forum-hero"><span class="app-kicker">DINOCADEMY / PANEL ADMINA</span><h1>Panel administratora</h1><p>Zarzadzaj kontami, planem Pro i wątkami forum.</p></header>
+
+<section class="admin-stats" id="admin-stats"></section>
+
+<section class="admin-section">
+<h2>Użytkownicy</h2>
+<div class="admin-table-wrap"><table class="admin-table" id="admin-users-table">
+<thead><tr><th>Nazwa</th><th>E-mail</th><th>Poziom</th><th>XP</th><th>Pro</th><th>Akcje</th></tr></thead>
+<tbody></tbody>
+</table></div>
+</section>
+
+<section class="admin-section">
+<h2>Wątki forum</h2>
+<div class="admin-table-wrap"><table class="admin-table" id="admin-threads-table">
+<thead><tr><th>Tytuł</th><th>Kategoria</th><th>Autor</th><th>Status</th><th>Akcje</th></tr></thead>
+<tbody></tbody>
+</table></div>
+</section>
+
+<section class="admin-section admin-danger">
+<h2>Strefa niebezpieczna</h2>
+<p>Resetuje CAŁĄ lokalną bazę danych (użytkownicy, postępy, forum). Nieodwracalne.</p>
+<button class="button button-danger" id="admin-reset-btn" type="button">Zresetuj bazę danych</button>
+</section>
+</div>
+
+</div></main><footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><a aria-label="Dinocademy — strona główna" class="brand" href="index.html"><span aria-hidden="true" class="brand-mark"><span class="brand-eye"></span><span class="brand-tooth brand-tooth-one"></span><span class="brand-tooth brand-tooth-two"></span></span><span>dinocademy</span></a><p>Nie uczymy list nazw. Uczymy czytać ślady przeszłości.</p></div><div class="footer-links"><div><strong>Odkrywaj</strong><a href="kursy.html">Wszystkie kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="notatnik.html">Notatnik</a></div><div><strong>Zacznij</strong><a href="kursy.html?c=dino-all">Kurs o dinozaurach</a><a href="gry.html">Centrum gier</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a></div></div></div><div class="footer-bottom"><span>© 2026 Dinocademy</span></div></footer><script src="assets/recovery-data.js"></script><script src="assets/recovery.js"></script><script src="assets/admin.js"></script></body></html>

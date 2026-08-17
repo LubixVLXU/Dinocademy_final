@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html data-theme="atlas" lang="pl"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Forum · Dinocademy</title><meta content="Forum spolecznosci Dinocademy — pytania i odpowiedzi o dinozaurach, kursach i grach" name="description"/><link href="favicon.svg" rel="icon"/><link href="assets/style.css" rel="stylesheet"/></head><body data-page="forum"><a class="skip-link" href="#main-content">Przejdź do treści</a><header class="site-header"><div class="header-inner"><a aria-label="Dinocademy — strona główna" class="brand" href="index.html"><span aria-hidden="true" class="brand-mark"><span class="brand-eye"></span><span class="brand-tooth brand-tooth-one"></span><span class="brand-tooth brand-tooth-two"></span></span><span>dinocademy</span></a><nav aria-label="Główna nawigacja" class="desktop-nav"><a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a><a href="forum.html">Forum</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a><a href="pro.html">Plan Pro</a></nav><details class="mobile-menu"><summary aria-label="Otwórz menu">Menu</summary><nav aria-label="Nawigacja mobilna"><a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a><a href="forum.html">Forum</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a><a href="pro.html">Plan Pro</a></nav></details><div class="header-actions"><details class="preferences-menu"><summary aria-label="Wygląd i język">Aa</summary><div class="preferences-popover"><section><span>Kolor strony</span><div class="theme-grid"><button aria-pressed="true" type="button"><i style="background:#1f4e79"></i><b>Atlas</b></button><button aria-pressed="false" type="button"><i style="background:#315e4c"></i><b>Teren</b></button><button aria-pressed="false" type="button"><i style="background:#713447"></i><b>Archiwum</b></button><button aria-pressed="false" type="button"><i style="background:#75afd0"></i><b>Noc</b></button></div></section><section><span>Język interfejsu</span><div class="language-choice"><button class="active" type="button">Polski</button><button class="" type="button">English</button></div><small>Nazwy naukowe pozostają po łacinie.</small></section></div></details><a class="header-register" data-auth-register="1" href="rejestracja.html">Załóż konto</a><a class="button button-small" data-auth-login="1" href="logowanie.html?next=%2Flearn">Zaloguj się</a></div></div></header><main class="forum-page" id="main-content"><div class="page-shell">
+<header class="forum-hero"><span class="app-kicker">DINOCADEMY / FORUM</span><h1>Forum społeczności</h1><p>Zadawaj pytania, dziel się obserwacjami i pomagaj innym odkrywcom. Wybierz kategorię i napisz swój pierwszy wątek.</p></header>
+
+<div class="forum-layout">
+<aside class="forum-sidebar">
+<h2>Kategorie</h2>
+<div class="forum-category-list" id="forum-categories">
+<button class="forum-category-btn active" data-category="">Wszystkie</button>
+</div>
+<button class="button button-large forum-new-btn" data-auth-required="1" id="forum-new-thread-btn" type="button">+ Nowe pytanie</button>
+<p class="forum-login-hint" id="forum-login-hint" style="display:none">Zaloguj się, aby zadać pytanie lub odpowiadać.</p>
+</aside>
+
+<section class="forum-main">
+<div class="forum-thread-list" id="forum-thread-list"><p class="forum-empty">Ładowanie wątków…</p></div>
+</section>
+</div>
+
+<div class="forum-modal" id="forum-new-modal" style="display:none">
+<div class="forum-modal-inner">
+<h2>Zadaj pytanie</h2>
+<form id="forum-new-form">
+<label><span>Kategoria</span>
+<select id="forum-new-category" name="categoryId" required>
+</select>
+</label>
+<label><span>Tytuł</span><input id="forum-new-title" maxlength="140" name="title" required type="text"/></label>
+<label><span>Treść pytania</span><textarea id="forum-new-body" maxlength="5000" name="body" required rows="6"></textarea></label>
+<div class="forum-modal-actions">
+<button class="button button-ghost" id="forum-new-cancel" type="button">Anuluj</button>
+<button class="button" type="submit">Opublikuj</button>
+</div>
+<p class="recovery-status" id="forum-new-status"></p>
+</form>
+</div>
+</div>
+
+<div class="forum-modal" id="forum-thread-modal" style="display:none">
+<div class="forum-modal-inner forum-thread-view">
+<button class="forum-close-btn" id="forum-thread-close" type="button">✕</button>
+<div id="forum-thread-content"></div>
+</div>
+</div>
+
+</div></main><footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><a aria-label="Dinocademy — strona główna" class="brand" href="index.html"><span aria-hidden="true" class="brand-mark"><span class="brand-eye"></span><span class="brand-tooth brand-tooth-one"></span><span class="brand-tooth brand-tooth-two"></span></span><span>dinocademy</span></a><p>Nie uczymy list nazw. Uczymy czytać ślady przeszłości.</p></div><div class="footer-links"><div><strong>Odkrywaj</strong><a href="kursy.html">Wszystkie kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="notatnik.html">Notatnik</a></div><div><strong>Zacznij</strong><a href="kursy.html?c=dino-all">Kurs o dinozaurach</a><a href="gry.html">Centrum gier</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a></div></div></div><div class="footer-bottom"><span>© 2026 Dinocademy</span></div></footer><script src="assets/recovery-data.js"></script><script src="assets/recovery.js"></script><script src="assets/forum.js"></script></body></html>

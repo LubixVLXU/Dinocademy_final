@@ -58,6 +58,21 @@
       if(reg){reg.textContent='Wyloguj';reg.href='#';reg.addEventListener('click',async e=>{e.preventDefault();try{await API.post('/api/logout');API.setToken(null)}catch{}location.href='index.html'})}
       // Add profile link
       if(login) { login.href='profil.html'; }
+      // Admin panel link
+      if(currentUser.isAdmin){
+        const nav=document.querySelector('.desktop-nav');
+        const mobileNav=document.querySelector('.mobile-menu nav');
+        if(nav && !nav.querySelector('[data-admin-link]')){
+          const a=document.createElement('a');
+          a.href='admin.html'; a.textContent='Panel admina'; a.setAttribute('data-admin-link','1');
+          nav.appendChild(a);
+        }
+        if(mobileNav && !mobileNav.querySelector('[data-admin-link]')){
+          const a2=document.createElement('a');
+          a2.href='admin.html'; a2.textContent='Panel admina'; a2.setAttribute('data-admin-link','1');
+          mobileNav.appendChild(a2);
+        }
+      }
     }
   }
 
