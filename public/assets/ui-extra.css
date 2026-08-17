@@ -1,21 +1,1102 @@
-/* ================= REVAMP EXTRA ================= */
-.skip-link{position:absolute;left:-999px;top:auto}.skip-link:focus{left:16px;top:16px;z-index:999;background:#111;color:#fff;padding:8px 12px;border-radius:10px}
-.page-shell{width:min(1180px,calc(100% - 32px));margin:0 auto}.page-stack{padding:32px 0 56px}.compact-hero{padding:24px 0 8px}.compact-hero h1{font-size:clamp(2rem,5vw,3.75rem);line-height:1.05}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;opacity:.72}
-.panel-glass{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.74));backdrop-filter:blur(12px);border:1px solid rgba(21,33,48,.08);box-shadow:0 18px 44px rgba(18,31,46,.08);border-radius:28px;padding:22px;margin:18px 0}
-.home-hero{padding:44px 0 28px;position:relative;overflow:hidden}.home-hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:24px;align-items:stretch}.home-hero-copy,.home-starter{background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.72));border:1px solid rgba(23,35,50,.08);border-radius:30px;padding:28px;box-shadow:0 18px 44px rgba(18,31,46,.08)}
-.home-hero-copy h1{font-size:clamp(2.6rem,7vw,5.4rem);line-height:.95;max-width:10ch;margin:10px 0 14px}.home-hero-copy p{font-size:1.06rem;max-width:60ch}.home-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;border-radius:999px;text-decoration:none;border:1px solid transparent;font-weight:700}.btn-primary{background:#0d6d77;color:#fff}.btn-secondary{background:rgba(13,109,119,.08);color:#124956;border-color:rgba(13,109,119,.18)}
-.home-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.home-proof div{padding:16px;border-radius:22px;background:rgba(255,255,255,.66);border:1px solid rgba(0,0,0,.06)}.home-proof dt{font-size:2rem;font-weight:800}.home-proof dd{margin-top:6px;opacity:.7}
-.home-starter header h2{font-size:clamp(1.5rem,4vw,2.2rem);margin-top:6px}.home-starter-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.home-starter-options button{min-height:52px;border-radius:18px;border:1px solid rgba(18,31,46,.09);background:#fff;padding:12px;font-weight:700}.home-starter-result{padding:14px 16px;border-radius:18px;background:rgba(13,109,119,.06);border:1px solid rgba(13,109,119,.12)}
-.section-head{margin-bottom:18px}.section-head h2{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.06}.home-path,.home-destinations,.home-facts{padding:26px 0}.home-path-list,.home-destination-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.home-path article,.home-destination-grid a{position:relative;background:#fff;border-radius:26px;padding:20px;border:1px solid rgba(20,32,46,.08);box-shadow:0 14px 34px rgba(19,29,44,.06);text-decoration:none;color:inherit}.home-path article span,.home-destination-grid span{font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;opacity:.6}.home-path h3,.home-destination-grid h3{font-size:1.35rem;margin:10px 0 8px;line-height:1.1}
-.home-facts{color:#102431}.hatchery-dashboard .hatchery-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:12px}.hatchery-dashboard .hatchery-stats div{background:#fff;border-radius:20px;padding:14px 16px;border:1px solid rgba(18,31,46,.08)}.hatchery-dashboard strong{display:block;font-size:1.9rem}
-.hx-egg-grid,.hx-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.hx-egg-card,.hx-card{background:#fff;border-radius:24px;padding:16px;border:1px solid rgba(20,32,46,.08);box-shadow:0 12px 28px rgba(0,0,0,.06)}.hx-egg-shell{height:92px;border-radius:999px;background:radial-gradient(circle at 35% 28%,#fff,rgba(255,255,255,.6) 20%,#d8c4a2 60%,#8f7155 100%);margin-bottom:14px;animation:eggFloat 2.8s ease-in-out infinite}.rarity-rare .hx-egg-shell{background:radial-gradient(circle at 35% 28%,#fff,#bfe7ff 22%,#56a3e1 60%,#1e4f7f 100%)}.rarity-epic .hx-egg-shell{background:radial-gradient(circle at 35% 28%,#fff,#e8d3ff 20%,#aa71ec 58%,#56258e 100%)}
-@keyframes eggFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(-2deg)}}
-.hx-progress{height:10px;background:rgba(14,25,38,.08);border-radius:999px;overflow:hidden;margin:12px 0}.hx-progress span{display:block;height:100%;background:linear-gradient(90deg,#0d6d77,#73d4d0);border-radius:999px}
-.hx-card-img{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;background:linear-gradient(180deg,#edf4f8,#dbe9ee)}.hx-card-img img{width:100%;height:100%;object-fit:cover}.hx-variant-badge,.hx-lock,.hx-level,.hx-reveal-variant,.hx-rarity{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 10px;font-size:.73rem;font-weight:700}.hx-variant-badge{position:absolute;top:10px;right:10px;background:rgba(10,20,32,.78);color:#fff}.hx-level{margin-top:10px;background:rgba(13,109,119,.1);color:#0d6d77}
-.hx-variant-shiny .hx-card-img img,.hx-reveal-card.hx-variant-shiny img{filter:saturate(1.4) drop-shadow(0 0 12px rgba(255,215,0,.55));animation:shinyGlow 2s ease-in-out infinite}.hx-variant-mutation_bio .hx-card-img img,.hx-reveal-card.hx-variant-mutation_bio img{filter:hue-rotate(55deg) saturate(1.3) drop-shadow(0 0 10px rgba(99,216,144,.44))}.hx-variant-mutation_tech .hx-card-img img,.hx-reveal-card.hx-variant-mutation_tech img{filter:hue-rotate(180deg) saturate(1.25) drop-shadow(0 0 12px rgba(76,202,255,.4))}.hx-variant-fossil_glow .hx-card-img img,.hx-reveal-card.hx-variant-fossil_glow img{filter:sepia(.35) saturate(1.1) drop-shadow(0 0 12px rgba(222,191,133,.55))}
-@keyframes shinyGlow{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-.hx-reveal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(6,10,18,.6);backdrop-filter:blur(8px);z-index:1000;padding:20px}.hx-reveal-card{max-width:560px;width:min(100%,560px);background:#fff;border-radius:30px;padding:20px;box-shadow:0 28px 60px rgba(0,0,0,.24);text-align:center;animation:revealPop .35s cubic-bezier(.2,.9,.2,1)}.hx-reveal-card img{width:min(240px,62vw);margin:0 auto 16px;border-radius:22px}.hx-reveal-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0 14px}.hx-rarity{background:rgba(13,109,119,.08);color:#0d6d77}.hx-reveal-variant{background:rgba(149,96,231,.12);color:#6830a4}
-@keyframes revealPop{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.ranking-toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.ranking-toolbar select,.admin-xp-form input{min-height:44px;border-radius:14px;border:1px solid rgba(20,32,46,.12);padding:10px 12px;background:#fff}.ranking-table{width:100%;border-collapse:collapse}.ranking-table th,.ranking-table td{padding:12px 10px;border-bottom:1px solid rgba(20,32,46,.08);text-align:left}.ranking-empty{padding:16px 0}.admin-xp-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.admin-xp-form label{display:grid;gap:6px}
-@media (max-width:980px){.home-hero-grid,.home-path-list,.home-destination-grid,.home-proof,.hatchery-dashboard .hatchery-stats,.admin-xp-form{grid-template-columns:1fr 1fr}.home-hero-copy h1{max-width:none}}
-@media (max-width:720px){.site-nav{display:flex;flex-wrap:wrap;gap:10px}.home-hero-grid,.home-path-list,.home-destination-grid,.home-proof,.hatchery-dashboard .hatchery-stats,.admin-xp-form,.home-starter-options{grid-template-columns:1fr}.panel-glass,.home-hero-copy,.home-starter{padding:18px;border-radius:22px}.home-hero-copy h1{font-size:clamp(2.2rem,12vw,4rem)}}
+/* ============================================================
+   DINOCAMEDY — HOME INTERACTIONS
+   ============================================================ */
+
+(() => {
+  "use strict";
+
+
+  /* ==========================================================
+     HELPERS
+  ========================================================== */
+
+  const clamp = (value, min, max) => {
+    return Math.min(Math.max(value, min), max);
+  };
+
+
+  const prefersReducedMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+  const hasFinePointer =
+    window.matchMedia("(pointer: fine)").matches;
+
+
+  /* ==========================================================
+     HEADER
+  ========================================================== */
+
+  const header = document.querySelector(".site-header");
+
+
+  function updateHeader() {
+    if (!header) return;
+
+    header.classList.toggle(
+      "is-scrolled",
+      window.scrollY > 20
+    );
+  }
+
+
+  updateHeader();
+
+  window.addEventListener(
+    "scroll",
+    updateHeader,
+    { passive: true }
+  );
+
+
+  /* ==========================================================
+     MOBILE MENU
+  ========================================================== */
+
+  const navToggle =
+    document.querySelector(".mobile-nav-toggle");
+
+  const nav =
+    document.querySelector(".site-nav");
+
+
+  if (navToggle && nav) {
+
+    navToggle.addEventListener("click", () => {
+
+      const open =
+        nav.classList.toggle("is-open");
+
+      navToggle.classList.toggle(
+        "is-active",
+        open
+      );
+
+      navToggle.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+      navToggle.setAttribute(
+        "aria-label",
+        open
+          ? "Zamknij menu"
+          : "Otwórz menu"
+      );
+
+    });
+
+
+    nav.querySelectorAll("a").forEach((link) => {
+
+      link.addEventListener("click", () => {
+
+        nav.classList.remove("is-open");
+
+        navToggle.classList.remove("is-active");
+
+        navToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      });
+
+    });
+
+
+    document.addEventListener("click", (event) => {
+
+      if (
+        !nav.contains(event.target) &&
+        !navToggle.contains(event.target)
+      ) {
+
+        nav.classList.remove("is-open");
+
+        navToggle.classList.remove(
+          "is-active"
+        );
+
+        navToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    });
+
+  }
+
+
+  /* ==========================================================
+     PAGE SCROLL PROGRESS
+  ========================================================== */
+
+  const progressBar =
+    document.querySelector(
+      ".scroll-progress span"
+    );
+
+
+  function updateScrollProgress() {
+
+    if (!progressBar) return;
+
+    const documentHeight =
+      document.documentElement.scrollHeight -
+      window.innerHeight;
+
+    if (documentHeight <= 0) {
+      progressBar.style.width = "0%";
+      return;
+    }
+
+    const progress =
+      clamp(
+        window.scrollY / documentHeight,
+        0,
+        1
+      );
+
+    progressBar.style.width =
+      `${progress * 100}%`;
+
+  }
+
+
+  updateScrollProgress();
+
+  window.addEventListener(
+    "scroll",
+    updateScrollProgress,
+    { passive: true }
+  );
+
+
+  window.addEventListener(
+    "resize",
+    updateScrollProgress
+  );
+
+
+  /* ==========================================================
+     CURSOR GLOW
+  ========================================================== */
+
+  if (
+    hasFinePointer &&
+    !prefersReducedMotion
+  ) {
+
+    let currentX =
+      window.innerWidth / 2;
+
+    let currentY =
+      window.innerHeight / 3;
+
+    let targetX = currentX;
+    let targetY = currentY;
+
+
+    document.addEventListener(
+      "pointermove",
+      (event) => {
+
+        targetX = event.clientX;
+        targetY = event.clientY;
+
+      },
+      { passive: true }
+    );
+
+
+    function animateGlow() {
+
+      currentX +=
+        (targetX - currentX) * 0.12;
+
+      currentY +=
+        (targetY - currentY) * 0.12;
+
+
+      document.documentElement.style.setProperty(
+        "--mx",
+        `${currentX}px`
+      );
+
+      document.documentElement.style.setProperty(
+        "--my",
+        `${currentY}px`
+      );
+
+
+      requestAnimationFrame(animateGlow);
+
+    }
+
+
+    animateGlow();
+
+  }
+
+
+  /* ==========================================================
+     REVEAL ON SCROLL
+  ========================================================== */
+
+  const revealElements =
+    document.querySelectorAll(
+      "[data-reveal]"
+    );
+
+
+  if (
+    "IntersectionObserver" in window &&
+    !prefersReducedMotion
+  ) {
+
+    const revealObserver =
+      new IntersectionObserver(
+
+        (entries, observer) => {
+
+          entries.forEach((entry) => {
+
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            entry.target.classList.add(
+              "is-visible"
+            );
+
+            observer.unobserve(
+              entry.target
+            );
+
+          });
+
+        },
+
+        {
+          threshold: 0.12,
+
+          rootMargin:
+            "0px 0px -45px 0px"
+        }
+
+      );
+
+
+    revealElements.forEach(
+      (element) => {
+        revealObserver.observe(element);
+      }
+    );
+
+  } else {
+
+    revealElements.forEach(
+      (element) => {
+        element.classList.add(
+          "is-visible"
+        );
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     3D TILT
+  ========================================================== */
+
+  const tiltElements =
+    document.querySelectorAll(
+      "[data-tilt]"
+    );
+
+
+  if (
+    hasFinePointer &&
+    !prefersReducedMotion
+  ) {
+
+    tiltElements.forEach((element) => {
+
+      element.addEventListener(
+        "pointermove",
+        (event) => {
+
+          const rect =
+            element.getBoundingClientRect();
+
+
+          const relativeX =
+            event.clientX - rect.left;
+
+          const relativeY =
+            event.clientY - rect.top;
+
+
+          const x =
+            relativeX / rect.width;
+
+          const y =
+            relativeY / rect.height;
+
+
+          const rotateY =
+            (x - 0.5) * 5;
+
+          const rotateX =
+            (0.5 - y) * 5;
+
+
+          element.style.setProperty(
+            "--rotateX",
+            `${rotateX}deg`
+          );
+
+          element.style.setProperty(
+            "--rotateY",
+            `${rotateY}deg`
+          );
+
+
+          element.style.setProperty(
+            "--card-x",
+            `${x * 100}%`
+          );
+
+          element.style.setProperty(
+            "--card-y",
+            `${y * 100}%`
+          );
+
+        }
+      );
+
+
+      element.addEventListener(
+        "pointerleave",
+        () => {
+
+          element.style.setProperty(
+            "--rotateX",
+            "0deg"
+          );
+
+          element.style.setProperty(
+            "--rotateY",
+            "0deg"
+          );
+
+        }
+      );
+
+    });
+
+  }
+
+
+  /* ==========================================================
+     MAGNETIC BUTTONS
+  ========================================================== */
+
+  if (
+    hasFinePointer &&
+    !prefersReducedMotion
+  ) {
+
+    document
+      .querySelectorAll(".magnetic")
+      .forEach((button) => {
+
+        button.addEventListener(
+          "pointermove",
+          (event) => {
+
+            const rect =
+              button.getBoundingClientRect();
+
+
+            const x =
+              event.clientX -
+              rect.left -
+              rect.width / 2;
+
+            const y =
+              event.clientY -
+              rect.top -
+              rect.height / 2;
+
+
+            button.style.transform =
+              `translate(${x * 0.08}px, ${y * 0.12}px)`;
+
+          }
+        );
+
+
+        button.addEventListener(
+          "pointerleave",
+          () => {
+
+            button.style.transform =
+              "translate(0, 0)";
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* ==========================================================
+     HERO COUNTERS
+  ========================================================== */
+
+  const counters =
+    document.querySelectorAll(
+      "[data-target]"
+    );
+
+
+  let countersStarted = false;
+
+
+  function animateCounter(element) {
+
+    const target =
+      Number(
+        element.dataset.target || 0
+      );
+
+    const suffix =
+      element.dataset.suffix || "";
+
+    const duration = 1150;
+
+    let startTime = null;
+
+
+    function tick(timestamp) {
+
+      if (!startTime) {
+        startTime = timestamp;
+      }
+
+
+      const progress =
+        clamp(
+          (timestamp - startTime) /
+          duration,
+          0,
+          1
+        );
+
+
+      const eased =
+        1 -
+        Math.pow(
+          1 - progress,
+          4
+        );
+
+
+      const value =
+        Math.round(
+          target * eased
+        );
+
+
+      element.textContent =
+        `${value}${suffix}`;
+
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      }
+
+    }
+
+
+    requestAnimationFrame(tick);
+
+  }
+
+
+  const proof =
+    document.querySelector(".home-proof");
+
+
+  if (
+    proof &&
+    counters.length &&
+    "IntersectionObserver" in window &&
+    !prefersReducedMotion
+  ) {
+
+    const counterObserver =
+      new IntersectionObserver(
+        (entries) => {
+
+          const entry = entries[0];
+
+          if (
+            !entry.isIntersecting ||
+            countersStarted
+          ) {
+            return;
+          }
+
+
+          countersStarted = true;
+
+
+          counters.forEach(
+            animateCounter
+          );
+
+
+          counterObserver.disconnect();
+
+        },
+
+        {
+          threshold: 0.45
+        }
+      );
+
+
+    counterObserver.observe(proof);
+
+  } else {
+
+    counters.forEach((counter) => {
+
+      const target =
+        counter.dataset.target;
+
+      const suffix =
+        counter.dataset.suffix || "";
+
+      counter.textContent =
+        `${target}${suffix}`;
+
+    });
+
+  }
+
+
+  /* ==========================================================
+     STARTER QUIZ
+  ========================================================== */
+
+  const answerButtons =
+    document.querySelectorAll(
+      ".home-starter-options button"
+    );
+
+
+  const quizResult =
+    document.querySelector(
+      ".home-starter-result"
+    );
+
+
+  let quizCompleted = false;
+
+
+  function resetQuizClasses() {
+
+    answerButtons.forEach(
+      (button) => {
+
+        button.classList.remove(
+          "is-correct",
+          "is-wrong"
+        );
+
+      }
+    );
+
+
+    if (quizResult) {
+
+      quizResult.classList.remove(
+        "is-correct",
+        "is-wrong"
+      );
+
+    }
+
+  }
+
+
+  answerButtons.forEach((button) => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        resetQuizClasses();
+
+
+        const answer =
+          button.dataset.answer;
+
+
+        if (answer === "correct") {
+
+          button.classList.add(
+            "is-correct"
+          );
+
+
+          if (quizResult) {
+
+            quizResult.classList.add(
+              "is-correct"
+            );
+
+
+            quizResult.innerHTML = `
+              <span class="result-icon">✓</span>
+
+              <div>
+                <b>Dokładnie.</b>
+
+                <p>
+                  Pteranodon był pterozaurem — latającym
+                  gadem blisko spokrewnionym z dinozaurami,
+                  ale nie należał do Dinosauria.
+                </p>
+              </div>
+            `;
+
+          }
+
+
+          if (!quizCompleted) {
+            quizCompleted = true;
+          }
+
+        } else {
+
+          button.classList.add(
+            "is-wrong"
+          );
+
+
+          if (quizResult) {
+
+            quizResult.classList.add(
+              "is-wrong"
+            );
+
+
+            quizResult.innerHTML = `
+              <span class="result-icon">×</span>
+
+              <div>
+                <b>Dobry trop, ale nie tym razem.</b>
+
+                <p>
+                  Klucz tkwi w tym, że nie każdy prehistoryczny
+                  gad był dinozaurem. Spróbuj jeszcze raz.
+                </p>
+              </div>
+            `;
+
+          }
+
+        }
+
+      }
+    );
+
+  });
+
+
+  /* ==========================================================
+     RANDOM FACTS
+  ========================================================== */
+
+  const facts = [
+
+    "Ptaki nie są jedynie potomkami dinozaurów. W klasyfikacji ewolucyjnej są żyjącą dziś grupą dinozaurów teropodowych.",
+
+    "Tyrannosaurus rex żył bliżej w czasie współczesnego człowieka niż stegozaura. Te dwa słynne dinozaury dzieliło około 80 milionów lat.",
+
+    "Nie znamy koloru większości dinozaurów, ale mikroskopijne struktury zachowane w niektórych skamieniałościach pozwalają rekonstruować ubarwienie części gatunków.",
+
+    "Pterozaury, mozazaury i plezjozaury żyły w erze dinozaurów, lecz żaden z nich nie należał do dinozaurów.",
+
+    "Skamieniałości to nie tylko kości. Paleontolodzy badają również odciski skóry, ślady stóp, jaja, koprolity, gniazda oraz chemiczne sygnały zachowane w skałach.",
+
+    "Niektóre dinozaury miały pióra długo zanim ewolucja doprowadziła do powstania aktywnego lotu. Pióra mogły początkowo pełnić zupełnie inne funkcje.",
+
+    "Granica między kredą a paleogenem jest zapisana w skałach na całym świecie jako cienka warstwa wzbogacona w iryd związany z uderzeniem planetoidy sprzed około 66 milionów lat."
+
+  ];
+
+
+  const factText =
+    document.getElementById(
+      "home-fact-text"
+    );
+
+
+  const factDots =
+    document.getElementById(
+      "home-fact-dots"
+    );
+
+
+  const nextFactButton =
+    document.getElementById(
+      "next-fact"
+    );
+
+
+  let currentFact = 0;
+
+  let factChangeLocked = false;
+
+
+  function renderFactDots() {
+
+    if (!factDots) return;
+
+
+    factDots.innerHTML = "";
+
+
+    facts.forEach(
+      (_, index) => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+
+        button.type = "button";
+
+        button.setAttribute(
+          "aria-label",
+          `Ciekawostka ${index + 1}`
+        );
+
+
+        if (index === currentFact) {
+
+          button.classList.add(
+            "is-active"
+          );
+
+        }
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            showFact(index);
+
+          }
+        );
+
+
+        factDots.appendChild(
+          button
+        );
+
+      }
+    );
+
+  }
+
+
+  function showFact(index) {
+
+    if (
+      !factText ||
+      factChangeLocked
+    ) {
+      return;
+    }
+
+
+    const normalizedIndex =
+      (
+        index +
+        facts.length
+      ) %
+      facts.length;
+
+
+    if (
+      normalizedIndex === currentFact &&
+      factText.textContent ===
+      facts[currentFact]
+    ) {
+      return;
+    }
+
+
+    factChangeLocked = true;
+
+
+    factText.classList.add(
+      "is-changing"
+    );
+
+
+    window.setTimeout(
+      () => {
+
+        currentFact =
+          normalizedIndex;
+
+
+        factText.textContent =
+          facts[currentFact];
+
+
+        renderFactDots();
+
+
+        requestAnimationFrame(() => {
+
+          factText.classList.remove(
+            "is-changing"
+          );
+
+        });
+
+
+        window.setTimeout(
+          () => {
+            factChangeLocked = false;
+          },
+          230
+        );
+
+      },
+      190
+    );
+
+  }
+
+
+  if (factText) {
+
+    factText.textContent =
+      facts[currentFact];
+
+  }
+
+
+  renderFactDots();
+
+
+  if (nextFactButton) {
+
+    nextFactButton.addEventListener(
+      "click",
+      () => {
+
+        showFact(
+          currentFact + 1
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ==========================================================
+     SUBTLE HERO PARALLAX
+  ========================================================== */
+
+  const heroCopy =
+    document.querySelector(
+      ".home-hero-copy"
+    );
+
+
+  const heroStarter =
+    document.querySelector(
+      ".home-starter"
+    );
+
+
+  if (
+    !prefersReducedMotion &&
+    hasFinePointer &&
+    heroCopy &&
+    heroStarter
+  ) {
+
+    let ticking = false;
+
+
+    window.addEventListener(
+      "scroll",
+      () => {
+
+        if (ticking) return;
+
+
+        ticking = true;
+
+
+        requestAnimationFrame(
+          () => {
+
+            const scrollY =
+              window.scrollY;
+
+
+            if (
+              scrollY <
+              window.innerHeight * 1.2
+            ) {
+
+              heroCopy.style.transform =
+                `translateY(${scrollY * 0.025}px)`;
+
+
+              heroStarter.style.marginTop =
+                `${scrollY * 0.018}px`;
+
+            }
+
+
+            ticking = false;
+
+          }
+        );
+
+      },
+      { passive: true }
+    );
+
+  }
+
+
+  /* ==========================================================
+     DESTINATION CARD LIGHT
+  ========================================================== */
+
+  if (hasFinePointer) {
+
+    document
+      .querySelectorAll(
+        ".destination-card"
+      )
+      .forEach((card) => {
+
+        card.addEventListener(
+          "pointermove",
+          (event) => {
+
+            const rect =
+              card.getBoundingClientRect();
+
+
+            const x =
+              event.clientX -
+              rect.left;
+
+            const y =
+              event.clientY -
+              rect.top;
+
+
+            card.style.setProperty(
+              "--card-x",
+              `${x}px`
+            );
+
+            card.style.setProperty(
+              "--card-y",
+              `${y}px`
+            );
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* ==========================================================
+     KEYBOARD ACCESSIBILITY FOR QUIZ
+  ========================================================== */
+
+  answerButtons.forEach(
+    (button, index) => {
+
+      button.addEventListener(
+        "keydown",
+        (event) => {
+
+          let targetIndex = index;
+
+
+          if (
+            event.key === "ArrowDown" ||
+            event.key === "ArrowRight"
+          ) {
+
+            targetIndex =
+              (
+                index + 1
+              ) %
+              answerButtons.length;
+
+          }
+
+
+          if (
+            event.key === "ArrowUp" ||
+            event.key === "ArrowLeft"
+          ) {
+
+            targetIndex =
+              (
+                index -
+                1 +
+                answerButtons.length
+              ) %
+              answerButtons.length;
+
+          }
+
+
+          if (targetIndex !== index) {
+
+            event.preventDefault();
+
+            answerButtons[
+              targetIndex
+            ].focus();
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+})();
