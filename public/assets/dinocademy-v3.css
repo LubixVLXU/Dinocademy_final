@@ -1,0 +1,184 @@
+/* ==========================================================
+  DINOCademy V3 — GLOBALNY, ZGODNY REVAMP STYLI
+  Dodaj ten plik JAKO OSTATNI <link> po ui-extra.css.
+  Nie usuwa żadnego dotychczasowego CSS. Nadpisuje wyłącznie
+  wygląd i obsługuje ZARÓWNO stare, jak i nowe klasy HTML.
+========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+:root {
+  --v3-paper: #f2f0e8;
+  --v3-paper-2: #e7e9e0;
+  --v3-surface: #fffdf8;
+  --v3-ink: #18272a;
+  --v3-muted: #607073;
+  --v3-line: rgba(24,39,42,.14);
+  --v3-green: #1e675f;
+  --v3-green-dark: #124942;
+  --v3-gold: #d8a654;
+  --v3-rust: #b7593b;
+  --v3-shadow: 0 18px 50px rgba(23,38,39,.11);
+  --v3-shadow-hover: 0 25px 60px rgba(23,38,39,.17);
+  --v3-radius: 18px;
+  --v3-body: 'Manrope', 'Segoe UI', sans-serif;
+  --v3-display: 'Playfair Display', Georgia, serif;
+  --v3-mono: 'DM Mono', monospace;
+}
+
+html[data-theme='night'], html[data-theme='noc'] {
+  --v3-paper: #111d20;
+  --v3-paper-2: #19272a;
+  --v3-surface: #1a292b;
+  --v3-ink: #edf2ed;
+  --v3-muted: #b5c0bc;
+  --v3-line: rgba(237,242,237,.16);
+  --v3-green: #80bbb1;
+  --v3-green-dark: #a3d4cb;
+  --v3-gold: #edc870;
+  --v3-shadow: 0 18px 50px rgba(0,0,0,.32);
+}
+
+html body {
+  background:
+    radial-gradient(circle at 88% -6%, color-mix(in srgb, var(--v3-gold) 18%, transparent), transparent 30rem),
+    radial-gradient(circle at 0 46%, color-mix(in srgb, var(--v3-green) 10%, transparent), transparent 30rem),
+    var(--v3-paper) !important;
+  color: var(--v3-ink) !important;
+  font-family: var(--v3-body) !important;
+  font-size: 16px;
+}
+html body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.16; background-image:radial-gradient(currentColor .45px,transparent .6px); background-size:7px 7px; }
+html body a { color:inherit; }
+
+/* ---------- HEADER: działa na header-inner i nav-shell ---------- */
+.site-header {
+  height: 76px !important;
+  background: color-mix(in srgb,var(--v3-paper) 84%,transparent) !important;
+  border-bottom: 1px solid var(--v3-line) !important;
+  backdrop-filter: blur(18px) saturate(135%) !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 100;
+}
+.header-inner, .nav-shell {
+  width: min(1180px,calc(100% - 44px)) !important;
+  height: 100%;
+  margin-inline:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:20px !important;
+}
+.brand { color:var(--v3-ink) !important; font-family:var(--v3-body) !important; font-weight:800 !important; font-size:20px !important; letter-spacing:-.055em !important; text-decoration:none !important; }
+.brand-mark { border-color:var(--v3-green) !important; color:var(--v3-green) !important; }
+.desktop-nav,.site-nav { display:flex !important; align-items:center !important; gap:3px !important; margin-left:auto !important; }
+.desktop-nav a,.site-nav a {
+ color:var(--v3-muted) !important; border:0 !important; border-radius:10px !important; padding:9px 10px !important; font-size:12px !important; line-height:1.1 !important; font-weight:800 !important; text-decoration:none !important; transition:background .18s ease,color .18s ease,transform .18s ease !important;
+}
+.desktop-nav a:hover,.site-nav a:hover { color:var(--v3-green) !important; background:color-mix(in srgb,var(--v3-green) 10%,transparent) !important; transform:translateY(-1px); }
+.desktop-nav a[aria-current='page'],.site-nav a[aria-current='page'] { color:#fff !important; background:var(--v3-green) !important; box-shadow:0 8px 17px color-mix(in srgb,var(--v3-green) 25%,transparent) !important; }
+.header-actions { display:flex !important; align-items:center !important; gap:9px !important; }
+.header-register { color:var(--v3-green) !important; font-size:12px !important; font-weight:800 !important; }
+.mobile-menu { display:none !important; }
+
+/* ---------- typografia i page wrappers ---------- */
+.page-shell { width:min(1180px,calc(100% - 44px)) !important; }
+.app-main,.page-stack { min-height:calc(100vh - 76px); }
+.recovery-page,.page-stack { padding-top:48px !important; padding-bottom:78px !important; }
+.library-heading,.page-hero,.compact-hero,.hx-top,.profile-header { max-width:860px; margin-bottom:32px !important; }
+.library-heading h1,.page-hero h1,.compact-hero h1,.hx-top h1,.profile-header h1,.research-dash-head h1 {
+ color:var(--v3-ink) !important; font-family:var(--v3-display) !important; font-weight:700 !important; line-height:.98 !important; letter-spacing:-.05em !important; font-size:clamp(2.8rem,6vw,5.4rem) !important; margin:12px 0 16px !important;
+}
+.library-heading p,.page-hero p,.compact-hero p,.hx-top p,.profile-header p { color:var(--v3-muted) !important; max-width:66ch; font-size:16px !important; line-height:1.72 !important; }
+.app-kicker,.eyebrow,.section-kicker { color:var(--v3-green) !important; border:0 !important; background:transparent !important; padding:0 !important; display:block !important; font-family:var(--v3-mono) !important; font-size:11px !important; font-weight:500 !important; letter-spacing:.12em !important; }
+h1,h2,h3 { color:var(--v3-ink); }
+
+/* ---------- buttons, inputs, utility cards ---------- */
+.button,.btn,.gk-result-actions .button,.pro-panel-actions .button {
+ border:1px solid var(--v3-green-dark) !important; color:#fff !important; background:var(--v3-green) !important; box-shadow:0 4px 0 var(--v3-green-dark) !important; border-radius:10px !important; min-height:44px !important; font-family:var(--v3-body) !important; font-size:13px !important; font-weight:800 !important; transition:transform .18s ease,box-shadow .18s ease,background .18s ease !important;
+}
+.button:hover,.btn:hover { transform:translateY(-2px) !important; background:var(--v3-green-dark) !important; box-shadow:0 6px 0 var(--v3-green-dark) !important; }
+.button-ghost,.btn-secondary,#clear-ranking { color:var(--v3-green) !important; background:transparent !important; border-color:color-mix(in srgb,var(--v3-green) 38%,transparent) !important; box-shadow:none !important; }
+input,select,textarea { background:color-mix(in srgb,var(--v3-surface) 91%,transparent) !important; color:var(--v3-ink) !important; border:1px solid var(--v3-line) !important; border-radius:10px !important; }
+input:focus,select:focus,textarea:focus { border-color:var(--v3-green) !important; outline:3px solid color-mix(in srgb,var(--v3-green) 16%,transparent) !important; }
+
+/* ---------- panels across recovery pages, profile, games, ranking ---------- */
+.recovery-progress,.recovery-game-stage,.recovery-ranking,.profile-level-card,.profile-grid>*,.pro-panel,.auth-panel,.hx-claim,.hx-egg,.hx-card,.hx-stat,.gk-mode,.recovery-lesson-card,.note-card,.forum-card,.panel-glass {
+ background:color-mix(in srgb,var(--v3-surface) 88%,transparent) !important;
+ color:var(--v3-ink) !important;
+ border:1px solid var(--v3-line) !important;
+ border-radius:var(--v3-radius) !important;
+ box-shadow:var(--v3-shadow) !important;
+}
+.recovery-game-stage,.recovery-ranking,.profile-level-card,.pro-panel,.auth-panel,.panel-glass { padding:clamp(19px,3vw,30px) !important; }
+.recovery-lesson-card:hover,.gk-mode:hover,.hx-egg:hover,.hx-card:hover { transform:translateY(-4px) !important; border-color:color-mix(in srgb,var(--v3-green) 40%,var(--v3-line)) !important; box-shadow:var(--v3-shadow-hover) !important; }
+
+/* ---------- ranking ---------- */
+.recovery-ranking { margin-top:22px !important; overflow-x:auto; }
+#ranking-table { min-width:660px; }
+.ranking-table,.recovery-ranking table { width:100%; border-collapse:collapse; }
+.ranking-table th,.ranking-table td,.recovery-ranking th,.recovery-ranking td { color:var(--v3-ink) !important; padding:14px 12px !important; border-bottom:1px solid var(--v3-line) !important; text-align:left; }
+.ranking-table th,.recovery-ranking th { color:var(--v3-muted) !important; font-family:var(--v3-mono) !important; font-size:10px !important; text-transform:uppercase; letter-spacing:.1em; }
+.ranking-row { color:var(--v3-ink) !important; border-bottom:1px solid var(--v3-line) !important; }
+
+/* ---------- games ---------- */
+.recovery-game-grid { gap:16px !important; }
+.recovery-game-grid button,.gk-mode,.choice-list button,.battle-pair button {
+ color:var(--v3-ink) !important; background:color-mix(in srgb,var(--v3-surface) 90%,transparent) !important; border:1px solid var(--v3-line) !important; border-radius:14px !important; box-shadow:none !important;
+}
+.recovery-game-grid button:hover,.choice-list button:hover,.battle-pair button:hover { border-color:var(--v3-green) !important; background:color-mix(in srgb,var(--v3-green) 7%,var(--v3-surface)) !important; }
+.game-head h2,.gk-result h2,.recovery-section h2 { font-family:var(--v3-display) !important; color:var(--v3-ink) !important; }
+.gk-bar>i,.hx-warm>i,.profile-progress-bar i { background:linear-gradient(90deg,var(--v3-green),#8fc3ae) !important; }
+
+/* ---------- hatchery ---------- */
+.hx-top { align-items:flex-end !important; }
+.hx-stat b { color:var(--v3-green) !important; }
+.hx-claim { background:linear-gradient(135deg,color-mix(in srgb,var(--v3-green) 12%,transparent),color-mix(in srgb,var(--v3-gold) 15%,transparent)) !important; }
+.hx-egg-grid,.hx-collection { gap:15px !important; }
+.hx-egg,.hx-card { overflow:hidden; }
+.hx-card-img { border-radius:12px !important; }
+.hx-card.is-owned { border-color:color-mix(in srgb,var(--v3-green) 45%,var(--v3-line)) !important; }
+.hx-rarity-epic { color:#713d9c !important; background:#eadcf7 !important; }
+.hx-rarity-rare { color:#1d587e !important; background:#d9eafa !important; }
+.hx-rarity-common { color:#42545a !important; background:#e2e8e4 !important; }
+
+/* ---------- auth ---------- */
+.auth-page { background:var(--v3-paper) !important; min-height:100vh; color:var(--v3-ink) !important; }
+.auth-top { padding:24px clamp(22px,6vw,80px) !important; }
+.auth-panel { max-width:520px !important; margin:40px auto !important; }
+.auth-heading h1 { font-family:var(--v3-display) !important; color:var(--v3-ink) !important; font-size:clamp(2.4rem,6vw,4rem) !important; line-height:1 !important; }
+.auth-form label span { color:var(--v3-muted) !important; font-size:12px; font-weight:800; }
+.auth-form input { padding:12px 14px !important; }
+
+/* ---------- footer ---------- */
+.site-footer { background:color-mix(in srgb,var(--v3-paper-2) 78%,transparent) !important; border-top:1px solid var(--v3-line) !important; color:var(--v3-ink) !important; }
+.footer-inner,.footer-bottom { width:min(1180px,calc(100% - 44px)) !important; }
+.footer-links a,.footer-brand p,.footer-bottom { color:var(--v3-muted) !important; }
+.footer-links strong { color:var(--v3-ink) !important; }
+
+/* ---------- new HTML version compatibility ---------- */
+.nav-shell { min-height:76px; }
+.home-hero { padding:50px 0 32px; }
+.home-hero-grid { width:min(1180px,calc(100% - 44px)); margin:auto; }
+.home-hero-copy,.home-starter { color:var(--v3-ink) !important; background:color-mix(in srgb,var(--v3-surface) 86%,transparent) !important; border-color:var(--v3-line) !important; box-shadow:var(--v3-shadow) !important; }
+.home-starter-options button { color:var(--v3-ink) !important; background:var(--v3-surface) !important; border-color:var(--v3-line) !important; }
+.home-destination-grid a,.home-path article { color:var(--v3-ink) !important; background:color-mix(in srgb,var(--v3-surface) 88%,transparent) !important; border-color:var(--v3-line) !important; }
+.home-facts { color:var(--v3-ink) !important; }
+
+@media(max-width:860px) {
+ .site-header { height:auto !important; }
+ .header-inner,.nav-shell { min-height:68px; padding:10px 0 !important; flex-wrap:wrap !important; }
+ .desktop-nav,.site-nav { order:3; width:100%; margin-left:0 !important; overflow-x:auto; flex-wrap:nowrap !important; }
+ .desktop-nav a,.site-nav a { white-space:nowrap; }
+ .header-actions { margin-left:auto; }
+ .page-shell,.header-inner,.nav-shell,.footer-inner,.footer-bottom { width:min(100% - 28px,1180px) !important; }
+ .library-heading h1,.page-hero h1,.compact-hero h1,.hx-top h1,.profile-header h1 { font-size:clamp(2.55rem,12vw,4.3rem) !important; }
+ .recovery-game-grid { grid-template-columns:1fr 1fr !important; }
+}
+@media(max-width:530px) {
+ .header-register { display:none !important; }
+ .recovery-game-grid,.hx-egg-grid,.hx-collection { grid-template-columns:1fr !important; }
+ .recovery-page,.page-stack { padding-top:28px !important; }
+ .ranking-row { grid-template-columns:36px 1fr 70px !important; }
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
