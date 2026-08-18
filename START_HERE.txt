@@ -1,24 +1,16 @@
-DINOCADEMY v5.0.0
-=================
+DINOCademy v6.0.0
 
-1. Rozpakuj cały katalog projektu.
+1. Rozpakuj cały katalog.
 2. Otwórz terminal w katalogu projektu.
-3. Uruchom:
+3. Uruchom: npm install
+4. Uruchom: npm start
+5. Wejdź na adres pokazany przez serwer (domyślnie http://localhost:3000).
 
-   npm install
-   npm start
+Najważniejsze zmiany v6:
+- encyklopedia wróciła do wyglądu sprzed v5,
+- naprawiony Plan Pro i rejestracja,
+- dopracowana strona główna,
+- znacznie mocniejsze mnożniki kart i leveli,
+- wszystkie jajka nadal zdobywają XP jednocześnie.
 
-4. Otwórz w przeglądarce:
-   http://localhost:3000
-
-Najważniejsze pliki:
-- server.js                         backend/API i logika XP
-- public/index.html                strona główna
-- public/assets/cohesion-v5.css    końcowy wspólny system wizualny
-- public/assets/site-shell.js      wspólny header, nawigacja i motywy
-- public/assets/hatchery.js        wykluwarnia/kolekcja
-- public/assets/forum.js           forum
-- docs/REVAMP_V5_NOTES.md          lista zmian i wykonanych testów
-
-Konto administratora rozpoznawane przez backend:
-adamlubanskimc@gmail.com
+Szczegóły: docs/REVAMP_V6_NOTES.md

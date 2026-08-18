@@ -1,7 +1,7 @@
 {
   "name": "dinocademy",
-  "version": "5.0.0",
-  "description": "Dinocademy v5.0 — spójny cyfrowy atlas paleontologii z kursami, grami, kolekcją, wykluwaniem i rankingiem",
+  "version": "6.0.0",
+  "description": "Dinocademy v6.0 — dopracowany interfejs, klasyczna encyklopedia i mocniejsza progresja kolekcji",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

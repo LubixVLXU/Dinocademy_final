@@ -28,11 +28,13 @@ const TAXA_BY_ID = Object.fromEntries(TAXA.map(t => [t.id, t]));
 const VARIANTS = Object.fromEntries(VARIANT_LIST.map(v => [v.id, v]));
 
 const RARITY = {
-  common:    { label: 'Pospolity',  required: 140, dinoXpFactor: 1.00, multiplierStep: 0.00006, weight: 46 },
-  uncommon:  { label: 'Niezwykły', required: 220, dinoXpFactor: 1.10, multiplierStep: 0.00008, weight: 27 },
-  rare:      { label: 'Rzadki',     required: 340, dinoXpFactor: 1.25, multiplierStep: 0.00011, weight: 16 },
-  epic:      { label: 'Epicki',     required: 520, dinoXpFactor: 1.50, multiplierStep: 0.00015, weight: 8 },
-  legendary: { label: 'Legendarny', required: 760, dinoXpFactor: 2.00, multiplierStep: 0.00020, weight: 3 }
+  // cardBase/cardMax describe the multiplier of ONE normal-variant card at Lv1/Lv100.
+  // Special variants amplify the bonus above ×1 through multiplierFactor from variants.json.
+  common:    { label: 'Pospolity',  required: 140, dinoXpFactor: 1.00, cardBase: 1.05, cardMax: 1.65, weight: 46 },
+  uncommon:  { label: 'Niezwykły', required: 220, dinoXpFactor: 1.10, cardBase: 1.10, cardMax: 1.95, weight: 27 },
+  rare:      { label: 'Rzadki',     required: 340, dinoXpFactor: 1.25, cardBase: 1.20, cardMax: 2.35, weight: 16 },
+  epic:      { label: 'Epicki',     required: 520, dinoXpFactor: 1.50, cardBase: 1.35, cardMax: 2.85, weight: 8 },
+  legendary: { label: 'Legendarny', required: 760, dinoXpFactor: 2.00, cardBase: 1.50, cardMax: 3.50, weight: 3 }
 };
 
 const LEVEL_THRESHOLDS = [0,100,250,500,1000,2000,3500,5500,8000,11000,15000,20000,26000,33000,41000,50000,65000,82000,100000,125000,150000,180000,215000,255000,300000,350000,405000,465000,530000,600000,675000,755000,840000,930000,1025000];
@@ -170,15 +172,22 @@ function sessionResponse(res, user) {
   res.json({ ok: true, token, user: { id:user.id,name:user.name,email:user.email,country:user.country,avatar:user.avatar,xp:user.xp,isPro:!!user.is_pro,isAdmin:!!user.is_admin,...levelInfo(user.xp) } });
 }
 
+function computeCardMultiplier(row) {
+  const rarity = RARITY[row?.rarity] || RARITY.common;
+  const level = Math.max(1, Math.min(100, Number(row?.level || 1)));
+  const progress = (level - 1) / 99;
+  // Slightly back-loaded curve: early duplicates matter, but high levels become substantially stronger.
+  const levelCurve = Math.pow(progress, 1.18);
+  const normalCard = rarity.cardBase + (rarity.cardMax - rarity.cardBase) * levelCurve;
+  const variantFactor = VARIANTS[row?.variant]?.multiplierFactor || 1;
+  return 1 + Math.max(0, normalCard - 1) * variantFactor;
+}
 function computeCollectionMultiplier(userId) {
   const rows = db.prepare('SELECT level,rarity,variant FROM collection WHERE user_id=?').all(userId);
-  const bonus = rows.reduce((sum, row) => {
-    const progressed = Math.max(0, Number(row.level || 1) - 1);
-    const rarityStep = RARITY[row.rarity]?.multiplierStep || RARITY.common.multiplierStep;
-    const variantFactor = VARIANTS[row.variant]?.multiplierFactor || 1;
-    return sum + progressed * rarityStep * variantFactor;
-  }, 0);
-  return Math.min(3, 1 + bonus);
+  // Each owned collectible contributes its bonus above ×1. This makes rare cards meaningful from Lv1,
+  // while still rewarding duplicate-driven Lv100 progression. Hard cap protects the XP economy.
+  const bonus = rows.reduce((sum, row) => sum + (computeCardMultiplier(row) - 1), 0);
+  return Math.min(50, Math.round((1 + bonus) * 10000) / 10000);
 }
 
 const awardXpTx = db.transaction(({ userId, baseXp, sourceType, sourceId = null, actorUserId = null, applyMultiplier = true }) => {
@@ -240,7 +249,7 @@ function applyDuplicateXp(card, gain) {
 app.post('/api/register', (req,res) => {
   const name=String(req.body?.name||'').trim().slice(0,40), email=String(req.body?.email||'').trim().toLowerCase(), password=String(req.body?.password||'');
   if(!name||!email||!password) return res.status(400).json({error:'Wypełnij wszystkie pola'});
-  if(password.length<8) return res.status(400).json({error:'Hasło musi mieć minimum 8 znaków'});
+  if(password.length<8||!/[A-Za-z]/.test(password)||!/\d/.test(password)) return res.status(400).json({error:'Hasło musi mieć minimum 8 znaków, literę i cyfrę'});
   if(db.prepare('SELECT id FROM users WHERE email=?').get(email)) return res.status(409).json({error:'Konto z tym e-mailem już istnieje'});
   const result=db.prepare('INSERT INTO users(name,email,password_hash,country,is_admin) VALUES (?,?,?,?,?)').run(name,email,bcrypt.hashSync(password,10),String(req.body?.country||'PL').slice(0,4),email===ADMIN_EMAIL?1:0);
   sessionResponse(res,db.prepare('SELECT * FROM users WHERE id=?').get(result.lastInsertRowid));
@@ -285,8 +294,9 @@ app.get('/api/hatchery',auth(),(req,res)=>{
   const u=db.prepare('SELECT xp FROM users WHERE id=?').get(req.user.id), level=computeLevel(u.xp||0);
   const eggs=db.prepare('SELECT id,rarity,warmth,required,from_level,created_at FROM eggs WHERE user_id=? AND hatched=0 ORDER BY id').all(req.user.id);
   const collection=db.prepare('SELECT id,dino_id,rarity,variant,level,dino_xp,duplicates,xp_bonus,nickname,hatched_at FROM collection WHERE user_id=? ORDER BY hatched_at DESC').all(req.user.id);
+  const collectionWithMultipliers=collection.map(c=>({...c,cardMultiplier:Math.round(computeCardMultiplier(c)*1000)/1000}));
   const claimed=db.prepare('SELECT COUNT(*) c FROM eggs WHERE user_id=?').get(req.user.id).c;
-  res.json({level,xp:u.xp||0,eggsAvailable:Math.max(0,level-claimed),eggs:eggs.map(e=>({...e,label:RARITY[e.rarity]?.label||e.rarity,ready:e.warmth>=e.required})),collection,collected:collection.length,totalDinos:TAXA.length,totalCollectibles:TAXA.length*VARIANT_LIST.length,rarities:RARITY,variants:VARIANTS,multiplier:computeCollectionMultiplier(req.user.id)});
+  res.json({level,xp:u.xp||0,eggsAvailable:Math.max(0,level-claimed),eggs:eggs.map(e=>({...e,label:RARITY[e.rarity]?.label||e.rarity,ready:e.warmth>=e.required})),collection:collectionWithMultipliers,collected:collection.length,totalDinos:TAXA.length,totalCollectibles:TAXA.length*VARIANT_LIST.length,rarities:RARITY,variants:VARIANTS,multiplier:computeCollectionMultiplier(req.user.id)});
 });
 app.post('/api/hatchery/egg',auth(),(req,res)=>{
   const u=db.prepare('SELECT xp FROM users WHERE id=?').get(req.user.id), level=computeLevel(u.xp||0), claimed=db.prepare('SELECT COUNT(*) c FROM eggs WHERE user_id=?').get(req.user.id).c;
@@ -319,7 +329,8 @@ app.post('/api/hatchery/hatch',auth(),(req,res)=>{
     db.prepare('UPDATE eggs SET hatched=1,active=0 WHERE id=?').run(egg.id);
   });
   hatchTx();
-  res.json({ok:true,dinoId:chosen.id,rarity,variant,level,dinoXp,duplicate,duplicateXp,taxon:chosen,multiplier:computeCollectionMultiplier(req.user.id)});
+  const cardMultiplier=Math.round(computeCardMultiplier({rarity,variant,level})*1000)/1000;
+  res.json({ok:true,dinoId:chosen.id,rarity,variant,level,dinoXp,duplicate,duplicateXp,taxon:chosen,cardMultiplier,multiplier:computeCollectionMultiplier(req.user.id)});
 });
 app.post('/api/hatchery/nickname',auth(),(req,res)=>{ const dinoId=String(req.body?.dinoId||''),variant=String(req.body?.variant||'normal'),nickname=String(req.body?.nickname||'').slice(0,30); const r=db.prepare('UPDATE collection SET nickname=? WHERE user_id=? AND dino_id=? AND variant=?').run(nickname,req.user.id,dinoId,variant); if(!r.changes)return res.status(404).json({error:'Nie masz tego wariantu'}); res.json({ok:true}); });
 
