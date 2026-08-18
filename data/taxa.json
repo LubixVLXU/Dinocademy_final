@@ -1,0 +1,930 @@
+[
+  {
+    "id": "trex",
+    "common": "Tyranozaur",
+    "scientific": "Tyrannosaurus rex",
+    "image": "/memory/trex.webp",
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 12.3,
+    "diet": "drapieżnik",
+    "clade": "Tyrannosauridae",
+    "feature": "masywna czaszka i dwupalczaste dłonie",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "Późnokredowy tyranozauryd z Ameryki Północnej. Jego grube, głęboko osadzone zęby dobrze znosiły duże obciążenia.",
+    "baseRarity": "legendary",
+    "collectible": true
+  },
+  {
+    "id": "triceratops",
+    "common": "Triceratops",
+    "scientific": "Triceratops horridus",
+    "image": "/memory/triceratops.webp",
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 8.5,
+    "diet": "roślinożerca",
+    "clade": "Ceratopsidae",
+    "feature": "trzy rogi i krótka pełna kryza",
+    "defense": "horns",
+    "habitat": "floodplain",
+    "description": "Duży ceratops z końca kredy. Rogi i kryza mogły pełnić kilka funkcji, dlatego nie przypisuje się im jednej pewnej roli.",
+    "baseRarity": "epic",
+    "collectible": true
+  },
+  {
+    "id": "stegosaurus",
+    "common": "Stegozaur",
+    "scientific": "Stegosaurus stenops",
+    "image": "/memory/stegosaurus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna jura",
+    "ageMya": 152,
+    "lengthM": 7,
+    "diet": "roślinożerca",
+    "clade": "Stegosauria",
+    "feature": "dwa rzędy płyt i kolczasty ogon",
+    "defense": "tail",
+    "habitat": "floodplain",
+    "description": "Jurajski roślinożerca z formacji Morrison. Kolce ogonowe noszą ślady zgodne z użyciem obronnym.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "archaeopteryx",
+    "common": "Archaeopteryx",
+    "scientific": "Archaeopteryx lithographica",
+    "image": "/encyclopedia/archaeopteryx.webp",
+    "countries": [
+      "DE"
+    ],
+    "period": "późna jura",
+    "ageMya": 150,
+    "lengthM": 0.5,
+    "diet": "drapieżnik",
+    "clade": "Avialae",
+    "feature": "lotki, zęby i długi kostny ogon",
+    "defense": "glide",
+    "habitat": "coastal",
+    "description": "",
+    "baseRarity": "legendary",
+    "collectible": true
+  },
+  {
+    "id": "velociraptor",
+    "common": "Welociraptor",
+    "scientific": "Velociraptor mongoliensis",
+    "image": "/memory/velociraptor.webp",
+    "countries": [
+      "MN",
+      "CN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 73,
+    "lengthM": 2,
+    "diet": "drapieżnik",
+    "clade": "Dromaeosauridae",
+    "feature": "pióra i sierpowaty pazur stopy",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "Niewielki dromeozauryd z Mongolii, znacznie mniejszy od filmowych odpowiedników. Guzki na kości wspierają obecność dużych piór.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "spinosaurus",
+    "common": "Spinozaur",
+    "scientific": "Spinosaurus aegyptiacus",
+    "image": "/memory/spinosaurus.webp",
+    "countries": [
+      "MA",
+      "EG"
+    ],
+    "period": "późna kreda",
+    "ageMya": 96,
+    "lengthM": 14,
+    "diet": "drapieżnik",
+    "clade": "Spinosauridae",
+    "feature": "wydłużony pysk, żagiel i głęboki ogon",
+    "defense": "water",
+    "habitat": "coastal",
+    "description": "Afrykański teropod związany ze środowiskami wodnymi. Zakres jego zdolności pływackich nadal jest dyskutowany.",
+    "baseRarity": "legendary",
+    "collectible": true
+  },
+  {
+    "id": "ankylosaurus",
+    "common": "Ankylozaur",
+    "scientific": "Ankylosaurus magniventris",
+    "image": "/memory/ankylosaurus.webp",
+    "countries": [
+      "US",
+      "CA"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 7,
+    "diet": "roślinożerca",
+    "clade": "Ankylosauridae",
+    "feature": "pancerz i maczuga ogonowa",
+    "defense": "armor",
+    "habitat": "floodplain",
+    "description": "Pancerny roślinożerca z końca kredy. Maczuga była zbudowana ze zmodyfikowanych kręgów i osteodermów.",
+    "baseRarity": "epic",
+    "collectible": true
+  },
+  {
+    "id": "diplodocus",
+    "common": "Diplodok",
+    "scientific": "Diplodocus carnegii",
+    "image": "/memory/diplodocus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna jura",
+    "ageMya": 153,
+    "lengthM": 25,
+    "diet": "roślinożerca",
+    "clade": "Diplodocidae",
+    "feature": "bardzo długa szyja i biczykowaty ogon",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "Lekko zbudowany diplodokid z późnej jury. Zęby skupione z przodu pyska różniły go od wielu innych zauropodów.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "coelophysis",
+    "common": "Celofyz",
+    "scientific": "Coelophysis bauri",
+    "image": "/encyclopedia/coelophysis.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późny trias",
+    "ageMya": 210,
+    "lengthM": 2.8,
+    "diet": "drapieżnik",
+    "clade": "Neotheropoda",
+    "feature": "lekka budowa, długa szyja i ogon",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "iguanodon",
+    "common": "Iguanodon",
+    "scientific": "Iguanodon bernissartensis",
+    "image": "/encyclopedia/iguanodon.webp",
+    "countries": [
+      "BE"
+    ],
+    "period": "wczesna kreda",
+    "ageMya": 124,
+    "lengthM": 9,
+    "diet": "roślinożerca",
+    "clade": "Iguanodontia",
+    "feature": "masywny kolec kciuka",
+    "defense": "claws",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "deinonychus",
+    "common": "Deinonych",
+    "scientific": "Deinonychus antirrhopus",
+    "image": "/encyclopedia/deinonychus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "wczesna kreda",
+    "ageMya": 112,
+    "lengthM": 3.4,
+    "diet": "drapieżnik",
+    "clade": "Dromaeosauridae",
+    "feature": "powiększony pazur drugiego palca i sztywny ogon",
+    "defense": "speed",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "epic",
+    "collectible": true
+  },
+  {
+    "id": "silesaurus",
+    "common": "Silezaur",
+    "scientific": "Silesaurus opolensis",
+    "image": "/encyclopedia/silesaurus.webp",
+    "countries": [
+      "PL"
+    ],
+    "period": "późny trias",
+    "ageMya": 230,
+    "lengthM": 2.3,
+    "diet": "roślinożerca",
+    "clade": "Silesauridae",
+    "feature": "bezzębna przednia część żuchwy",
+    "defense": "speed",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "dimetrodon",
+    "common": "Dimetrodon",
+    "scientific": "Dimetrodon limbatus",
+    "image": "/encyclopedia/dimetrodon.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "wczesny perm",
+    "ageMya": 280,
+    "lengthM": 3.5,
+    "diet": "drapieżnik",
+    "clade": "Sphenacodontidae",
+    "feature": "wysoki żagiel i czaszka synapsyda",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "pteranodon",
+    "common": "Pteranodon",
+    "scientific": "Pteranodon longiceps",
+    "image": "/course/f01-pteranodon-longiceps.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 85,
+    "lengthM": null,
+    "diet": "drapieżnik",
+    "clade": "Pteranodontidae",
+    "feature": "bezzębny dziób, grzebień i skrzydło na IV palcu",
+    "defense": "glide",
+    "habitat": "coastal",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-01",
+    "common": "Aardonyx",
+    "scientific": "Aardonyx celestae",
+    "image": "/encyclopedia/aardonyx.webp",
+    "countries": [
+      "ZA"
+    ],
+    "period": "wczesna jura",
+    "ageMya": 195,
+    "lengthM": 7,
+    "diet": "roślinożerca",
+    "clade": "Sauropodomorpha",
+    "feature": "pośredni zestaw cech lokomocji zauropodomorfów",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-02",
+    "common": "Adratiklit",
+    "scientific": "Adratiklit boulahfa",
+    "image": "/encyclopedia/adratiklit.webp",
+    "countries": [
+      "MA"
+    ],
+    "period": "środkowa jura",
+    "ageMya": 168,
+    "lengthM": null,
+    "diet": "roślinożerca",
+    "clade": "Stegosauria",
+    "feature": "wczesny północnoafrykański stegozaur",
+    "defense": "tail",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-03",
+    "common": "Anzu",
+    "scientific": "Anzu wyliei",
+    "image": "/memory/anzu.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 3.5,
+    "diet": "wszystkożerca",
+    "clade": "Caenagnathidae",
+    "feature": "bezzębny dziób i wysoki grzebień",
+    "defense": "speed",
+    "habitat": "floodplain",
+    "description": "Duży owiraptorozaur z formacji Hell Creek, czasem nazywany „kurczakiem z piekła”. Nazwa nie zastępuje diagnozy anatomicznej.",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-04",
+    "common": "Bajadasaurus",
+    "scientific": "Bajadasaurus pronuspinax",
+    "image": "/memory/bajadasaurus.webp",
+    "countries": [
+      "AR"
+    ],
+    "period": "wczesna kreda",
+    "ageMya": 135,
+    "lengthM": 12,
+    "diet": "roślinożerca",
+    "clade": "Dicraeosauridae",
+    "feature": "długie wyrostki kręgów szyjnych",
+    "defense": "size",
+    "habitat": "arid",
+    "description": "Wczesnokredowy dikreozauryd z Argentyny. Wygląd osłon długich wyrostków pozostaje przedmiotem rekonstrukcji.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-05",
+    "common": "Bistahieversor",
+    "scientific": "Bistahieversor sealeyi",
+    "image": "/encyclopedia/bistahieversor.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 75,
+    "lengthM": 9,
+    "diet": "drapieżnik",
+    "clade": "Tyrannosauroidea",
+    "feature": "głęboka czaszka dużego tyranozauroida",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-06",
+    "common": "Concavenator",
+    "scientific": "Concavenator corcovatus",
+    "image": "/memory/concavenator.webp",
+    "countries": [
+      "ES"
+    ],
+    "period": "wczesna kreda",
+    "ageMya": 125,
+    "lengthM": 6,
+    "diet": "drapieżnik",
+    "clade": "Carcharodontosauria",
+    "feature": "krótki wysoki profil przed miednicą",
+    "defense": "speed",
+    "habitat": "forest",
+    "description": "Wczesnokredowy teropod z Hiszpanii. Znany jest z wyjątkowo kompletnego, spłaszczonego szkieletu.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-07",
+    "common": "Dacentrurus",
+    "scientific": "Dacentrurus armatus",
+    "image": "/encyclopedia/dacentrurus.webp",
+    "countries": [
+      "GB",
+      "FR",
+      "ES",
+      "PT"
+    ],
+    "period": "późna jura",
+    "ageMya": 155,
+    "lengthM": 8,
+    "diet": "roślinożerca",
+    "clade": "Stegosauria",
+    "feature": "masywna miednica i kolczasty ogon",
+    "defense": "tail",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-08",
+    "common": "Daemonosaurus",
+    "scientific": "Daemonosaurus chauliodus",
+    "image": "/encyclopedia/daemonosaurus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późny trias",
+    "ageMya": 205,
+    "lengthM": 1.5,
+    "diet": "drapieżnik",
+    "clade": "Theropoda",
+    "feature": "krótki pysk i duże przednie zęby",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-09",
+    "common": "Dryptosaurus",
+    "scientific": "Dryptosaurus aquilunguis",
+    "image": "/encyclopedia/dryptosaurus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 7.5,
+    "diet": "drapieżnik",
+    "clade": "Tyrannosauroidea",
+    "feature": "duże dłonie i silnie zakrzywione pazury",
+    "defense": "claws",
+    "habitat": "coastal",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-10",
+    "common": "Europasaurus",
+    "scientific": "Europasaurus holgeri",
+    "image": "/encyclopedia/europasaurus.webp",
+    "countries": [
+      "DE"
+    ],
+    "period": "późna jura",
+    "ageMya": 154,
+    "lengthM": 6.2,
+    "diet": "roślinożerca",
+    "clade": "Macronaria",
+    "feature": "wyspowe karłowacenie zauropoda",
+    "defense": "size",
+    "habitat": "coastal",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-11",
+    "common": "Jakapil",
+    "scientific": "Jakapil kaniukura",
+    "image": "/encyclopedia/jakapil.webp",
+    "countries": [
+      "AR"
+    ],
+    "period": "późna kreda",
+    "ageMya": 95,
+    "lengthM": 1.5,
+    "diet": "roślinożerca",
+    "clade": "Thyreophora?",
+    "feature": "niewielkie ciało i skórny pancerz",
+    "defense": "armor",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-12",
+    "common": "Jobaria",
+    "scientific": "Jobaria tiguidensis",
+    "image": "/encyclopedia/jobaria.webp",
+    "countries": [
+      "NE"
+    ],
+    "period": "środkowa jura",
+    "ageMya": 167,
+    "lengthM": 18,
+    "diet": "roślinożerca",
+    "clade": "Sauropoda",
+    "feature": "duży zauropod zachowany z czaszką",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-13",
+    "common": "Kulindadromeus",
+    "scientific": "Kulindadromeus zabaikalicus",
+    "image": "/encyclopedia/kulindadromeus.webp",
+    "countries": [
+      "RU"
+    ],
+    "period": "środkowa jura",
+    "ageMya": 165,
+    "lengthM": 1.5,
+    "diet": "roślinożerca",
+    "clade": "Neornithischia",
+    "feature": "łuski i złożone struktury włókniste",
+    "defense": "speed",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-14",
+    "common": "Leaellynasaura",
+    "scientific": "Leaellynasaura amicagraphica",
+    "image": "/encyclopedia/leaellynasaura.webp",
+    "countries": [
+      "AU"
+    ],
+    "period": "wczesna kreda",
+    "ageMya": 110,
+    "lengthM": 1.8,
+    "diet": "roślinożerca",
+    "clade": "Ornithopoda",
+    "feature": "niewielki ornithopod z szerokości polarnych",
+    "defense": "speed",
+    "habitat": "polar",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-15",
+    "common": "Linhenykus",
+    "scientific": "Linhenykus monodactylus",
+    "image": "/memory/linhenykus.webp",
+    "countries": [
+      "CN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 75,
+    "lengthM": 0.7,
+    "diet": "owadożerca",
+    "clade": "Alvarezsauridae",
+    "feature": "jeden funkcjonalny palec dłoni",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "Bardzo mały alwarezauryd z Mongolii. Redukcja dłoni jest jego najbardziej charakterystyczną cechą.",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-16",
+    "common": "Masiakasaurus",
+    "scientific": "Masiakasaurus knopfleri",
+    "image": "/encyclopedia/masiakasaurus.webp",
+    "countries": [
+      "MG"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 2,
+    "diet": "drapieżnik",
+    "clade": "Noasauridae",
+    "feature": "przednie zęby skierowane ku przodowi",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-17",
+    "common": "Mononykus",
+    "scientific": "Mononykus olecranus",
+    "image": "/encyclopedia/mononykus.webp",
+    "countries": [
+      "MN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 1,
+    "diet": "owadożerca",
+    "clade": "Alvarezsauridae",
+    "feature": "krótkie przedramiona z jednym dużym pazurem",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-18",
+    "common": "Natovenator",
+    "scientific": "Natovenator polydontus",
+    "image": "/memory/natovenator.webp",
+    "countries": [
+      "MN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 0.7,
+    "diet": "drapieżnik",
+    "clade": "Halszkaraptorinae",
+    "feature": "opływowy tułów i liczne drobne zęby",
+    "defense": "water",
+    "habitat": "coastal",
+    "description": "Mały dromeozauryd z Mongolii interpretowany jako zwierzę przystosowane do pływania. To wniosek z zestawu cech, nie jednej sylwetki.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-19",
+    "common": "Nothronychus",
+    "scientific": "Nothronychus mckinleyi",
+    "image": "/encyclopedia/nothronychus.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 92,
+    "lengthM": 5,
+    "diet": "roślinożerca",
+    "clade": "Therizinosauridae",
+    "feature": "szeroki tułów i długie pazury",
+    "defense": "claws",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-20",
+    "common": "Olorotitan",
+    "scientific": "Olorotitan arharensis",
+    "image": "/encyclopedia/olorotitan.webp",
+    "countries": [
+      "RU"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 8,
+    "diet": "roślinożerca",
+    "clade": "Lambeosaurinae",
+    "feature": "wysoki grzebień czaszki",
+    "defense": "speed",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-21",
+    "common": "Qianzhousaurus",
+    "scientific": "Qianzhousaurus sinensis",
+    "image": "/memory/qianzhousaurus.webp",
+    "countries": [
+      "CN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 67,
+    "lengthM": 9,
+    "diet": "drapieżnik",
+    "clade": "Tyrannosauridae",
+    "feature": "długi smukły pysk tyranozauroida",
+    "defense": "speed",
+    "habitat": "forest",
+    "description": "Azjatycki tyranozauroid nazywany czasem „Pinokio rex”. Smukły pysk odróżnia go od masywnego T. rex.",
+    "baseRarity": "rare",
+    "collectible": true
+  },
+  {
+    "id": "extra-22",
+    "common": "Rajasaurus",
+    "scientific": "Rajasaurus narmadensis",
+    "image": "/encyclopedia/rajasaurus.webp",
+    "countries": [
+      "IN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 68,
+    "lengthM": 7,
+    "diet": "drapieżnik",
+    "clade": "Abelisauridae",
+    "feature": "niski róg na czole",
+    "defense": "size",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-23",
+    "common": "Rebbachisaurus",
+    "scientific": "Rebbachisaurus garasbae",
+    "image": "/encyclopedia/rebbachisaurus.webp",
+    "countries": [
+      "MA"
+    ],
+    "period": "późna kreda",
+    "ageMya": 99,
+    "lengthM": 14,
+    "diet": "roślinożerca",
+    "clade": "Rebbachisauridae",
+    "feature": "wysokie wyrostki kręgowe",
+    "defense": "size",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-24",
+    "common": "Shuvuuia",
+    "scientific": "Shuvuuia deserti",
+    "image": "/encyclopedia/shuvuuia.webp",
+    "countries": [
+      "MN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 75,
+    "lengthM": 0.6,
+    "diet": "owadożerca",
+    "clade": "Alvarezsauridae",
+    "feature": "krótkie silne przedramiona i długie nogi",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-25",
+    "common": "Struthiosaurus",
+    "scientific": "Struthiosaurus austriacus",
+    "image": "/memory/struthiosaurus.webp",
+    "countries": [
+      "AT"
+    ],
+    "period": "późna kreda",
+    "ageMya": 80,
+    "lengthM": 3,
+    "diet": "roślinożerca",
+    "clade": "Nodosauridae",
+    "feature": "pancerz bez wielkiej maczugi ogonowej",
+    "defense": "armor",
+    "habitat": "forest",
+    "description": "Jeden z najmniejszych znanych ankylozaurów. Jego szczątki pochodzą z wysp późnokredowej Europy.",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-26",
+    "common": "Tawa",
+    "scientific": "Tawa hallae",
+    "image": "/encyclopedia/tawa.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późny trias",
+    "ageMya": 215,
+    "lengthM": 2,
+    "diet": "drapieżnik",
+    "clade": "Theropoda",
+    "feature": "lekka budowa wczesnego teropoda",
+    "defense": "speed",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-27",
+    "common": "Therizinosaurus",
+    "scientific": "Therizinosaurus cheloniformis",
+    "image": "/memory/therizinosaurus.webp",
+    "countries": [
+      "MN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 10,
+    "diet": "roślinożerca",
+    "clade": "Therizinosauridae",
+    "feature": "ogromne pazury dłoni",
+    "defense": "claws",
+    "habitat": "forest",
+    "description": "Późnokredowy maniraptor z Mongolii. Ogromne pazury nie oznaczają automatycznie drapieżnego trybu życia.",
+    "baseRarity": "epic",
+    "collectible": true
+  },
+  {
+    "id": "extra-28",
+    "common": "Udanoceratops",
+    "scientific": "Udanoceratops tschizhovi",
+    "image": "/encyclopedia/udanoceratops.webp",
+    "countries": [
+      "MN"
+    ],
+    "period": "późna kreda",
+    "ageMya": 80,
+    "lengthM": 4,
+    "diet": "roślinożerca",
+    "clade": "Leptoceratopsidae",
+    "feature": "głęboka żuchwa i brak wielkiej kryzy",
+    "defense": "horns",
+    "habitat": "arid",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-29",
+    "common": "Yi",
+    "scientific": "Yi qi",
+    "image": "/memory/yi.webp",
+    "countries": [
+      "CN"
+    ],
+    "period": "późna jura",
+    "ageMya": 160,
+    "lengthM": 0.4,
+    "diet": "owadożerca",
+    "clade": "Scansoriopterygidae",
+    "feature": "błoniaste skrzydło na kości nadgarstka",
+    "defense": "glide",
+    "habitat": "forest",
+    "description": "Maleńki jurajski maniraptor z Chin reprezentujący nietypowy eksperyment ze skrzydłem błoniastym.",
+    "baseRarity": "epic",
+    "collectible": true
+  },
+  {
+    "id": "extra-30",
+    "common": "Yangchuanosaurus",
+    "scientific": "Yangchuanosaurus shangyouensis",
+    "image": "/encyclopedia/yangchuanosaurus.webp",
+    "countries": [
+      "CN"
+    ],
+    "period": "późna jura",
+    "ageMya": 160,
+    "lengthM": 10.8,
+    "diet": "drapieżnik",
+    "clade": "Metriacanthosauridae",
+    "feature": "duża czaszka z kostnymi ornamentami",
+    "defense": "size",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "uncommon",
+    "collectible": true
+  },
+  {
+    "id": "extra-31",
+    "common": "Zalmoxes",
+    "scientific": "Zalmoxes robustus",
+    "image": "/encyclopedia/zalmoxes.webp",
+    "countries": [
+      "RO"
+    ],
+    "period": "późna kreda",
+    "ageMya": 70,
+    "lengthM": 3,
+    "diet": "roślinożerca",
+    "clade": "Rhabdodontidae",
+    "feature": "krępy wyspowy ornithopod",
+    "defense": "speed",
+    "habitat": "forest",
+    "description": "",
+    "baseRarity": "common",
+    "collectible": true
+  },
+  {
+    "id": "extra-32",
+    "common": "Zuul",
+    "scientific": "Zuul crurivastator",
+    "image": "/encyclopedia/zuul.webp",
+    "countries": [
+      "US"
+    ],
+    "period": "późna kreda",
+    "ageMya": 76,
+    "lengthM": 6,
+    "diet": "roślinożerca",
+    "clade": "Ankylosauridae",
+    "feature": "zachowany pancerz i maczuga ogonowa",
+    "defense": "armor",
+    "habitat": "floodplain",
+    "description": "",
+    "baseRarity": "epic",
+    "collectible": true
+  }
+]

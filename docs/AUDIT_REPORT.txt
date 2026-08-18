@@ -1,0 +1,23 @@
+DINOCademy v4.1.0 — FINAL AUDIT
+================================
+
+PASS  JavaScript syntax: server.js + all public/assets/*.js
+PASS  HTML shell: one site-shell.css and site-shell.js per public HTML
+PASS  Main pages: one standardized header, 7 nav destinations, vector dinosaur logo
+PASS  Auth pages: vector dinosaur logo
+PASS  No legacy pseudo-logo letter D in public UI
+PASS  No Playfair Display / Georgia declarations in public UI
+PASS  Requested "przewiń przez warstwy czasu" text absent from public UI
+PASS  CSS brace balance
+PASS  46 taxa + 7 variants = 322 collectible combinations
+PASS  All 46 canonical taxon images exist
+PASS  Taxon and variant IDs are unique
+PASS  Protected frontend modules send X-Session-Token
+PASS  Hatchery and admin auth helpers use dinocademy-token
+PASS  Map game locks the round after first answer; wrong answer awards 0 and auto-advances
+PASS  Theme aliases normalized to atlas / field / archive / night
+
+ENVIRONMENT LIMITATION
+The generation environment did not have npm dependencies cached and could not fetch them,
+so a full npm-start runtime test could not be completed here. npm install is required after
+unpacking. Static/source integrity checks above all passed.
