@@ -32,8 +32,8 @@
   const lstore={get(k,d=null){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){localStorage.setItem(k,JSON.stringify(v))}};
 
   // Theme
-  const theme=localStorage.getItem('dinocademy-theme')||'atlas'; document.documentElement.dataset.theme=theme;
-  $$('.theme-grid button').forEach((b,i)=>b.addEventListener('click',()=>{const names=['atlas','teren','archiwum','noc']; const t=names[i]||'atlas'; document.documentElement.dataset.theme=t;localStorage.setItem('dinocademy-theme',t); $$('.theme-grid button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')}));
+  const themeAliases={atlas:'',teren:'field',field:'field',archiwum:'archive',archive:'archive',noc:'night',night:'night'}; const storedTheme=localStorage.getItem('dinocademy-theme')||'atlas'; document.documentElement.dataset.theme=themeAliases[storedTheme]||'';
+  $$('.theme-grid button').forEach((b,i)=>b.addEventListener('click',()=>{const names=['atlas','field','archive','night']; const t=names[i]||'atlas'; document.documentElement.dataset.theme=t==='atlas'?'':t;localStorage.setItem('dinocademy-theme',t); $$('.theme-grid button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')}));
 
   // Intercept absolute links
   document.addEventListener('click',e=>{const a=e.target.closest('a'); if(!a)return; const h=a.getAttribute('href')||''; if(h.startsWith('/')){e.preventDefault(); const clean=h.split('?')[0]; const map={'/':'index.html','/learn':'kursy.html','/kursy':'kursy.html','/lekcja':'lekcja.html','/encyklopedia':'encyklopedia.html','/gry':'gry.html','/ranking':'ranking.html','/pro':'pro.html','/notatnik':'notatnik.html','/rejestracja':'rejestracja.html','/logowanie':'logowanie.html','/kurs/level-0':'kurs.html?c=paleo-pro','/kurs':'kurs.html'}; location.href=(map[clean]||'index.html')+(h.includes('?')?'?'+h.split('?')[1]:'')}} ,true);

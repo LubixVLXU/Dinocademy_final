@@ -3,32 +3,40 @@
   if(document.body.dataset.page!=='home') return;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine=window.matchMedia&&window.matchMedia('(pointer:fine)').matches;
-  function all(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+  function all(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel));}
 
-  var reveal=all('[data-reveal]');
-  if(reduce||!('IntersectionObserver' in window)){reveal.forEach(function(x){x.classList.add('is-visible');});}
-  else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});},{threshold:.13,rootMargin:'0px 0px -7%'});reveal.forEach(function(x){io.observe(x);});}
+  var reveals=all('[data-reveal]');
+  if(reduce||!('IntersectionObserver' in window)){reveals.forEach(function(el){el.classList.add('is-visible');});}
+  else{
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -7% 0px'});
+    reveals.forEach(function(el){io.observe(el);});
+  }
 
-  var dust=document.getElementById('paleo-dust');
-  if(dust&&!reduce){for(var i=0;i<28;i++){var d=document.createElement('i');d.className='dust';d.style.left=(Math.random()*100)+'%';d.style.top=(Math.random()*100)+'%';d.style.setProperty('--d',(8+Math.random()*12)+'s');d.style.setProperty('--o',(.15+Math.random()*.45).toFixed(2));d.style.animationDelay=(-Math.random()*12)+'s';dust.appendChild(d);}}
+  var specimen=document.getElementById('specimen-frame');
+  if(specimen&&fine&&!reduce){
+    specimen.addEventListener('pointermove',function(e){var r=specimen.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;specimen.style.setProperty('--ry',(x*5.5).toFixed(2)+'deg');specimen.style.setProperty('--rx',(-y*4.2).toFixed(2)+'deg');});
+    specimen.addEventListener('pointerleave',function(){specimen.style.setProperty('--ry','0deg');specimen.style.setProperty('--rx','0deg');});
+  }
+  var factBtn=document.getElementById('specimen-fact-button'),fact=document.getElementById('specimen-fact');
+  if(factBtn&&fact){factBtn.addEventListener('click',function(){var open=fact.classList.toggle('is-open');factBtn.setAttribute('aria-expanded',String(open));factBtn.textContent=open?'Ukryj notatkę':'Odsłoń notatkę';});}
 
-  var specimen=document.getElementById('specimen-card');
-  if(specimen){specimen.addEventListener('click',function(){specimen.classList.toggle('is-open');});if(fine&&!reduce){specimen.addEventListener('mousemove',function(e){var r=specimen.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;specimen.style.setProperty('--ry',(x*8).toFixed(2)+'deg');specimen.style.setProperty('--rx',(-y*7).toFixed(2)+'deg');});specimen.addEventListener('mouseleave',function(){specimen.style.setProperty('--ry','0deg');specimen.style.setProperty('--rx','0deg');});}}
-
-  all('[data-target]').forEach(function(el){var target=Number(el.dataset.target)||0;if(reduce){el.textContent=target;return;}var started=false;var o=new IntersectionObserver(function(es){if(!started&&es[0].isIntersecting){started=true;var t0=0;function tick(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/900),v=Math.round(target*(1-Math.pow(1-p,3)));el.textContent=v;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);o.disconnect();}},{threshold:.7});o.observe(el);});
-
-  var eraData={
-    trias:['TRIAS','Pangea nadal łączyła większość lądów.','Wczesne dinozaury dzieliły ekosystemy z wieloma innymi liniami archozaurów. Dominacja dinozaurów nie wydarzyła się natychmiast.'],
-    jura:['JURA','Gigantyzm zauropodów osiągnął niezwykłą skalę.','W jurze pojawiły się także małe opierzone teropody i formy bliskie początkom ptaków. Pióra nie oznaczały jeszcze koniecznie aktywnego lotu.'],
-    kreda:['KREDA','Kwitnące rośliny zmieniły lądowe ekosystemy.','W kredzie dinozaury osiągnęły ogromną różnorodność. Okres zakończył się 66 mln lat temu wymieraniem K–Pg, ale jedna linia dinozaurów — ptaki — przetrwała.']
+  var evidence={
+    bone:['01 / KOŚĆ','Jedna cecha rzadko wystarcza.','Kształt kości ma sens dopiero po porównaniu z innymi okazami, pozycją w szkielecie i kontekstem geologicznym.'],
+    track:['02 / TROP','Zachowanie może przetrwać bez szkieletu.','Kierunek, rozstaw kroków i układ wielu tropów mogą zapisać ruch albo interakcję zwierząt, których kości nigdy nie odnajdziemy.'],
+    rock:['03 / WARSTWA','Skamieniałość bez kontekstu traci część historii.','Położenie w sekwencji skał pozwala łączyć okaz z konkretnym środowiskiem i przedziałem czasu, zamiast traktować go jako oderwany obiekt.'],
+    tree:['04 / DRZEWO','Pokrewieństwo nie jest rankingiem podobieństwa.','Analizuje się zestawy cech wspólnych i ich rozkład. Dlatego ptak może być bliżej spokrewniony z teropodem niż z innym latającym gadem.']
   };
-  var eraReveal=document.getElementById('era-reveal');
-  all('.era-card').forEach(function(btn){btn.addEventListener('click',function(){all('.era-card').forEach(function(b){b.classList.remove('is-active');});btn.classList.add('is-active');var d=eraData[btn.dataset.era];if(eraReveal&&d){eraReveal.innerHTML='<span>'+d[0]+'</span><strong>'+d[1]+'</strong><p>'+d[2]+'</p>';}});});
+  var readout=document.getElementById('evidence-readout');
+  all('[data-evidence]').forEach(function(btn){btn.addEventListener('click',function(){all('[data-evidence]').forEach(function(x){x.classList.remove('is-active');});btn.classList.add('is-active');var d=evidence[btn.dataset.evidence];if(readout&&d)readout.innerHTML='<span>'+d[0]+'</span><h3>'+d[1]+'</h3><p>'+d[2]+'</p>';});});
 
-  var digFact=document.getElementById('dig-fact');
-  all('.fossil').forEach(function(btn){btn.addEventListener('click',function(){all('.fossil').forEach(function(b){b.classList.remove('is-active');});btn.classList.add('is-active');if(digFact){digFact.innerHTML='<b>Odkrycie: '+btn.textContent.trim()+'</b><p>'+btn.dataset.fact+'</p>';digFact.classList.add('is-open');}});});
+  var periods={
+    trias:['TRIAS / 252–201 mln lat temu','Pierwsze dinozaury pojawiają się w świecie nadal zdominowanym przez inne linie archozaurów.','Większość lądów pozostaje połączona w Pangeę. Wczesne dinozaury są tylko częścią znacznie większej historii odbudowy ekosystemów po wymieraniu permskim.'],
+    jura:['JURA / 201–145 mln lat temu','Kontynenty zaczynają się rozsuwać, a dinozaury zajmują coraz więcej nisz lądowych.','Ogromne zauropody, zróżnicowane teropody i ptakopodobne formy pokazują, że „dinozaur” nie oznaczał jednego planu budowy ani jednego sposobu życia.'],
+    kreda:['KREDA / 145–66 mln lat temu','Różnorodność dinozaurów rośnie razem z przebudową świata roślin i kontynentów.','Pod koniec kredy żyją tyranozaury, ceratopsy i wiele wyspecjalizowanych linii. Wymieranie K–Pg kończy erę dinozaurów nieptasich, ale ptaki przetrwają.']
+  };
+  var periodCopy=document.getElementById('period-copy'),periodStage=document.querySelector('.period-stage');
+  all('.period-tab').forEach(function(btn){btn.addEventListener('click',function(){all('.period-tab').forEach(function(x){x.classList.remove('is-active');x.setAttribute('aria-selected','false');});btn.classList.add('is-active');btn.setAttribute('aria-selected','true');var d=periods[btn.dataset.period];if(periodCopy&&d){periodCopy.innerHTML='<span>'+d[0]+'</span><h3>'+d[1]+'</h3><p>'+d[2]+'</p>';if(periodStage&&!reduce){periodStage.classList.remove('is-changing');void periodStage.offsetWidth;periodStage.classList.add('is-changing');}}});});
 
-  var quiz={pteranodon:['Nie.','Pteranodon był pterozaurem — bliskim krewnym dinozaurów, ale poza Dinosauria.'],triceratops:['Tak.','Triceratops był ceratopsem, czyli prawdziwym dinozaurem ptasiomiednicznym.'],mosasaurus:['Nie.','Mosasaurus był morskim łuskonośnym gadem, bliżej spokrewnionym z jaszczurkami i wężami niż z dinozaurami.'],dimetrodon:['Nie.','Dimetrodon był synapsydem i żył dziesiątki milionów lat przed pierwszymi dinozaurami.']};
-  var result=document.getElementById('myth-result');
-  all('#myth-quiz button').forEach(function(btn){btn.addEventListener('click',function(){all('#myth-quiz button').forEach(function(b){b.classList.remove('is-correct','is-wrong');});var ok=btn.dataset.answer==='triceratops';btn.classList.add(ok?'is-correct':'is-wrong');var d=quiz[btn.dataset.answer];if(result)result.innerHTML='<b>'+d[0]+'</b><p>'+d[1]+'</p>';});});
+  var result=document.getElementById('myth-result'),quiz=all('#myth-quiz [data-answer]');
+  quiz.forEach(function(btn){btn.addEventListener('click',function(){quiz.forEach(function(x){x.classList.remove('correct','wrong');x.disabled=true;});var ok=btn.dataset.answer==='triceratops';btn.classList.add(ok?'correct':'wrong');if(result){result.innerHTML=ok?'<b>Tak — Triceratops to dinozaur.</b><span>Pteranodon był pterozaurem, Mosasaurus morskim łuskonośnym, a Dimetrodon synapsydem żyjącym długo przed pierwszymi dinozaurami.</span>':'<b>Nie tym razem.</b><span>Poprawna odpowiedź to Triceratops. Pozostałe trzy zwierzęta należały do innych linii kręgowców.</span>';}});});
 })();

@@ -4,7 +4,6 @@
   Nie usuwa żadnego dotychczasowego CSS. Nadpisuje wyłącznie
   wygląd i obsługuje ZARÓWNO stare, jak i nowe klasy HTML.
 ========================================================== */
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
 
 :root {
   --v3-paper: #f2f0e8;
@@ -21,7 +20,7 @@
   --v3-shadow-hover: 0 25px 60px rgba(23,38,39,.17);
   --v3-radius: 18px;
   --v3-body: 'Manrope', 'Segoe UI', sans-serif;
-  --v3-display: 'Playfair Display', Georgia, serif;
+  --v3-display: "Aptos Display", "Segoe UI Variable Display", "Segoe UI", Arial, sans-serif;
   --v3-mono: 'DM Mono', monospace;
 }
 

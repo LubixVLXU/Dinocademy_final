@@ -3,7 +3,7 @@
   if(document.body.dataset.page!=='hatchery') return;
   var root=document.getElementById('hatchery-root'), state=null, catalog=[];
   function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function api(url,method,body){return fetch(url,{method:method||'GET',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}).then(function(r){return r.json().catch(function(){return{};}).then(function(j){if(!r.ok)throw new Error(j.error||'Błąd');return j;});});}
+  function api(url,method,body){var headers={'Content-Type':'application/json'};try{var t=localStorage.getItem('dinocademy-token');if(t)headers['X-Session-Token']=t;}catch(_){}return fetch(url,{method:method||'GET',credentials:'same-origin',headers:headers,body:body?JSON.stringify(body):undefined}).then(function(r){return r.json().catch(function(){return{};}).then(function(j){if(!r.ok){var e=new Error(j.error||'Błąd');e.status=r.status;throw e;}return j;});});}
   function taxon(id){return catalog.find(function(t){return t.id===id;})||{id:id,common:id,scientific:'',image:'',period:'',clade:''};}
   function labelVariant(id){return state&&state.variants&&state.variants[id]?state.variants[id].label:id;}
   function levelNeed(level){return 100+25*Math.max(0,Number(level||1)-1);}

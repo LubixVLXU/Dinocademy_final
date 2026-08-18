@@ -3,7 +3,6 @@
    Podmień: public/assets/ui-extra.css
    Ten plik działa na wszystkich stronach korzystających z ui-extra.css.
 ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
 
 :root {
   --ink: #142127;
@@ -20,7 +19,7 @@
   --shadow: 0 18px 45px rgba(19, 35, 37, .10);
   --shadow-hover: 0 24px 54px rgba(19, 35, 37, .16);
   --radius: 22px;
-  --display: 'Playfair Display', Georgia, serif;
+  --display: "Aptos Display", "Segoe UI Variable Display", "Segoe UI", Arial, sans-serif;
   --body: 'Manrope', Arial, sans-serif;
   --mono: 'DM Mono', monospace;
 }
@@ -68,7 +67,7 @@ button { cursor: pointer; }
 }
 .nav-shell { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 1.05rem; letter-spacing: -.04em; }
-.brand::before { content: 'D'; display:grid; place-items:center; width:33px; height:33px; color:#fff; background:var(--forest); border-radius: 10px 10px 10px 3px; font-family:var(--display); font-size:1.3rem; box-shadow: 4px 4px 0 rgba(15,84,80,.15); }
+.brand::before { content:none; display:none; }
 .brand-mark { width: 30px; height: 30px; color: var(--forest); }
 .brand-mark + span { margin-left: -5px; }
 .site-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
