@@ -1,0 +1,13 @@
+DINOCademy v6.0.0 — AUDYT STATYCZNY
+
+Wykonano:
+- node --check na server.js
+- node --check na wszystkich plikach public/assets/*.js
+- parsing wszystkich 17 plików HTML
+- kontrolę wszystkich lokalnych href/src w HTML: 0 brakujących plików
+- kontrolę wspólnego site-shell.js na wszystkich 17 stronach
+- kontrolę pustego kontenera header.site-header na wszystkich 17 stronach
+- porównanie warstwy encyklopedii z v4.1: style.css, site-shell.css i recovery.css są identyczne
+- sprawdzenie nowego modelu mnożników i zakresów Lv1/Lv100
+
+Pełnego testu runtime Node/SQLite nie wykonano w tym środowisku, ponieważ instalacja zależności npm nie została ukończona. Projekt zawiera kompletne package.json i package-lock.json.

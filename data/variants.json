@@ -20,7 +20,7 @@
     "label": "Fosylna poświata",
     "dropWeight": 20,
     "dinoXpFactor": 1.2,
-    "multiplierFactor": 1.2,
+    "multiplierFactor": 1.22,
     "cssClass": "variant-fossil"
   },
   {
@@ -28,7 +28,7 @@
     "label": "Mutacja bio",
     "dropWeight": 15,
     "dinoXpFactor": 1.25,
-    "multiplierFactor": 1.25,
+    "multiplierFactor": 1.3,
     "cssClass": "variant-bio"
   },
   {
@@ -36,7 +36,7 @@
     "label": "Mutacja cyber",
     "dropWeight": 10,
     "dinoXpFactor": 1.3,
-    "multiplierFactor": 1.3,
+    "multiplierFactor": 1.38,
     "cssClass": "variant-tech"
   },
   {
@@ -44,7 +44,7 @@
     "label": "Cryo",
     "dropWeight": 10,
     "dinoXpFactor": 1.3,
-    "multiplierFactor": 1.3,
+    "multiplierFactor": 1.42,
     "cssClass": "variant-cryo"
   },
   {
@@ -52,7 +52,7 @@
     "label": "Primal",
     "dropWeight": 5,
     "dinoXpFactor": 1.35,
-    "multiplierFactor": 1.35,
+    "multiplierFactor": 1.5,
     "cssClass": "variant-primal"
   }
 ]
