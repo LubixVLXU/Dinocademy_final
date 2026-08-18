@@ -1,0 +1,18 @@
+DINOCademy REVAMP v4.1.0
+=========================
+
+URUCHOMIENIE LOKALNE
+1. Zainstaluj Node.js 18 lub nowszy.
+2. Otwórz terminal w tym katalogu.
+3. Uruchom: npm install
+4. Uruchom: npm start
+5. Wejdź na adres pokazany w terminalu (domyślnie http://localhost:3000).
+
+WAŻNE
+- Nie otwieraj plików HTML bezpośrednio przez file://. Logowanie, wykluwarnia,
+  ranking, profil i panel admina korzystają z backendu Express.
+- Konto administratora jest powiązane z: adamlubanskimc@gmail.com
+- Baza SQLite (data.db) tworzy się lokalnie przy pierwszym uruchomieniu i jest
+  ignorowana przez Git.
+
+Najważniejsze zmiany tej wersji są w docs/REVAMP_V4_1_NOTES.md.

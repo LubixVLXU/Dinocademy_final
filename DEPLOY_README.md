@@ -1,52 +1,45 @@
-# Dinocademy - serwer Node.js + Express + SQLite
+# Dinocademy — wdrożenie Node.js + Express + SQLite
 
-Prawdziwy, prosty serwer backendowy gotowy do wrzucenia na hosting.
-Baza danych to pojedynczy plik SQLite - bez zewnetrznej uslugi bazodanowej.
+## Lokalnie
 
-## Uruchomienie lokalne
-
+```bash
 npm install
 npm start
+```
 
-Serwer wystartuje na http://localhost:3000
+Domyślnie serwer działa pod `http://localhost:3000`.
 
-## Konto administratora (tworzone automatycznie przy pierwszym starcie)
-- e-mail: adamlubanskimc@gmail.com
-- haslo: Adamlubixroblox123
+## Administrator
 
-Po zalogowaniu tym kontem w menu nawigacji pojawi sie link "Panel admina"
-ze statystykami, zarzadzaniem uzytkownikami/planem Pro i moderacja forum.
+Konto administratora jest przypisane do `adamlubanskimc@gmail.com`.
 
-## Struktura projektu
-server.js       - caly backend: Express + SQLite + wszystkie endpointy /api/...
-package.json    - zaleznosci (Express, better-sqlite3, bcryptjs, cors, uuid)
-public/         - caly frontend (HTML, CSS, JS, obrazy)
-data.db         - baza SQLite (tworzy sie automatycznie przy pierwszym starcie)
+- Jeśli użytkownik o tym adresie już istnieje, backend nada mu flagę administratora.
+- Na świeżej bazie konto administratora zostanie utworzone tylko wtedy, gdy przed pierwszym uruchomieniem ustawisz zmienną środowiskową `ADMIN_PASSWORD`.
+- Hasło administratora nie jest zapisane w repozytorium.
 
-## Osadzenie w internecie
+Przykład PowerShell:
 
-### Render.com (zalecane, darmowy plan wystarczy)
-1. Wrzuc ten folder do repozytorium GitHub.
-2. Na Render.com: New -> Web Service -> polacz repozytorium.
-3. Render wykryje dolaczony plik render.yaml i skonfiguruje wszystko
-   automatycznie (dysk trwaly pod baze SQLite, komenda startowa npm start).
-4. Po chwili strona bedzie dostepna pod adresem https://twoja-nazwa.onrender.com
+```powershell
+$env:ADMIN_PASSWORD="TU_WSTAW_SILNE_HASLO"
+npm start
+```
 
-Bez render.yaml wystarczy recznie ustawic:
-- Build command: npm install
-- Start command: npm start
-- Persistent Disk zamontowany w /var/data
-- Zmienna srodowiskowa DATABASE_PATH=/var/data/dinocademy.db
+## Struktura
 
-### Railway.app / Fly.io / dowolny VPS
-Identyczna zasada: npm install i npm start, port z process.env.PORT
-(juz obslugiwany w kodzie), oraz trwaly wolumin dla pliku data.db.
+- `server.js` — backend Express + SQLite i API;
+- `package.json` / `package-lock.json` — zależności;
+- `public/` — frontend;
+- `data/taxa.json` — katalog taksonów;
+- `data/variants.json` — warianty kolekcjonerskie;
+- `data.db` — tworzona automatycznie baza użytkowników (nie jest częścią repozytorium).
 
-### Uwaga o trwalosci danych
-Jesli hosting nie oferuje trwalego dysku, plik data.db zniknie po restarcie
-serwera. Dla produkcyjnego uzytku warto rozwazyc zewnetrzna baze (np. Turso).
+## Hosting
 
-## Zmienne srodowiskowe
-- PORT - port serwera (domyslnie 3000)
-- DATABASE_PATH - sciezka do pliku bazy (domyslnie ./data.db)
-- NODE_ENV=production - wlacza bezpieczne ciasteczka
+Aplikacja korzysta z `process.env.PORT`. Dla hostingu produkcyjnego baza SQLite musi znajdować się na trwałym woluminie; ścieżkę można ustawić przez `DATABASE_PATH`.
+
+Zmienne środowiskowe:
+
+- `PORT` — port HTTP, domyślnie 3000;
+- `DATABASE_PATH` — ścieżka do SQLite, domyślnie `./data.db`;
+- `ADMIN_PASSWORD` — hasło użyte wyłącznie do utworzenia konta admina na świeżej bazie;
+- `NODE_ENV=production` — włącza `secure` dla ciasteczka sesji.

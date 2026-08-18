@@ -1,13 +1,13 @@
 {
   "name": "dinocademy",
-  "version": "2.0.0",
-  "description": "Dinocademy - interaktywny kurs paleontologii (SQLite + Express, gotowy do hostingu)",
+  "version": "4.1.0",
+  "description": "Dinocademy v4.1 — spójny cyfrowy atlas paleontologii z kursami, grami, kolekcją, wykluwaniem i rankingiem",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=18"
   },
   "dependencies": {
     "better-sqlite3": "^11.3.0",
