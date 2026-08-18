@@ -1,0 +1,13 @@
+DINOCademy v3.0 — START
+
+1. Rozpakuj projekt.
+2. Otwórz terminal w katalogu projektu.
+3. Uruchom: npm install
+4. Uruchom: npm start
+5. Otwórz: http://localhost:3000
+
+Pełna lista zmian: docs/REVAMP_NOTES.md
+
+Admin:
+- istniejące konto adamlubanskimc@gmail.com automatycznie dostaje is_admin=1;
+- przy zupełnie świeżej bazie ustaw ADMIN_PASSWORD przed pierwszym startem, jeśli serwer ma sam utworzyć to konto.

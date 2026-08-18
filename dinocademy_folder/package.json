@@ -1,7 +1,7 @@
 {
   "name": "dinocademy",
-  "version": "2.0.0",
-  "description": "Dinocademy - interaktywny kurs paleontologii (SQLite + Express, gotowy do hostingu)",
+  "version": "3.0.0",
+  "description": "Dinocademy v3 — interaktywna akademia paleontologii z kolekcją, wykluwaniem, grami i rankingiem",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
