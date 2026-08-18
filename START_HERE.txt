@@ -1,18 +1,24 @@
-DINOCademy REVAMP v4.1.0
-=========================
+DINOCADEMY v5.0.0
+=================
 
-URUCHOMIENIE LOKALNE
-1. Zainstaluj Node.js 18 lub nowszy.
-2. Otwórz terminal w tym katalogu.
-3. Uruchom: npm install
-4. Uruchom: npm start
-5. Wejdź na adres pokazany w terminalu (domyślnie http://localhost:3000).
+1. Rozpakuj cały katalog projektu.
+2. Otwórz terminal w katalogu projektu.
+3. Uruchom:
 
-WAŻNE
-- Nie otwieraj plików HTML bezpośrednio przez file://. Logowanie, wykluwarnia,
-  ranking, profil i panel admina korzystają z backendu Express.
-- Konto administratora jest powiązane z: adamlubanskimc@gmail.com
-- Baza SQLite (data.db) tworzy się lokalnie przy pierwszym uruchomieniu i jest
-  ignorowana przez Git.
+   npm install
+   npm start
 
-Najważniejsze zmiany tej wersji są w docs/REVAMP_V4_1_NOTES.md.
+4. Otwórz w przeglądarce:
+   http://localhost:3000
+
+Najważniejsze pliki:
+- server.js                         backend/API i logika XP
+- public/index.html                strona główna
+- public/assets/cohesion-v5.css    końcowy wspólny system wizualny
+- public/assets/site-shell.js      wspólny header, nawigacja i motywy
+- public/assets/hatchery.js        wykluwarnia/kolekcja
+- public/assets/forum.js           forum
+- docs/REVAMP_V5_NOTES.md          lista zmian i wykonanych testów
+
+Konto administratora rozpoznawane przez backend:
+adamlubanskimc@gmail.com

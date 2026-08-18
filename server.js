@@ -181,30 +181,28 @@ function computeCollectionMultiplier(userId) {
   return Math.min(3, 1 + bonus);
 }
 
-function getActiveEgg(userId) {
-  let egg = db.prepare("SELECT * FROM eggs WHERE user_id=? AND hatched=0 AND active=1 ORDER BY id LIMIT 1").get(userId);
-  if (!egg) {
-    egg = db.prepare("SELECT * FROM eggs WHERE user_id=? AND hatched=0 ORDER BY id LIMIT 1").get(userId);
-    if (egg) { db.prepare('UPDATE eggs SET active=0 WHERE user_id=? AND hatched=0').run(userId); db.prepare('UPDATE eggs SET active=1 WHERE id=?').run(egg.id); egg.active = 1; }
-  }
-  return egg;
-}
-
 const awardXpTx = db.transaction(({ userId, baseXp, sourceType, sourceId = null, actorUserId = null, applyMultiplier = true }) => {
   const safeBase = Math.max(0, Math.floor(Number(baseXp) || 0));
   const multiplier = applyMultiplier ? computeCollectionMultiplier(userId) : 1;
   const finalXp = Math.max(0, Math.floor(safeBase * multiplier));
   db.prepare('UPDATE users SET xp=xp+? WHERE id=?').run(finalXp, userId);
   let hatchXp = 0;
-  const egg = getActiveEgg(userId);
-  if (egg && finalXp > 0) {
-    hatchXp = Math.min(finalXp, Math.max(0, egg.required - egg.warmth));
-    db.prepare('UPDATE eggs SET warmth=MIN(warmth+?,required) WHERE id=?').run(hatchXp, egg.id);
+  let warmedEggs = 0;
+  if (finalXp > 0) {
+    const eggs = db.prepare('SELECT id,warmth,required FROM eggs WHERE user_id=? AND hatched=0 ORDER BY id').all(userId);
+    for (const egg of eggs) {
+      const applied = Math.min(finalXp, Math.max(0, egg.required - egg.warmth));
+      if (applied > 0) {
+        db.prepare('UPDATE eggs SET warmth=MIN(warmth+?,required) WHERE id=?').run(applied, egg.id);
+        hatchXp += applied;
+        warmedEggs += 1;
+      }
+    }
   }
   db.prepare('INSERT INTO xp_ledger(user_id,source_type,source_id,base_xp,multiplier,final_xp,hatch_xp,actor_user_id) VALUES (?,?,?,?,?,?,?,?)')
     .run(userId, sourceType, sourceId, safeBase, multiplier, finalXp, hatchXp, actorUserId);
   if (finalXp) markStudyDay(userId);
-  return { baseXp: safeBase, multiplier, finalXp, hatchXp };
+  return { baseXp: safeBase, multiplier, finalXp, hatchXp, warmedEggs };
 });
 function awardXp(args) { return awardXpTx(args); }
 
@@ -285,8 +283,7 @@ app.get('/api/ranking',(req,res)=>{
 
 app.get('/api/hatchery',auth(),(req,res)=>{
   const u=db.prepare('SELECT xp FROM users WHERE id=?').get(req.user.id), level=computeLevel(u.xp||0);
-  getActiveEgg(req.user.id);
-  const eggs=db.prepare('SELECT id,rarity,warmth,required,from_level,active,created_at FROM eggs WHERE user_id=? AND hatched=0 ORDER BY active DESC,id').all(req.user.id);
+  const eggs=db.prepare('SELECT id,rarity,warmth,required,from_level,created_at FROM eggs WHERE user_id=? AND hatched=0 ORDER BY id').all(req.user.id);
   const collection=db.prepare('SELECT id,dino_id,rarity,variant,level,dino_xp,duplicates,xp_bonus,nickname,hatched_at FROM collection WHERE user_id=? ORDER BY hatched_at DESC').all(req.user.id);
   const claimed=db.prepare('SELECT COUNT(*) c FROM eggs WHERE user_id=?').get(req.user.id).c;
   res.json({level,xp:u.xp||0,eggsAvailable:Math.max(0,level-claimed),eggs:eggs.map(e=>({...e,label:RARITY[e.rarity]?.label||e.rarity,ready:e.warmth>=e.required})),collection,collected:collection.length,totalDinos:TAXA.length,totalCollectibles:TAXA.length*VARIANT_LIST.length,rarities:RARITY,variants:VARIANTS,multiplier:computeCollectionMultiplier(req.user.id)});
@@ -294,15 +291,9 @@ app.get('/api/hatchery',auth(),(req,res)=>{
 app.post('/api/hatchery/egg',auth(),(req,res)=>{
   const u=db.prepare('SELECT xp FROM users WHERE id=?').get(req.user.id), level=computeLevel(u.xp||0), claimed=db.prepare('SELECT COUNT(*) c FROM eggs WHERE user_id=?').get(req.user.id).c;
   if(claimed>=level) return res.status(400).json({error:'Brak dostępnych jaj. Zdobądź kolejny poziom.'});
-  const rarity=rollEggRarity(level), info=RARITY[rarity], hasActive=!!getActiveEgg(req.user.id);
-  const r=db.prepare('INSERT INTO eggs(user_id,rarity,warmth,required,from_level,active) VALUES (?,?,0,?,?,?)').run(req.user.id,rarity,info.required,level,hasActive?0:1);
-  res.json({ok:true,egg:{id:r.lastInsertRowid,rarity,label:info.label,warmth:0,required:info.required,ready:false,active:hasActive?0:1}});
-});
-app.post('/api/hatchery/activate',auth(),(req,res)=>{
-  const eggId=Number(req.body?.eggId), egg=db.prepare('SELECT id FROM eggs WHERE id=? AND user_id=? AND hatched=0').get(eggId,req.user.id);
-  if(!egg) return res.status(404).json({error:'Nie znaleziono jaja'});
-  db.transaction(()=>{db.prepare('UPDATE eggs SET active=0 WHERE user_id=? AND hatched=0').run(req.user.id);db.prepare('UPDATE eggs SET active=1 WHERE id=?').run(eggId);})();
-  res.json({ok:true});
+  const rarity=rollEggRarity(level), info=RARITY[rarity];
+  const r=db.prepare('INSERT INTO eggs(user_id,rarity,warmth,required,from_level,active) VALUES (?,?,0,?,?,0)').run(req.user.id,rarity,info.required,level);
+  res.json({ok:true,egg:{id:r.lastInsertRowid,rarity,label:info.label,warmth:0,required:info.required,ready:false}});
 });
 app.post('/api/hatchery/hatch',auth(),(req,res)=>{
   const egg=db.prepare('SELECT * FROM eggs WHERE id=? AND user_id=? AND hatched=0').get(Number(req.body?.eggId),req.user.id);
@@ -326,7 +317,6 @@ app.post('/api/hatchery/hatch',auth(),(req,res)=>{
       db.prepare('INSERT INTO collection(user_id,dino_id,rarity,variant,level,dino_xp,duplicates,xp_bonus) VALUES (?,?,?,?,1,0,0,0)').run(req.user.id,chosen.id,rarity,variant);
     }
     db.prepare('UPDATE eggs SET hatched=1,active=0 WHERE id=?').run(egg.id);
-    getActiveEgg(req.user.id);
   });
   hatchTx();
   res.json({ok:true,dinoId:chosen.id,rarity,variant,level,dinoXp,duplicate,duplicateXp,taxon:chosen,multiplier:computeCollectionMultiplier(req.user.id)});
@@ -358,12 +348,24 @@ app.delete('/api/notes/:id',auth(),(req,res)=>{db.prepare('DELETE FROM notes WHE
 app.get('/api/favorites',auth(),(req,res)=>res.json({favorites:db.prepare('SELECT taxon_id FROM favorites WHERE user_id=?').all(req.user.id).map(x=>x.taxon_id)}));
 app.post('/api/favorites/toggle',auth(),(req,res)=>{const id=String(req.body?.taxon_id||'');if(!id)return res.status(400).json({error:'Brak taxon_id'});const row=db.prepare('SELECT id FROM favorites WHERE user_id=? AND taxon_id=?').get(req.user.id,id);if(row){db.prepare('DELETE FROM favorites WHERE id=?').run(row.id);return res.json({ok:true,active:false});}db.prepare('INSERT INTO favorites(user_id,taxon_id) VALUES (?,?)').run(req.user.id,id);res.json({ok:true,active:true});});
 
-const FORUM_CATEGORIES=[{id:'general',name:'Ogólne'},{id:'paleo',name:'Paleontologia'},{id:'learning',name:'Nauka'},{id:'games',name:'Gry i kolekcja'}];
+const FORUM_CATEGORIES=[{id:'general',label:'Ogólne'},{id:'paleo',label:'Paleontologia'},{id:'learning',label:'Nauka'},{id:'games',label:'Gry i kolekcja'}];
+function forumThreadDto(row){return {id:row.id,title:row.title,body:row.body,categoryId:row.category_id,authorId:row.author_id,authorName:row.author_name,pinned:!!row.pinned,createdAt:row.created_at,replyCount:Number(row.reply_count||0),authorIsAdmin:!!row.author_is_admin};}
+function forumReplyDto(row){return {id:row.id,threadId:row.thread_id,body:row.body,authorId:row.author_id,authorName:row.author_name,createdAt:row.created_at,authorIsAdmin:!!row.author_is_admin};}
 app.get('/api/forum/categories',(req,res)=>res.json({categories:FORUM_CATEGORIES}));
-app.get('/api/forum/threads',(req,res)=>{const cat=String(req.query.category||'');const rows=cat?db.prepare(`SELECT t.*,u.name author_name FROM forum_threads t JOIN users u ON u.id=t.author_id WHERE t.deleted=0 AND t.category_id=? ORDER BY t.pinned DESC,t.created_at DESC`).all(cat):db.prepare(`SELECT t.*,u.name author_name FROM forum_threads t JOIN users u ON u.id=t.author_id WHERE t.deleted=0 ORDER BY t.pinned DESC,t.created_at DESC`).all();res.json({threads:rows});});
-app.get('/api/forum/threads/:id',(req,res)=>{const thread=db.prepare(`SELECT t.*,u.name author_name FROM forum_threads t JOIN users u ON u.id=t.author_id WHERE t.id=? AND t.deleted=0`).get(req.params.id);if(!thread)return res.status(404).json({error:'Nie znaleziono wątku'});const replies=db.prepare(`SELECT r.*,u.name author_name FROM forum_replies r JOIN users u ON u.id=r.author_id WHERE r.thread_id=? AND r.deleted=0 ORDER BY r.created_at`).all(req.params.id);res.json({thread,replies});});
-app.post('/api/forum/threads',auth(),(req,res)=>{const title=String(req.body?.title||'').trim().slice(0,120),body=String(req.body?.body||'').trim().slice(0,5000),category=String(req.body?.categoryId||'general');if(!title||!body)return res.status(400).json({error:'Podaj tytuł i treść'});const r=db.prepare('INSERT INTO forum_threads(title,body,category_id,author_id) VALUES (?,?,?,?)').run(title,body,category,req.user.id);res.json({ok:true,id:r.lastInsertRowid});});
-app.post('/api/forum/threads/:id/replies',auth(),(req,res)=>{const body=String(req.body?.body||'').trim().slice(0,5000);if(!body)return res.status(400).json({error:'Brak treści'});const r=db.prepare('INSERT INTO forum_replies(thread_id,body,author_id) VALUES (?,?,?)').run(req.params.id,body,req.user.id);res.json({ok:true,id:r.lastInsertRowid});});
+app.get('/api/forum/threads',(req,res)=>{
+  const cat=String(req.query.category||'');
+  const sql=`SELECT t.*,u.name author_name,u.is_admin author_is_admin,(SELECT COUNT(*) FROM forum_replies r WHERE r.thread_id=t.id AND r.deleted=0) reply_count FROM forum_threads t JOIN users u ON u.id=t.author_id WHERE t.deleted=0 ${cat?'AND t.category_id=?':''} ORDER BY t.pinned DESC,t.created_at DESC`;
+  const rows=cat?db.prepare(sql).all(cat):db.prepare(sql).all();
+  res.json({threads:rows.map(forumThreadDto)});
+});
+app.get('/api/forum/threads/:id',(req,res)=>{
+  const thread=db.prepare(`SELECT t.*,u.name author_name,u.is_admin author_is_admin,(SELECT COUNT(*) FROM forum_replies rr WHERE rr.thread_id=t.id AND rr.deleted=0) reply_count FROM forum_threads t JOIN users u ON u.id=t.author_id WHERE t.id=? AND t.deleted=0`).get(req.params.id);
+  if(!thread)return res.status(404).json({error:'Nie znaleziono wątku'});
+  const replies=db.prepare(`SELECT r.*,u.name author_name,u.is_admin author_is_admin FROM forum_replies r JOIN users u ON u.id=r.author_id WHERE r.thread_id=? AND r.deleted=0 ORDER BY r.created_at`).all(req.params.id);
+  res.json({thread:forumThreadDto(thread),replies:replies.map(forumReplyDto)});
+});
+app.post('/api/forum/threads',auth(),(req,res)=>{const title=String(req.body?.title||'').trim().slice(0,120),body=String(req.body?.body||'').trim().slice(0,5000),category=String(req.body?.categoryId||'general');if(!title||!body)return res.status(400).json({error:'Podaj tytuł i treść'});if(!FORUM_CATEGORIES.some(c=>c.id===category))return res.status(400).json({error:'Nieprawidłowa kategoria'});const r=db.prepare('INSERT INTO forum_threads(title,body,category_id,author_id) VALUES (?,?,?,?)').run(title,body,category,req.user.id);res.json({ok:true,id:r.lastInsertRowid});});
+app.post('/api/forum/threads/:id/replies',auth(),(req,res)=>{const body=String(req.body?.body||'').trim().slice(0,5000);if(!body)return res.status(400).json({error:'Brak treści'});const thread=db.prepare('SELECT id FROM forum_threads WHERE id=? AND deleted=0').get(req.params.id);if(!thread)return res.status(404).json({error:'Nie znaleziono wątku'});const r=db.prepare('INSERT INTO forum_replies(thread_id,body,author_id) VALUES (?,?,?)').run(req.params.id,body,req.user.id);res.json({ok:true,id:r.lastInsertRowid});});
 app.delete('/api/forum/threads/:id',auth(),(req,res)=>{const t=db.prepare('SELECT author_id FROM forum_threads WHERE id=?').get(req.params.id);if(!t)return res.status(404).json({error:'Brak wątku'});if(t.author_id!==req.user.id&&!req.user.is_admin)return res.status(403).json({error:'Brak uprawnień'});db.prepare('UPDATE forum_threads SET deleted=1 WHERE id=?').run(req.params.id);res.json({ok:true});});
 app.delete('/api/forum/replies/:id',auth(),(req,res)=>{const r=db.prepare('SELECT author_id FROM forum_replies WHERE id=?').get(req.params.id);if(!r)return res.status(404).json({error:'Brak odpowiedzi'});if(r.author_id!==req.user.id&&!req.user.is_admin)return res.status(403).json({error:'Brak uprawnień'});db.prepare('UPDATE forum_replies SET deleted=1 WHERE id=?').run(req.params.id);res.json({ok:true});});
 
@@ -375,8 +377,8 @@ app.post('/api/admin/add-xp',auth(),(req,res)=>{
   if(!Number.isInteger(userId)||!Number.isInteger(amount)||amount<=0||amount>100000000)return res.status(400).json({error:'Podaj poprawne userId i ilość XP 1–100 000 000'});
   const target=db.prepare('SELECT id,xp,name,email FROM users WHERE id=?').get(userId);if(!target)return res.status(404).json({error:'Nie znaleziono użytkownika'});
   const award=awardXp({userId,baseXp:amount,sourceType:'admin',actorUserId:req.user.id,applyMultiplier:false});
-  const newXp=target.xp+award.finalXp;db.prepare('INSERT INTO admin_audit_log(actor_user_id,target_user_id,action,amount,details) VALUES (?,?,?,?,?)').run(req.user.id,userId,'ADD_XP',amount,JSON.stringify({beforeXp:target.xp,afterXp:newXp,hatchXp:award.hatchXp}));
-  res.json({ok:true,userId,amount,newXp,hatchXp:award.hatchXp,...levelInfo(newXp)});
+  const newXp=target.xp+award.finalXp;db.prepare('INSERT INTO admin_audit_log(actor_user_id,target_user_id,action,amount,details) VALUES (?,?,?,?,?)').run(req.user.id,userId,'ADD_XP',amount,JSON.stringify({beforeXp:target.xp,afterXp:newXp,hatchXp:award.hatchXp,warmedEggs:award.warmedEggs||0}));
+  res.json({ok:true,userId,amount,newXp,hatchXp:award.hatchXp,warmedEggs:award.warmedEggs||0,...levelInfo(newXp)});
 });
 app.post('/api/admin/users/:id/pro',auth(),(req,res)=>{if(!requireAdmin(req,res))return;db.prepare("UPDATE users SET is_pro=?,pro_since=CASE WHEN ? THEN datetime('now') ELSE pro_since END WHERE id=?").run(req.body?.isPro?1:0,req.body?.isPro?1:0,req.params.id);res.json({ok:true});});
 

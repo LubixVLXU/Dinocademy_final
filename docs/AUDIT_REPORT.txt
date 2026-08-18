@@ -1,23 +1,45 @@
-DINOCademy v4.1.0 — FINAL AUDIT
-================================
+DINOCADEMY v5.0.0 — FINAL AUDIT
+===============================
 
-PASS  JavaScript syntax: server.js + all public/assets/*.js
-PASS  HTML shell: one site-shell.css and site-shell.js per public HTML
-PASS  Main pages: one standardized header, 7 nav destinations, vector dinosaur logo
-PASS  Auth pages: vector dinosaur logo
-PASS  No legacy pseudo-logo letter D in public UI
-PASS  No Playfair Display / Georgia declarations in public UI
-PASS  Requested "przewiń przez warstwy czasu" text absent from public UI
-PASS  CSS brace balance
-PASS  46 taxa + 7 variants = 322 collectible combinations
-PASS  All 46 canonical taxon images exist
-PASS  Taxon and variant IDs are unique
-PASS  Protected frontend modules send X-Session-Token
-PASS  Hatchery and admin auth helpers use dinocademy-token
-PASS  Map game locks the round after first answer; wrong answer awards 0 and auto-advances
-PASS  Theme aliases normalized to atlas / field / archive / night
+STATIC CODE
+- server.js: syntax OK
+- 15 frontend JavaScript files: syntax OK
+- 17 root HTML files: common site header present
+- 17 root HTML files: site-shell.js present
+- 17 root HTML files: cohesion-v5.css is the final stylesheet
+- local CSS/JS/IMG references: 0 missing
+- package.json and package-lock.json version: 5.0.0
 
-ENVIRONMENT LIMITATION
-The generation environment did not have npm dependencies cached and could not fetch them,
-so a full npm-start runtime test could not be completed here. npm install is required after
-unpacking. Static/source integrity checks above all passed.
+NAVIGATION
+- same main tabs rendered from one shared source on all 17 pages
+- tabs: Kursy / Encyklopedia / Gry / Forum / Wykluwarnia / Ranking / Plan Pro
+- administrator additionally receives Panel admina in the same nav
+- vector dinosaur logo retained
+- logged-in state tested: register CTA hidden, logout + profile shown
+
+HOMEPAGE
+- light profile/encyclopedia visual language verified in Chromium
+- all five destination cards rendered
+- reveal animation has progressive-enhancement fallback; content cannot remain permanently hidden when observer fails
+- no page errors in mock render
+
+HATCHERY
+- old single-active-egg endpoint removed
+- awardXpTx iterates over every unhatched egg and applies the final XP independently to each
+- mocked Chromium render: 3/3 sample eggs shown and each labelled WSPÓLNY XP
+- collection grid rendered as four columns at 1440 px
+- no page errors in mock render
+
+FORUM
+- frontend/backend DTO mismatch fixed
+- categories use id + label
+- thread/reply fields are camelCase on the API boundary
+- reply count returned by backend
+- mocked Chromium render: thread list rendered, thread modal opened, no page errors
+
+RANKING / ADMIN
+- ranking mock render: 12 sorting tabs + result rows, no page errors
+- admin mock render: user cards + audit log, no page errors
+
+LIMITATION
+The full Express/SQLite server process was not started in the build environment because npm dependencies could not be downloaded from the registry. The ZIP does not contain node_modules; run npm install before npm start.
