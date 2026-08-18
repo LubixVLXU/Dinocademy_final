@@ -1,1102 +1,132 @@
 /* ============================================================
-   DINOCAMEDY — HOME INTERACTIONS
-   ============================================================ */
-
-(() => {
-  "use strict";
-
-
-  /* ==========================================================
-     HELPERS
-  ========================================================== */
-
-  const clamp = (value, min, max) => {
-    return Math.min(Math.max(value, min), max);
-  };
-
-
-  const prefersReducedMotion =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-
-  const hasFinePointer =
-    window.matchMedia("(pointer: fine)").matches;
-
-
-  /* ==========================================================
-     HEADER
-  ========================================================== */
-
-  const header = document.querySelector(".site-header");
-
-
-  function updateHeader() {
-    if (!header) return;
-
-    header.classList.toggle(
-      "is-scrolled",
-      window.scrollY > 20
-    );
-  }
-
-
-  updateHeader();
-
-  window.addEventListener(
-    "scroll",
-    updateHeader,
-    { passive: true }
-  );
-
-
-  /* ==========================================================
-     MOBILE MENU
-  ========================================================== */
-
-  const navToggle =
-    document.querySelector(".mobile-nav-toggle");
-
-  const nav =
-    document.querySelector(".site-nav");
-
-
-  if (navToggle && nav) {
-
-    navToggle.addEventListener("click", () => {
-
-      const open =
-        nav.classList.toggle("is-open");
-
-      navToggle.classList.toggle(
-        "is-active",
-        open
-      );
-
-      navToggle.setAttribute(
-        "aria-expanded",
-        String(open)
-      );
-
-      navToggle.setAttribute(
-        "aria-label",
-        open
-          ? "Zamknij menu"
-          : "Otwórz menu"
-      );
-
-    });
-
-
-    nav.querySelectorAll("a").forEach((link) => {
-
-      link.addEventListener("click", () => {
-
-        nav.classList.remove("is-open");
-
-        navToggle.classList.remove("is-active");
-
-        navToggle.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-      });
-
-    });
-
-
-    document.addEventListener("click", (event) => {
-
-      if (
-        !nav.contains(event.target) &&
-        !navToggle.contains(event.target)
-      ) {
-
-        nav.classList.remove("is-open");
-
-        navToggle.classList.remove(
-          "is-active"
-        );
-
-        navToggle.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-
-      }
-
-    });
-
-  }
-
-
-  /* ==========================================================
-     PAGE SCROLL PROGRESS
-  ========================================================== */
-
-  const progressBar =
-    document.querySelector(
-      ".scroll-progress span"
-    );
-
-
-  function updateScrollProgress() {
-
-    if (!progressBar) return;
-
-    const documentHeight =
-      document.documentElement.scrollHeight -
-      window.innerHeight;
-
-    if (documentHeight <= 0) {
-      progressBar.style.width = "0%";
-      return;
-    }
-
-    const progress =
-      clamp(
-        window.scrollY / documentHeight,
-        0,
-        1
-      );
-
-    progressBar.style.width =
-      `${progress * 100}%`;
-
-  }
-
-
-  updateScrollProgress();
-
-  window.addEventListener(
-    "scroll",
-    updateScrollProgress,
-    { passive: true }
-  );
-
-
-  window.addEventListener(
-    "resize",
-    updateScrollProgress
-  );
-
-
-  /* ==========================================================
-     CURSOR GLOW
-  ========================================================== */
-
-  if (
-    hasFinePointer &&
-    !prefersReducedMotion
-  ) {
-
-    let currentX =
-      window.innerWidth / 2;
-
-    let currentY =
-      window.innerHeight / 3;
-
-    let targetX = currentX;
-    let targetY = currentY;
-
-
-    document.addEventListener(
-      "pointermove",
-      (event) => {
-
-        targetX = event.clientX;
-        targetY = event.clientY;
-
-      },
-      { passive: true }
-    );
-
-
-    function animateGlow() {
-
-      currentX +=
-        (targetX - currentX) * 0.12;
-
-      currentY +=
-        (targetY - currentY) * 0.12;
-
-
-      document.documentElement.style.setProperty(
-        "--mx",
-        `${currentX}px`
-      );
-
-      document.documentElement.style.setProperty(
-        "--my",
-        `${currentY}px`
-      );
-
-
-      requestAnimationFrame(animateGlow);
-
-    }
-
-
-    animateGlow();
-
-  }
-
-
-  /* ==========================================================
-     REVEAL ON SCROLL
-  ========================================================== */
-
-  const revealElements =
-    document.querySelectorAll(
-      "[data-reveal]"
-    );
-
-
-  if (
-    "IntersectionObserver" in window &&
-    !prefersReducedMotion
-  ) {
-
-    const revealObserver =
-      new IntersectionObserver(
-
-        (entries, observer) => {
-
-          entries.forEach((entry) => {
-
-            if (!entry.isIntersecting) {
-              return;
-            }
-
-            entry.target.classList.add(
-              "is-visible"
-            );
-
-            observer.unobserve(
-              entry.target
-            );
-
-          });
-
-        },
-
-        {
-          threshold: 0.12,
-
-          rootMargin:
-            "0px 0px -45px 0px"
-        }
-
-      );
-
-
-    revealElements.forEach(
-      (element) => {
-        revealObserver.observe(element);
-      }
-    );
-
-  } else {
-
-    revealElements.forEach(
-      (element) => {
-        element.classList.add(
-          "is-visible"
-        );
-      }
-    );
-
-  }
-
-
-  /* ==========================================================
-     3D TILT
-  ========================================================== */
-
-  const tiltElements =
-    document.querySelectorAll(
-      "[data-tilt]"
-    );
-
-
-  if (
-    hasFinePointer &&
-    !prefersReducedMotion
-  ) {
-
-    tiltElements.forEach((element) => {
-
-      element.addEventListener(
-        "pointermove",
-        (event) => {
-
-          const rect =
-            element.getBoundingClientRect();
-
-
-          const relativeX =
-            event.clientX - rect.left;
-
-          const relativeY =
-            event.clientY - rect.top;
-
-
-          const x =
-            relativeX / rect.width;
-
-          const y =
-            relativeY / rect.height;
-
-
-          const rotateY =
-            (x - 0.5) * 5;
-
-          const rotateX =
-            (0.5 - y) * 5;
-
-
-          element.style.setProperty(
-            "--rotateX",
-            `${rotateX}deg`
-          );
-
-          element.style.setProperty(
-            "--rotateY",
-            `${rotateY}deg`
-          );
-
-
-          element.style.setProperty(
-            "--card-x",
-            `${x * 100}%`
-          );
-
-          element.style.setProperty(
-            "--card-y",
-            `${y * 100}%`
-          );
-
-        }
-      );
-
-
-      element.addEventListener(
-        "pointerleave",
-        () => {
-
-          element.style.setProperty(
-            "--rotateX",
-            "0deg"
-          );
-
-          element.style.setProperty(
-            "--rotateY",
-            "0deg"
-          );
-
-        }
-      );
-
-    });
-
-  }
-
-
-  /* ==========================================================
-     MAGNETIC BUTTONS
-  ========================================================== */
-
-  if (
-    hasFinePointer &&
-    !prefersReducedMotion
-  ) {
-
-    document
-      .querySelectorAll(".magnetic")
-      .forEach((button) => {
-
-        button.addEventListener(
-          "pointermove",
-          (event) => {
-
-            const rect =
-              button.getBoundingClientRect();
-
-
-            const x =
-              event.clientX -
-              rect.left -
-              rect.width / 2;
-
-            const y =
-              event.clientY -
-              rect.top -
-              rect.height / 2;
-
-
-            button.style.transform =
-              `translate(${x * 0.08}px, ${y * 0.12}px)`;
-
-          }
-        );
-
-
-        button.addEventListener(
-          "pointerleave",
-          () => {
-
-            button.style.transform =
-              "translate(0, 0)";
-
-          }
-        );
-
-      });
-
-  }
-
-
-  /* ==========================================================
-     HERO COUNTERS
-  ========================================================== */
-
-  const counters =
-    document.querySelectorAll(
-      "[data-target]"
-    );
-
-
-  let countersStarted = false;
-
-
-  function animateCounter(element) {
-
-    const target =
-      Number(
-        element.dataset.target || 0
-      );
-
-    const suffix =
-      element.dataset.suffix || "";
-
-    const duration = 1150;
-
-    let startTime = null;
-
-
-    function tick(timestamp) {
-
-      if (!startTime) {
-        startTime = timestamp;
-      }
-
-
-      const progress =
-        clamp(
-          (timestamp - startTime) /
-          duration,
-          0,
-          1
-        );
-
-
-      const eased =
-        1 -
-        Math.pow(
-          1 - progress,
-          4
-        );
-
-
-      const value =
-        Math.round(
-          target * eased
-        );
-
-
-      element.textContent =
-        `${value}${suffix}`;
-
-
-      if (progress < 1) {
-        requestAnimationFrame(tick);
-      }
-
-    }
-
-
-    requestAnimationFrame(tick);
-
-  }
-
-
-  const proof =
-    document.querySelector(".home-proof");
-
-
-  if (
-    proof &&
-    counters.length &&
-    "IntersectionObserver" in window &&
-    !prefersReducedMotion
-  ) {
-
-    const counterObserver =
-      new IntersectionObserver(
-        (entries) => {
-
-          const entry = entries[0];
-
-          if (
-            !entry.isIntersecting ||
-            countersStarted
-          ) {
-            return;
-          }
-
-
-          countersStarted = true;
-
-
-          counters.forEach(
-            animateCounter
-          );
-
-
-          counterObserver.disconnect();
-
-        },
-
-        {
-          threshold: 0.45
-        }
-      );
-
-
-    counterObserver.observe(proof);
-
-  } else {
-
-    counters.forEach((counter) => {
-
-      const target =
-        counter.dataset.target;
-
-      const suffix =
-        counter.dataset.suffix || "";
-
-      counter.textContent =
-        `${target}${suffix}`;
-
-    });
-
-  }
-
-
-  /* ==========================================================
-     STARTER QUIZ
-  ========================================================== */
-
-  const answerButtons =
-    document.querySelectorAll(
-      ".home-starter-options button"
-    );
-
-
-  const quizResult =
-    document.querySelector(
-      ".home-starter-result"
-    );
-
-
-  let quizCompleted = false;
-
-
-  function resetQuizClasses() {
-
-    answerButtons.forEach(
-      (button) => {
-
-        button.classList.remove(
-          "is-correct",
-          "is-wrong"
-        );
-
-      }
-    );
-
-
-    if (quizResult) {
-
-      quizResult.classList.remove(
-        "is-correct",
-        "is-wrong"
-      );
-
-    }
-
-  }
-
-
-  answerButtons.forEach((button) => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        resetQuizClasses();
-
-
-        const answer =
-          button.dataset.answer;
-
-
-        if (answer === "correct") {
-
-          button.classList.add(
-            "is-correct"
-          );
-
-
-          if (quizResult) {
-
-            quizResult.classList.add(
-              "is-correct"
-            );
-
-
-            quizResult.innerHTML = `
-              <span class="result-icon">✓</span>
-
-              <div>
-                <b>Dokładnie.</b>
-
-                <p>
-                  Pteranodon był pterozaurem — latającym
-                  gadem blisko spokrewnionym z dinozaurami,
-                  ale nie należał do Dinosauria.
-                </p>
-              </div>
-            `;
-
-          }
-
-
-          if (!quizCompleted) {
-            quizCompleted = true;
-          }
-
-        } else {
-
-          button.classList.add(
-            "is-wrong"
-          );
-
-
-          if (quizResult) {
-
-            quizResult.classList.add(
-              "is-wrong"
-            );
-
-
-            quizResult.innerHTML = `
-              <span class="result-icon">×</span>
-
-              <div>
-                <b>Dobry trop, ale nie tym razem.</b>
-
-                <p>
-                  Klucz tkwi w tym, że nie każdy prehistoryczny
-                  gad był dinozaurem. Spróbuj jeszcze raz.
-                </p>
-              </div>
-            `;
-
-          }
-
-        }
-
-      }
-    );
-
-  });
-
-
-  /* ==========================================================
-     RANDOM FACTS
-  ========================================================== */
-
-  const facts = [
-
-    "Ptaki nie są jedynie potomkami dinozaurów. W klasyfikacji ewolucyjnej są żyjącą dziś grupą dinozaurów teropodowych.",
-
-    "Tyrannosaurus rex żył bliżej w czasie współczesnego człowieka niż stegozaura. Te dwa słynne dinozaury dzieliło około 80 milionów lat.",
-
-    "Nie znamy koloru większości dinozaurów, ale mikroskopijne struktury zachowane w niektórych skamieniałościach pozwalają rekonstruować ubarwienie części gatunków.",
-
-    "Pterozaury, mozazaury i plezjozaury żyły w erze dinozaurów, lecz żaden z nich nie należał do dinozaurów.",
-
-    "Skamieniałości to nie tylko kości. Paleontolodzy badają również odciski skóry, ślady stóp, jaja, koprolity, gniazda oraz chemiczne sygnały zachowane w skałach.",
-
-    "Niektóre dinozaury miały pióra długo zanim ewolucja doprowadziła do powstania aktywnego lotu. Pióra mogły początkowo pełnić zupełnie inne funkcje.",
-
-    "Granica między kredą a paleogenem jest zapisana w skałach na całym świecie jako cienka warstwa wzbogacona w iryd związany z uderzeniem planetoidy sprzed około 66 milionów lat."
-
-  ];
-
-
-  const factText =
-    document.getElementById(
-      "home-fact-text"
-    );
-
-
-  const factDots =
-    document.getElementById(
-      "home-fact-dots"
-    );
-
-
-  const nextFactButton =
-    document.getElementById(
-      "next-fact"
-    );
-
-
-  let currentFact = 0;
-
-  let factChangeLocked = false;
-
-
-  function renderFactDots() {
-
-    if (!factDots) return;
-
-
-    factDots.innerHTML = "";
-
-
-    facts.forEach(
-      (_, index) => {
-
-        const button =
-          document.createElement(
-            "button"
-          );
-
-
-        button.type = "button";
-
-        button.setAttribute(
-          "aria-label",
-          `Ciekawostka ${index + 1}`
-        );
-
-
-        if (index === currentFact) {
-
-          button.classList.add(
-            "is-active"
-          );
-
-        }
-
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            showFact(index);
-
-          }
-        );
-
-
-        factDots.appendChild(
-          button
-        );
-
-      }
-    );
-
-  }
-
-
-  function showFact(index) {
-
-    if (
-      !factText ||
-      factChangeLocked
-    ) {
-      return;
-    }
-
-
-    const normalizedIndex =
-      (
-        index +
-        facts.length
-      ) %
-      facts.length;
-
-
-    if (
-      normalizedIndex === currentFact &&
-      factText.textContent ===
-      facts[currentFact]
-    ) {
-      return;
-    }
-
-
-    factChangeLocked = true;
-
-
-    factText.classList.add(
-      "is-changing"
-    );
-
-
-    window.setTimeout(
-      () => {
-
-        currentFact =
-          normalizedIndex;
-
-
-        factText.textContent =
-          facts[currentFact];
-
-
-        renderFactDots();
-
-
-        requestAnimationFrame(() => {
-
-          factText.classList.remove(
-            "is-changing"
-          );
-
-        });
-
-
-        window.setTimeout(
-          () => {
-            factChangeLocked = false;
-          },
-          230
-        );
-
-      },
-      190
-    );
-
-  }
-
-
-  if (factText) {
-
-    factText.textContent =
-      facts[currentFact];
-
-  }
-
-
-  renderFactDots();
-
-
-  if (nextFactButton) {
-
-    nextFactButton.addEventListener(
-      "click",
-      () => {
-
-        showFact(
-          currentFact + 1
-        );
-
-      }
-    );
-
-  }
-
-
-  /* ==========================================================
-     SUBTLE HERO PARALLAX
-  ========================================================== */
-
-  const heroCopy =
-    document.querySelector(
-      ".home-hero-copy"
-    );
-
-
-  const heroStarter =
-    document.querySelector(
-      ".home-starter"
-    );
-
-
-  if (
-    !prefersReducedMotion &&
-    hasFinePointer &&
-    heroCopy &&
-    heroStarter
-  ) {
-
-    let ticking = false;
-
-
-    window.addEventListener(
-      "scroll",
-      () => {
-
-        if (ticking) return;
-
-
-        ticking = true;
-
-
-        requestAnimationFrame(
-          () => {
-
-            const scrollY =
-              window.scrollY;
-
-
-            if (
-              scrollY <
-              window.innerHeight * 1.2
-            ) {
-
-              heroCopy.style.transform =
-                `translateY(${scrollY * 0.025}px)`;
-
-
-              heroStarter.style.marginTop =
-                `${scrollY * 0.018}px`;
-
-            }
-
-
-            ticking = false;
-
-          }
-        );
-
-      },
-      { passive: true }
-    );
-
-  }
-
-
-  /* ==========================================================
-     DESTINATION CARD LIGHT
-  ========================================================== */
-
-  if (hasFinePointer) {
-
-    document
-      .querySelectorAll(
-        ".destination-card"
-      )
-      .forEach((card) => {
-
-        card.addEventListener(
-          "pointermove",
-          (event) => {
-
-            const rect =
-              card.getBoundingClientRect();
-
-
-            const x =
-              event.clientX -
-              rect.left;
-
-            const y =
-              event.clientY -
-              rect.top;
-
-
-            card.style.setProperty(
-              "--card-x",
-              `${x}px`
-            );
-
-            card.style.setProperty(
-              "--card-y",
-              `${y}px`
-            );
-
-          }
-        );
-
-      });
-
-  }
-
-
-  /* ==========================================================
-     KEYBOARD ACCESSIBILITY FOR QUIZ
-  ========================================================== */
-
-  answerButtons.forEach(
-    (button, index) => {
-
-      button.addEventListener(
-        "keydown",
-        (event) => {
-
-          let targetIndex = index;
-
-
-          if (
-            event.key === "ArrowDown" ||
-            event.key === "ArrowRight"
-          ) {
-
-            targetIndex =
-              (
-                index + 1
-              ) %
-              answerButtons.length;
-
-          }
-
-
-          if (
-            event.key === "ArrowUp" ||
-            event.key === "ArrowLeft"
-          ) {
-
-            targetIndex =
-              (
-                index -
-                1 +
-                answerButtons.length
-              ) %
-              answerButtons.length;
-
-          }
-
-
-          if (targetIndex !== index) {
-
-            event.preventDefault();
-
-            answerButtons[
-              targetIndex
-            ].focus();
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-})();
+   DINOCademy — global visual shell
+   Podmień: public/assets/ui-extra.css
+   Ten plik działa na wszystkich stronach korzystających z ui-extra.css.
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+:root {
+  --ink: #142127;
+  --muted: #617078;
+  --paper: #f5f2ea;
+  --surface: #fffdf8;
+  --surface-deep: #edf1eb;
+  --line: rgba(20, 33, 39, .12);
+  --forest: #0f5450;
+  --forest-dark: #093b39;
+  --moss: #7b9765;
+  --sand: #d9ab68;
+  --sun: #f0c86e;
+  --shadow: 0 18px 45px rgba(19, 35, 37, .10);
+  --shadow-hover: 0 24px 54px rgba(19, 35, 37, .16);
+  --radius: 22px;
+  --display: 'Playfair Display', Georgia, serif;
+  --body: 'Manrope', Arial, sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 85% -10%, rgba(217,171,104,.22), transparent 28rem),
+    radial-gradient(circle at -5% 24%, rgba(123,151,101,.13), transparent 27rem),
+    var(--paper);
+  font-family: var(--body);
+  line-height: 1.6;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .16;
+  z-index: -1;
+  background-image: radial-gradient(rgba(20,33,39,.25) .55px, transparent .7px);
+  background-size: 6px 6px;
+}
+a { color: inherit; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.skip-link { position: fixed; left: 16px; top: -80px; z-index: 9999; padding: 10px 14px; background: var(--forest); color: #fff; border-radius: 10px; transition: top .2s ease; }
+.skip-link:focus { top: 16px; }
+.page-shell { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.page-stack { padding-block: 42px 72px; }
+
+/* NAV — this is the main missing styling from the screenshot */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--line);
+  background: rgba(245,242,234,.82);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+.nav-shell { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 1.05rem; letter-spacing: -.04em; }
+.brand::before { content: 'D'; display:grid; place-items:center; width:33px; height:33px; color:#fff; background:var(--forest); border-radius: 10px 10px 10px 3px; font-family:var(--display); font-size:1.3rem; box-shadow: 4px 4px 0 rgba(15,84,80,.15); }
+.brand-mark { width: 30px; height: 30px; color: var(--forest); }
+.brand-mark + span { margin-left: -5px; }
+.site-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.site-nav a { color: #365057; font-size: .82rem; font-weight: 800; text-decoration: none; padding: 9px 10px; border-radius: 11px; transition: background .18s ease, color .18s ease, transform .18s ease; }
+.site-nav a:hover { color: var(--forest); background: rgba(15,84,80,.09); transform: translateY(-1px); }
+.site-nav a[aria-current='page'] { color: #fff; background: var(--forest); box-shadow: 0 7px 15px rgba(15,84,80,.2); }
+
+/* Typography and hero */
+.eyebrow, .section-head > span, .page-hero > span { display:block; font-family:var(--mono); color:var(--forest); font-weight:500; font-size:.71rem; letter-spacing:.13em; text-transform:uppercase; }
+.page-hero, .compact-hero { max-width: 870px; padding: 30px 0 25px; }
+.page-hero h1, .compact-hero h1, .home-hero-copy h1 { font-family: var(--display); letter-spacing: -.052em; font-weight: 700; line-height: .99; margin: 12px 0 17px; color: #152329; }
+.page-hero h1, .compact-hero h1 { font-size: clamp(2.35rem, 5.8vw, 5.2rem); }
+.page-hero p, .compact-hero p { max-width: 67ch; color: var(--muted); font-size: 1rem; }
+h1,h2,h3 { text-wrap: balance; }
+h2 { font-family: var(--display); line-height: 1.06; letter-spacing: -.035em; }
+p { text-wrap: pretty; }
+
+/* Buttons and forms */
+.btn, .panel-glass button, .admin-xp-form button, #clear-ranking {
+  appearance: none; display: inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border-radius:999px; border:1px solid transparent; text-decoration:none; font-weight:800; font-size:.82rem; transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn-primary, .admin-xp-form button { color:#fff; background:var(--forest); box-shadow:0 9px 18px rgba(15,84,80,.2); }
+.btn-primary:hover, .admin-xp-form button:hover { transform:translateY(-2px); background:var(--forest-dark); box-shadow:0 13px 24px rgba(15,84,80,.26); }
+.btn-secondary, #clear-ranking { color:var(--forest); border-color:rgba(15,84,80,.22); background:rgba(255,255,255,.55); }
+.btn-secondary:hover, #clear-ranking:hover { transform:translateY(-2px); background:#fff; }
+select,input,textarea { color:var(--ink); background:rgba(255,255,255,.78); border:1px solid var(--line); border-radius:12px; outline:none; }
+select:focus,input:focus,textarea:focus { border-color:var(--forest); box-shadow:0 0 0 4px rgba(15,84,80,.12); }
+
+/* Panels, ranking and responsive behaviour */
+.panel-glass { border: 1px solid rgba(20,33,39,.09); border-radius: var(--radius); background: rgba(255,253,248,.72); box-shadow: var(--shadow); padding: clamp(18px,3vw,30px); backdrop-filter: blur(10px); }
+.ranking-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:10px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+.ranking-toolbar label { color:var(--muted); font-family:var(--mono); font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; }
+.ranking-toolbar select { min-height:42px; padding:0 32px 0 12px; }
+#clear-ranking { margin-left:auto; min-height:40px; padding:8px 13px; }
+.ranking-table { width:100%; border-collapse:collapse; margin-top:8px; overflow:hidden; }
+.ranking-table th { padding:13px 10px; color:var(--muted); font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; text-align:left; text-transform:uppercase; }
+.ranking-table td { padding:15px 10px; border-top:1px solid var(--line); font-size:.88rem; }
+.ranking-table tbody tr { transition: background .16s ease; }
+.ranking-table tbody tr:hover { background:rgba(15,84,80,.055); }
+.ranking-empty { padding:30px 4px 8px; color:var(--muted); }
+
+/* Shared cards used by all application sections */
+.home-path article,.home-destination-grid a,.hx-card,.hx-egg-card,.course-card,.game-card,.forum-card { background:rgba(255,253,248,.82); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 10px 24px rgba(19,35,37,.06); }
+.home-path article,.home-destination-grid a { padding:20px; text-decoration:none; transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease; }
+.home-path article:hover,.home-destination-grid a:hover { transform:translateY(-5px); box-shadow:var(--shadow-hover); border-color:rgba(15,84,80,.25); }
+
+/* Keep legacy recovery/encyclopedia visual system intact */
+body[data-page='encyclopedia'] .site-header,
+body:has(#glossary-root) .site-header { background: transparent; }
+
+@media (max-width: 760px) {
+ .page-shell { width:min(100% - 28px,1180px); }
+ .nav-shell { min-height:auto; padding:12px 0; align-items:flex-start; flex-direction:column; gap:8px; }
+ .site-nav { justify-content:flex-start; gap:2px; }
+ .site-nav a { padding:7px 8px; font-size:.75rem; }
+ .page-stack { padding-block:22px 48px; }
+ .page-hero h1,.compact-hero h1 { font-size:clamp(2.3rem,12vw,3.8rem); }
+ #clear-ranking { margin-left:0; }
+ .ranking-table { display:block; overflow-x:auto; white-space:nowrap; }
+}
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }

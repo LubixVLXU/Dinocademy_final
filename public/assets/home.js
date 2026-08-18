@@ -1,235 +1,34 @@
-/* ============================================================
-Dinocademy — strona główna: animacje, interakcje, ciekawostki
-Podmień istniejący plik assets/home.js
-============================================================ */
-(function () {
+(function(){
   'use strict';
-  if (document.body.dataset.page !== 'home') return;
+  if(document.body.dataset.page!=='home') return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=window.matchMedia&&window.matchMedia('(pointer:fine)').matches;
+  function all(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 
-  var doc = document;
-  var win = window;
-  var reduceMotion = win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reveal=all('[data-reveal]');
+  if(reduce||!('IntersectionObserver' in window)){reveal.forEach(function(x){x.classList.add('is-visible');});}
+  else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});},{threshold:.13,rootMargin:'0px 0px -7%'});reveal.forEach(function(x){io.observe(x);});}
 
-  function $all(sel, root) {
-    return [].slice.call((root || doc).querySelectorAll(sel));
-  }
+  var dust=document.getElementById('paleo-dust');
+  if(dust&&!reduce){for(var i=0;i<28;i++){var d=document.createElement('i');d.className='dust';d.style.left=(Math.random()*100)+'%';d.style.top=(Math.random()*100)+'%';d.style.setProperty('--d',(8+Math.random()*12)+'s');d.style.setProperty('--o',(.15+Math.random()*.45).toFixed(2));d.style.animationDelay=(-Math.random()*12)+'s';dust.appendChild(d);}}
 
-  function revealOnScroll(selector) {
-    var els = $all(selector);
-    if (!els.length) return;
-    if (!('IntersectionObserver' in win) || reduceMotion) {
-      els.forEach(function (el) { el.classList.add('is-visible'); });
-      return;
-    }
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.16, rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (el) { obs.observe(el); });
-  }
+  var specimen=document.getElementById('specimen-card');
+  if(specimen){specimen.addEventListener('click',function(){specimen.classList.toggle('is-open');});if(fine&&!reduce){specimen.addEventListener('mousemove',function(e){var r=specimen.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;specimen.style.setProperty('--ry',(x*8).toFixed(2)+'deg');specimen.style.setProperty('--rx',(-y*7).toFixed(2)+'deg');});specimen.addEventListener('mouseleave',function(){specimen.style.setProperty('--ry','0deg');specimen.style.setProperty('--rx','0deg');});}}
 
-  revealOnScroll('.home-hero');
-  revealOnScroll('.home-path article');
-  revealOnScroll('.home-destination-grid a');
-  revealOnScroll('.home-facts');
-  revealOnScroll('.home-hero-copy > *');
-  revealOnScroll('.home-proof div');
+  all('[data-target]').forEach(function(el){var target=Number(el.dataset.target)||0;if(reduce){el.textContent=target;return;}var started=false;var o=new IntersectionObserver(function(es){if(!started&&es[0].isIntersecting){started=true;var t0=0;function tick(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/900),v=Math.round(target*(1-Math.pow(1-p,3)));el.textContent=v;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);o.disconnect();}},{threshold:.7});o.observe(el);});
 
-  var heroGrid = doc.querySelector('.home-hero-grid');
-  if (heroGrid && !reduceMotion && win.matchMedia('(pointer:fine)').matches) {
-    heroGrid.addEventListener('mousemove', function (e) {
-      var rect = heroGrid.getBoundingClientRect();
-      var px = (e.clientX - rect.left) / rect.width;
-      var py = (e.clientY - rect.top) / rect.height;
-      heroGrid.style.setProperty('--tiltY', ((px - 0.5) * 7).toFixed(2) + 'deg');
-      heroGrid.style.setProperty('--tiltX', ((0.5 - py) * 6).toFixed(2) + 'deg');
-      heroGrid.style.setProperty('--glowX', (px * 100).toFixed(1) + '%');
-      heroGrid.style.setProperty('--glowY', (py * 100).toFixed(1) + '%');
-    });
-    heroGrid.addEventListener('mouseleave', function () {
-      heroGrid.style.setProperty('--tiltX', '0deg');
-      heroGrid.style.setProperty('--tiltY', '0deg');
-      heroGrid.style.setProperty('--glowX', '50%');
-      heroGrid.style.setProperty('--glowY', '40%');
-    });
-  }
-
-  var pathCards = $all('.home-path article');
-  pathCards.forEach(function (card, index) {
-    card.style.setProperty('--i', index);
-    card.addEventListener('mouseenter', function () { card.classList.add('is-hover'); });
-    card.addEventListener('mouseleave', function () { card.classList.remove('is-hover'); });
-  });
-
-  var options = $all('.home-starter-options button');
-  var resultBox = doc.querySelector('.home-starter-result');
-  var footerSpan = doc.querySelector('.home-starter footer span');
-  var answerFacts = {
-    triceratops: {
-      ok: true,
-      lead: 'Trafiona odpowiedź.',
-      body: 'Triceratops był prawdziwym dinozaurem z kladu Dinosauria i do tego roślinożercą z imponującą kryzą.'
-    },
-    pteranodon: {
-      ok: false,
-      lead: 'Blisko, ale nie tym razem.',
-      body: 'Pteranodon był pterozaurem — latającym krewniakiem dinozaurów, ale nie dinozaurem właściwym.'
-    },
-    mosasaurus: {
-      ok: false,
-      lead: 'To nie dinozaur.',
-      body: 'Mosasaurus był morskim gadem, który polował w oceanach późnej kredy.'
-    },
-    dimetrodon: {
-      ok: false,
-      lead: 'Dobra próba.',
-      body: 'Dimetrodon żył dużo wcześniej niż dinozaury i należał do synapsydów, dalszych krewnych ssaków.'
-    }
+  var eraData={
+    trias:['TRIAS','Pangea nadal łączyła większość lądów.','Wczesne dinozaury dzieliły ekosystemy z wieloma innymi liniami archozaurów. Dominacja dinozaurów nie wydarzyła się natychmiast.'],
+    jura:['JURA','Gigantyzm zauropodów osiągnął niezwykłą skalę.','W jurze pojawiły się także małe opierzone teropody i formy bliskie początkom ptaków. Pióra nie oznaczały jeszcze koniecznie aktywnego lotu.'],
+    kreda:['KREDA','Kwitnące rośliny zmieniły lądowe ekosystemy.','W kredzie dinozaury osiągnęły ogromną różnorodność. Okres zakończył się 66 mln lat temu wymieraniem K–Pg, ale jedna linia dinozaurów — ptaki — przetrwała.']
   };
+  var eraReveal=document.getElementById('era-reveal');
+  all('.era-card').forEach(function(btn){btn.addEventListener('click',function(){all('.era-card').forEach(function(b){b.classList.remove('is-active');});btn.classList.add('is-active');var d=eraData[btn.dataset.era];if(eraReveal&&d){eraReveal.innerHTML='<span>'+d[0]+'</span><strong>'+d[1]+'</strong><p>'+d[2]+'</p>';}});});
 
-  function inferAnswerKey(text) {
-    text = String(text || '').toLowerCase();
-    return Object.keys(answerFacts).find(function (key) { return text.indexOf(key) !== -1; }) || 'triceratops';
-  }
+  var digFact=document.getElementById('dig-fact');
+  all('.fossil').forEach(function(btn){btn.addEventListener('click',function(){all('.fossil').forEach(function(b){b.classList.remove('is-active');});btn.classList.add('is-active');if(digFact){digFact.innerHTML='<b>Odkrycie: '+btn.textContent.trim()+'</b><p>'+btn.dataset.fact+'</p>';digFact.classList.add('is-open');}});});
 
-  if (options.length && footerSpan) {
-    options.forEach(function (btn, idx) {
-      btn.style.setProperty('--i', idx);
-      btn.addEventListener('click', function () {
-        options.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
-        btn.setAttribute('aria-pressed', 'true');
-        btn.classList.add('is-pop');
-        setTimeout(function () { btn.classList.remove('is-pop'); }, 280);
-
-        var key = inferAnswerKey(btn.textContent);
-        var item = answerFacts[key];
-        footerSpan.textContent = item.lead + ' ' + item.body;
-        if (resultBox) {
-          resultBox.classList.toggle('is-correct', !!item.ok);
-          resultBox.classList.add('is-burst');
-          setTimeout(function () { resultBox.classList.remove('is-burst'); }, 420);
-          var title = resultBox.querySelector('b');
-          var text = resultBox.querySelector('p');
-          if (title) title.textContent = item.lead;
-          if (text) text.textContent = item.body;
-        }
-      });
-    });
-  }
-
-  var facts = [
-    'Ptaki są żyjącymi dinozaurami i należą do tej samej wielkiej linii ewolucyjnej co drapieżne teropody.',
-    'Velociraptor był dużo mniejszy niż filmowy odpowiednik — bardziej jak duży indyk niż potwór wielkości człowieka.',
-    'Niektóre dinozaury miały pióra, zanim powstały pierwsze nowoczesne ptaki.',
-    'Tyranozaur miał jeden z najsilniejszych znanych ugryzień w historii zwierząt lądowych.',
-    'Spinosaurus był świetnie przystosowany do życia przy wodzie i prawdopodobnie aktywnie w niej polował.',
-    'Największe znane tropy dinozaurów mają ponad metr długości i pokazują, jak gigantyczne były niektóre gatunki.',
-    'Ankylozaury miały pancerz tak skuteczny, że wiele drapieżników wolało ich unikać niż ryzykować atak.',
-    'Część współczesnych kolorów upierzenia ptaków może podpowiadać, jak mogły wyglądać niektóre opierzone dinozaury.'
-  ];
-  var factEl = doc.getElementById('home-fact-text');
-  var factDots = doc.getElementById('home-fact-dots');
-  var factIndex = 0;
-  var factTimer = null;
-
-  function renderFact(index) {
-    if (!factEl) return;
-    factIndex = (index + facts.length) % facts.length;
-    factEl.classList.remove('is-in');
-    void factEl.offsetWidth;
-    factEl.textContent = facts[factIndex];
-    factEl.classList.add('is-in');
-    if (factDots) {
-      [].slice.call(factDots.children).forEach(function (dot, idx) {
-        dot.classList.toggle('is-active', idx === factIndex);
-        dot.setAttribute('aria-pressed', idx === factIndex ? 'true' : 'false');
-      });
-    }
-  }
-
-  function startFactLoop() {
-    if (reduceMotion) return;
-    stopFactLoop();
-    factTimer = win.setInterval(function () { renderFact(factIndex + 1); }, 4800);
-  }
-  function stopFactLoop() {
-    if (factTimer) {
-      win.clearInterval(factTimer);
-      factTimer = null;
-    }
-  }
-
-  if (factEl && factDots) {
-    factDots.innerHTML = '';
-    facts.forEach(function (_, idx) {
-      var dot = doc.createElement('button');
-      dot.type = 'button';
-      dot.className = 'home-fact-dot';
-      dot.setAttribute('aria-label', 'Pokaż ciekawostkę ' + (idx + 1));
-      dot.addEventListener('click', function () {
-        renderFact(idx);
-        startFactLoop();
-      });
-      factDots.appendChild(dot);
-    });
-    renderFact(0);
-    startFactLoop();
-    var factsWrap = doc.querySelector('.home-facts');
-    if (factsWrap) {
-      factsWrap.addEventListener('mouseenter', stopFactLoop);
-      factsWrap.addEventListener('mouseleave', startFactLoop);
-    }
-  }
-
-  var animatedNumbers = $all('.home-proof dt[data-target]');
-  function animateCounter(el) {
-    if (!el || el.dataset.animated === '1') return;
-    el.dataset.animated = '1';
-    var target = parseInt(el.getAttribute('data-target') || el.textContent, 10) || 0;
-    var start = 0;
-    var startTime = 0;
-    function tick(ts) {
-      if (!startTime) startTime = ts;
-      var progress = Math.min((ts - startTime) / 1100, 1);
-      var eased = 1 - Math.pow(1 - progress, 3);
-      var value = Math.round(start + (target - start) * eased);
-      el.textContent = value + (el.dataset.suffix || '');
-      if (progress < 1) win.requestAnimationFrame(tick);
-    }
-    win.requestAnimationFrame(tick);
-  }
-
-  if (animatedNumbers.length && 'IntersectionObserver' in win && !reduceMotion) {
-    var numsObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          numsObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.55 });
-    animatedNumbers.forEach(function (el) { numsObs.observe(el); });
-  } else {
-    animatedNumbers.forEach(animateCounter);
-  }
-
-  var destinations = $all('.home-destination-grid a');
-  destinations.forEach(function (link) {
-    link.addEventListener('mousemove', function (e) {
-      if (reduceMotion || !win.matchMedia('(pointer:fine)').matches) return;
-      var rect = link.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width) * 100;
-      var y = ((e.clientY - rect.top) / rect.height) * 100;
-      link.style.setProperty('--mx', x + '%');
-      link.style.setProperty('--my', y + '%');
-    });
-    link.addEventListener('mouseleave', function () {
-      link.style.removeProperty('--mx');
-      link.style.removeProperty('--my');
-    });
-  });
+  var quiz={pteranodon:['Nie.','Pteranodon był pterozaurem — bliskim krewnym dinozaurów, ale poza Dinosauria.'],triceratops:['Tak.','Triceratops był ceratopsem, czyli prawdziwym dinozaurem ptasiomiednicznym.'],mosasaurus:['Nie.','Mosasaurus był morskim łuskonośnym gadem, bliżej spokrewnionym z jaszczurkami i wężami niż z dinozaurami.'],dimetrodon:['Nie.','Dimetrodon był synapsydem i żył dziesiątki milionów lat przed pierwszymi dinozaurami.']};
+  var result=document.getElementById('myth-result');
+  all('#myth-quiz button').forEach(function(btn){btn.addEventListener('click',function(){all('#myth-quiz button').forEach(function(b){b.classList.remove('is-correct','is-wrong');});var ok=btn.dataset.answer==='triceratops';btn.classList.add(ok?'is-correct':'is-wrong');var d=quiz[btn.dataset.answer];if(result)result.innerHTML='<b>'+d[0]+'</b><p>'+d[1]+'</p>';});});
 })();

@@ -206,6 +206,7 @@
             <span class="${p.is_pro ? 'pf-pro-badge' : ''}">${p.is_pro ? 'PRO' : 'Free'}</span>
             <span class="pf-dot">·</span>
             <span>konto Dinocademy</span>
+            ${p.isAdmin ? '<span class="pf-dot">·</span><a class="pf-admin-link" href="admin.html">Panel admina →</a>' : ''}
           </div>
         </div>
         <div class="pf-streak ${isCold?'is-cold':''}">
@@ -265,7 +266,7 @@
           ${activity.length ? `<div class="pf-timeline">${activity.map(a=>`
             <div class="pf-timeline-row">
               <span>${esc(a.label)} ${a.score?`(${a.score} pkt)`:''}</span>
-              <span class="pf-timeline-xp">+${a.xp} XP</span>
+              <span class="pf-timeline-xp">${a.xp != null ? `+${a.xp} XP` : ``}</span>
             </div>
           `).join('')}</div>` : `<div class="pf-empty"><span class="pf-empty-icon">📭</span><p>Brak aktywności. Zagraj w grę lub ukończ lekcję.</p></div>`}
         </section>

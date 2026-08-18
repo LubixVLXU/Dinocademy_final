@@ -887,16 +887,13 @@
         K.$$('.gk-map-pin', K.stage()).forEach(function (pin) {
           pin.addEventListener('click', function () {
             if (state.locked) return;
+            state.locked = true;
             var ok = correct.indexOf(pin.dataset.code) !== -1;
-            if (ok) {
-              state.locked = true;
-              state.score += 100 + (mode === 'hard' && state.firstTry ? 50 : 0);
-              setPins(true, correct, pin.dataset.code, true);
-              pending = setTimeout(function () { state.index++; next(); }, 1200);
-            } else {
-              state.firstTry = false;
-              setPins(false, correct, pin.dataset.code, false);
-            }
+            if (ok) state.score += 100 + (mode === 'hard' ? 50 : 0);
+            setPins(ok, correct, pin.dataset.code, true);
+            var feedback = K.$('.gk-map-feedback', K.stage());
+            if (feedback && !ok) feedback.innerHTML = '<strong class="no">✕ Błędna odpowiedź. 0 pkt.</strong> Poprawne miejsce zaznaczono na zielono. Przechodzę do kolejnego dinozaura…';
+            pending = setTimeout(function () { state.index++; next(); }, 1050);
           });
         });
       }

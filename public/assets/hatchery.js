@@ -1,118 +1,46 @@
-/* ============================================================
-Dinocademy — wykluwarnia z levelami, wariantami i animowanymi kartami
-============================================================ */
-(function () {
+(function(){
   'use strict';
-  if (document.body.dataset.page !== 'hatchery') return;
-  var API_BASE = '__PORT_3000__'.indexOf('PORT') !== -1 ? '' : '__PORT_3000__';
-  function $(s, r) { return (r || document).querySelector(s); }
-  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]; }); }
-  function token() { return localStorage.getItem('dinocademy-token') || null; }
-  function api(path, method, body) {
-    var headers = { 'Content-Type': 'application/json' };
-    var t = token();
-    if (t) headers['X-Session-Token'] = t;
-    return fetch(API_BASE + path, { method: method || 'GET', headers: headers, credentials: 'same-origin', body: body ? JSON.stringify(body) : undefined })
-      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'Błąd serwera'); return j; }); });
-  }
-  function dinoById(id) {
-    var list = (window.DINO_DATA && window.DINO_DATA.dino && window.DINO_DATA.dino.e) || [];
-    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
-    return null;
-  }
-  function variantLabel(v) {
-    return { normal: 'Standard', shiny: 'Shiny', mutation_bio: 'Mutacja biologiczna', mutation_tech: 'Mutacja cybernetyczna', fossil_glow: 'Fosylna poświata' }[v] || v || 'Standard';
-  }
-  var state = null;
+  if(document.body.dataset.page!=='hatchery') return;
+  var root=document.getElementById('hatchery-root'), state=null, catalog=[];
+  function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function api(url,method,body){return fetch(url,{method:method||'GET',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}).then(function(r){return r.json().catch(function(){return{};}).then(function(j){if(!r.ok)throw new Error(j.error||'Błąd');return j;});});}
+  function taxon(id){return catalog.find(function(t){return t.id===id;})||{id:id,common:id,scientific:'',image:'',period:'',clade:''};}
+  function labelVariant(id){return state&&state.variants&&state.variants[id]?state.variants[id].label:id;}
+  function levelNeed(level){return 100+25*Math.max(0,Number(level||1)-1);}
+  function pct(a,b){return Math.max(0,Math.min(100,Math.round((Number(a||0)/Math.max(1,Number(b||1)))*100)));}
+  function variantClass(v){return 'variant-'+({normal:'normal',shiny:'shiny',fossil_glow:'fossil',mutation_bio:'bio',mutation_tech:'tech',cryo:'cryo',primal:'primal'}[v]||'normal');}
+  function rarityLabel(r){return state&&state.rarities&&state.rarities[r]?state.rarities[r].label:r;}
 
-  function render() {
-    var root = $('#hatchery-root');
-    if (!root || !state) return;
-    var html = '';
-    html += '<section class="panel-glass hatchery-dashboard">';
-    html += '<div class="hatchery-stats">';
-    html += '<div><span>Poziom gracza</span><strong>' + esc(state.level) + '</strong></div>';
-    html += '<div><span>XP</span><strong>' + esc(state.xp) + '</strong></div>';
-    html += '<div><span>Kolekcja</span><strong>' + esc(state.collected) + ' / ' + esc(state.totalDinos) + '</strong></div>';
-    html += '<div><span>Jaja do odbioru</span><strong>' + esc(state.eggsAvailable) + '</strong></div>';
-    html += '</div>';
-    if (state.eggsAvailable > 0) html += '<button class="btn btn-primary" id="claim-egg">Odbierz nowe jajo</button>';
-    html += '</section>';
+  function eggHtml(e){var ready=e.ready,progress=pct(e.warmth,e.required);return '<article class="rev-egg '+(e.active?'is-active ':'')+'rarity-'+esc(e.rarity)+'">'+
+    '<div class="egg-shell" aria-hidden="true"><span></span></div><div class="egg-copy"><div class="egg-top"><span>'+esc(rarityLabel(e.rarity))+'</span>'+(e.active?'<b>AKTYWNE</b>':'')+'</div><h3>Jajo #'+esc(e.id)+'</h3><p>'+(ready?'Gotowe do wyklucia.':'Zdobywaj XP w lekcjach i grach. Tylko aktywne jajo otrzymuje energię.')+'</p><div class="mini-progress"><i style="width:'+progress+'%"></i></div><small>'+esc(e.warmth)+' / '+esc(e.required)+' XP inkubacji</small><div class="egg-actions">'+(!e.active?'<button data-activate="'+e.id+'" type="button">Ustaw aktywne</button>':'')+(ready?'<button class="primary" data-hatch="'+e.id+'" type="button">Wykluj teraz</button>':'')+'</div></div></article>';}
 
-    html += '<section class="panel-glass hatchery-eggs"><h2>Inkubator</h2>';
-    if (!state.eggs.length) {
-      html += '<p>Inkubator jest pusty. Zdobywaj XP w grach i lekcjach albo odbierz nowe jajo za poziom.</p>';
-    } else {
-      html += '<div class="hx-egg-grid">';
-      state.eggs.forEach(function (egg) {
-        var progress = egg.required ? Math.min(100, Math.round((egg.warmth / egg.required) * 100)) : 0;
-        html += '<article class="hx-egg-card rarity-' + esc(egg.rarity) + '">';
-        html += '<div class="hx-egg-shell"></div>';
-        html += '<strong>' + esc(egg.label) + '</strong>';
-        html += '<small>Poziom źródłowy: ' + esc(egg.from_level || '-') + '</small>';
-        html += '<div class="hx-progress"><span style="width:' + progress + '%"></span></div>';
-        html += '<p>' + esc(egg.warmth) + ' / ' + esc(egg.required) + ' XP</p>';
-        html += egg.ready ? '<button class="btn btn-primary hx-hatch" data-egg="' + esc(egg.id) + '">Wykluj</button>' : '<button class="btn btn-secondary" disabled>Jeszcze się ogrzewa</button>';
-        html += '</article>';
-      });
-      html += '</div>';
-    }
-    html += '</section>';
+  function cardHtml(c){var d=taxon(c.dino_id),need=levelNeed(c.level),progress=c.level>=100?100:pct(c.dino_xp,need);return '<article class="collection-card '+variantClass(c.variant)+' rarity-'+esc(c.rarity)+'" data-card data-name="'+esc((d.common+' '+d.scientific+' '+c.variant+' '+c.rarity).toLowerCase())+'" data-rarity="'+esc(c.rarity)+'" data-variant="'+esc(c.variant)+'">'+
+    '<div class="card-art"><img loading="lazy" src="'+esc(d.image||'favicon.svg')+'" alt="'+esc(d.common)+'"><div class="card-fx" aria-hidden="true"></div><span class="rarity-chip">'+esc(rarityLabel(c.rarity))+'</span><span class="variant-chip">'+esc(labelVariant(c.variant))+'</span></div><div class="card-body"><div class="card-title"><div><strong>'+esc(c.nickname||d.common)+'</strong><small><i>'+esc(d.scientific)+'</i></small></div><b>Lv '+esc(c.level)+'</b></div><div class="mini-progress"><i style="width:'+progress+'%"></i></div><div class="card-meta"><span>'+(c.level>=100?'MAX LEVEL':esc(c.dino_xp)+' / '+esc(need)+' Dino XP')+'</span><span>duplikaty: '+esc(c.duplicates||0)+'</span></div><button class="card-detail" data-detail="'+esc(c.id)+'" type="button">Szczegóły karty</button></div></article>';}
 
-    html += '<section class="panel-glass hatchery-collection"><h2>Kolekcja</h2><div class="hx-card-grid">';
-    state.collection.forEach(function (mine) {
-      var d = dinoById(mine.dino_id) || {};
-      var name = d.name_pl || d.name || mine.dino_id;
-      var sci = d.scientific || d.name_latin || '';
-      var image = d.image || d.img || 'images/dinosaurs/' + mine.dino_id + '.png';
-      var variant = mine.variant || 'normal';
-      var level = mine.level || 1;
-      html += '<article class="hx-card is-owned hx-variant-' + esc(variant) + '">';
-      html += '<div class="hx-card-img"><img src="' + esc(image) + '" alt="' + esc(name) + '" loading="lazy"><span class="hx-variant-badge">' + esc(variantLabel(variant)) + '</span></div>';
-      html += '<span class="hx-level">Lv ' + esc(level) + '</span>';
-      html += '<strong>' + esc(mine.nickname || name) + '</strong>';
-      html += '<small><i>' + esc(sci) + '</i></small>';
-      html += '<p>' + esc((d.description || '').slice(0, 120)) + '</p>';
-      html += '</article>';
-    });
-    html += '</div></section>';
-    root.innerHTML = html;
-
-    var claim = $('#claim-egg');
-    if (claim) claim.addEventListener('click', function () {
-      api('/api/hatchery/egg', 'POST').then(load).catch(function (e) { alert(e.message); });
-    });
-    [].slice.call(document.querySelectorAll('.hx-hatch')).forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        api('/api/hatchery/hatch', 'POST', { eggId: Number(btn.getAttribute('data-egg')) })
-          .then(function (res) { showReveal(res); return load(); })
-          .catch(function (e) { alert(e.message); });
-      });
-    });
+  function render(){
+    var coll=state.collection||[], eggs=state.eggs||[];
+    root.innerHTML='<section class="hatchery-dashboard">'+
+      '<div class="hatch-stat"><span>LEVEL KONTA</span><strong>'+esc(state.level)+'</strong><small>'+esc(state.xp)+' XP</small></div>'+
+      '<div class="hatch-stat multiplier"><span>MNOŻNIK XP</span><strong>×'+Number(state.multiplier||1).toFixed(3)+'</strong><small>z poziomów kolekcji</small></div>'+
+      '<div class="hatch-stat"><span>KOLEKCJA</span><strong>'+esc(coll.length)+' / '+esc(state.totalCollectibles)+'</strong><small>'+esc(state.totalDinos)+' gatunków × 7 wariantów</small></div>'+
+      '<div class="hatch-stat"><span>JAJA DO ODEBRANIA</span><strong>'+esc(state.eggsAvailable)+'</strong><button id="claim-egg" type="button" '+(state.eggsAvailable<1?'disabled':'')+'>Odbierz jajo</button></div></section>'+
+      '<section class="hatchery-section"><header><div><span class="section-kicker">Inkubator</span><h2>Jedno aktywne jajo zbiera XP.</h2></div><p>Możesz mieć kilka jaj w kolejce, ale energia z nauki trafia tylko do wybranego aktywnego jaja.</p></header><div class="egg-grid">'+(eggs.length?eggs.map(eggHtml).join(''):'<div class="empty-state">Nie masz jeszcze żadnego jaja. Odbierz pierwsze za zdobyty poziom.</div>')+'</div></section>'+
+      '<section class="hatchery-section collection-section"><header><div><span class="section-kicker">Twoja kolekcja</span><h2>Rozwijaj każdy wariant osobno.</h2></div><p>Wyższa rzadkość i specjalny wariant dają więcej Dino XP z duplikatu oraz większy wkład do mnożnika.</p></header><div class="collection-toolbar"><input id="collection-search" type="search" placeholder="Szukaj gatunku lub wariantu…"><select id="collection-rarity"><option value="">Wszystkie rzadkości</option>'+Object.keys(state.rarities||{}).map(function(k){return '<option value="'+k+'">'+esc(rarityLabel(k))+'</option>';}).join('')+'</select><select id="collection-variant"><option value="">Wszystkie warianty</option>'+Object.keys(state.variants||{}).map(function(k){return '<option value="'+k+'">'+esc(labelVariant(k))+'</option>';}).join('')+'</select></div><div class="collection-grid" id="collection-grid">'+(coll.length?coll.map(cardHtml).join(''):'<div class="empty-state">Pierwszy okaz pojawi się tutaj po wykluciu jaja.</div>')+'</div></section>';
+    bind();
   }
 
-  function showReveal(res) {
-    var existing = document.querySelector('.hx-reveal');
-    if (existing) existing.remove();
-    var wrap = document.createElement('div');
-    wrap.className = 'hx-reveal';
-    if (res.duplicate) {
-      wrap.innerHTML = '<div class="hx-reveal-card"><h3>Duplikat przetworzony</h3><p>' + esc(res.message || ('Dodano poziom lub XP: ' + (res.xpBonus || 0))) + '</p><button type="button">Zamknij</button></div>';
-    } else {
-      var d = dinoById(res.dinoId) || {};
-      var title = d.name_pl || d.name || res.dinoId;
-      var image = d.image || d.img || 'images/dinosaurs/' + res.dinoId + '.png';
-      wrap.innerHTML = '<div class="hx-reveal-card hx-variant-' + esc(res.variant || 'normal') + '"><img src="' + esc(image) + '" alt="' + esc(title) + '"><h3>' + esc(title) + '</h3><div class="hx-reveal-badges"><span class="hx-rarity">' + esc(res.rarity || '') + '</span><span class="hx-reveal-variant">' + esc(variantLabel(res.variant)) + '</span><span class="hx-level">Lv ' + esc(res.level || 1) + '</span></div><p>' + esc((d.description || '').slice(0, 180)) + '</p><button type="button">Super</button></div>';
-    }
-    document.body.appendChild(wrap);
-    wrap.querySelector('button').addEventListener('click', function () { wrap.remove(); });
-    wrap.addEventListener('click', function (e) { if (e.target === wrap) wrap.remove(); });
+  function bind(){
+    var claim=document.getElementById('claim-egg'); if(claim)claim.addEventListener('click',function(){claim.disabled=true;api('/api/hatchery/egg','POST').then(load).catch(showError);});
+    Array.prototype.forEach.call(document.querySelectorAll('[data-activate]'),function(b){b.addEventListener('click',function(){api('/api/hatchery/activate','POST',{eggId:Number(b.dataset.activate)}).then(load).catch(showError);});});
+    Array.prototype.forEach.call(document.querySelectorAll('[data-hatch]'),function(b){b.addEventListener('click',function(){b.disabled=true;api('/api/hatchery/hatch','POST',{eggId:Number(b.dataset.hatch)}).then(function(r){showReveal(r);return load();}).catch(showError);});});
+    Array.prototype.forEach.call(document.querySelectorAll('[data-detail]'),function(b){b.addEventListener('click',function(){var c=(state.collection||[]).find(function(x){return String(x.id)===String(b.dataset.detail);});if(c)showCard(c);});});
+    ['collection-search','collection-rarity','collection-variant'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener(id==='collection-search'?'input':'change',filterCards);});
   }
-
-  function load() {
-    return api('/api/hatchery').then(function (j) { state = j; render(); });
-  }
-  load().catch(function (e) {
-    $('#hatchery-root').innerHTML = '<section class="panel-glass"><p>' + esc(e.message) + '</p><a class="btn btn-primary" href="logowanie.html">Zaloguj się</a></section>';
-  });
+  function filterCards(){var q=(document.getElementById('collection-search').value||'').toLowerCase(),r=document.getElementById('collection-rarity').value,v=document.getElementById('collection-variant').value;Array.prototype.forEach.call(document.querySelectorAll('[data-card]'),function(c){c.hidden=!!((q&&!c.dataset.name.includes(q))||(r&&c.dataset.rarity!==r)||(v&&c.dataset.variant!==v));});}
+  function modal(html,cls){var m=document.createElement('div');m.className='rev-modal '+(cls||'');m.innerHTML='<div class="rev-modal-backdrop" data-close></div><div class="rev-modal-card">'+html+'<button class="modal-close" data-close type="button">Zamknij</button></div>';document.body.appendChild(m);requestAnimationFrame(function(){m.classList.add('is-open');});m.querySelectorAll('[data-close]').forEach(function(x){x.addEventListener('click',function(){m.remove();});});}
+  function showReveal(r){var d=r.taxon||taxon(r.dinoId),dup=r.duplicate?'<p class="duplicate-note">Duplikat → +'+esc(r.duplicateXp)+' Dino XP · nowy poziom: <b>'+esc(r.level)+'</b></p>':'<p class="duplicate-note">Nowy okaz został dodany do kolekcji.</p>';modal('<div class="hatch-reveal '+variantClass(r.variant)+'"><span class="reveal-kicker">WYKLUCIE · '+esc(rarityLabel(r.rarity))+'</span><div class="reveal-art"><img src="'+esc(d.image||'favicon.svg')+'" alt="'+esc(d.common)+'"><div class="card-fx"></div></div><h2>'+esc(d.common)+'</h2><p><i>'+esc(d.scientific)+'</i></p><div class="reveal-badges"><span>'+esc(labelVariant(r.variant))+'</span><span>Lv '+esc(r.level)+'</span><span>×'+Number(r.multiplier||1).toFixed(3)+' XP</span></div>'+dup+'</div>','reveal-modal');}
+  function showCard(c){var d=taxon(c.dino_id);modal('<div class="card-inspector '+variantClass(c.variant)+'"><div class="inspector-art"><img src="'+esc(d.image||'favicon.svg')+'" alt="'+esc(d.common)+'"><div class="card-fx"></div></div><span class="section-kicker">'+esc(rarityLabel(c.rarity))+' · '+esc(labelVariant(c.variant))+'</span><h2>'+esc(c.nickname||d.common)+'</h2><p><i>'+esc(d.scientific)+'</i> · '+esc(d.period||'')+' · '+esc(d.clade||'')+'</p><dl><div><dt>Poziom</dt><dd>'+esc(c.level)+'/100</dd></div><div><dt>Duplikaty</dt><dd>'+esc(c.duplicates||0)+'</dd></div><div><dt>Dino XP</dt><dd>'+esc(c.dino_xp||0)+'</dd></div></dl><p>'+esc(d.feature||d.description||'')+'</p></div>');}
+  function showError(e){modal('<h2>Nie udało się wykonać akcji</h2><p>'+esc(e.message)+'</p>');}
+  function load(){return Promise.all([api('/api/hatchery'),catalog.length?Promise.resolve({taxa:catalog}):api('/api/catalog')]).then(function(x){state=x[0];catalog=x[1].taxa||catalog;render();});}
+  load().catch(function(e){root.innerHTML='<section class="panel-glass empty-state"><h2>Wykluwarnia wymaga konta.</h2><p>'+esc(e.message)+'</p><a class="button" href="logowanie.html">Zaloguj się</a></section>';});
 })();
