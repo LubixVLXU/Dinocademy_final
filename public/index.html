@@ -1,173 +1,138 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-theme="atlas">
 <head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Dinocademy — interaktywna platforma do nauki paleontologii: kursy, encyklopedia, gry, kolekcja i wykluwarnia."/>
+  <meta name="theme-color" content="#f2f5f8"/>
   <title>Dinocademy — odkrywaj świat dinozaurów</title>
-  <meta content="Interaktywna platforma do nauki o dinozaurach: kursy, encyklopedia, gry, wykluwarnia i ranking." name="description"/>
   <link href="favicon.svg" rel="icon" type="image/svg+xml"/>
-  <link href="assets/index-C-lA4BJt.css" rel="stylesheet"/>
-  <link href="assets/ui-extra.css" rel="stylesheet"/>
+  <link href="assets/style.css" rel="stylesheet"/>
+  <link href="assets/site-shell.css" rel="stylesheet"/>
+  <link href="assets/cohesion-v5.css" rel="stylesheet"/>
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">Przejdź do treści</a>
-  <header class="site-header">
-    <div class="page-shell nav-shell">
-      <a class="brand" href="index.html" aria-label="Dinocademy — strona główna">
-        <span class="brand-mark" aria-hidden="true"><span class="brand-eye"></span><span class="brand-tooth brand-tooth-one"></span><span class="brand-tooth brand-tooth-two"></span></span>
-        <span>dinocademy</span>
-      </a>
-      <nav class="site-nav" aria-label="Główna nawigacja">
-        <a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a><a href="pro.html">Pro</a><a href="profil.html">Profil</a>
-      </nav>
-    </div>
-  </header>
+  <header class="site-header"></header>
 
-  <main id="main" class="home-revamp">
-    <section class="paleo-hero" aria-labelledby="home-title">
-      <div class="paleo-atmosphere" aria-hidden="true"></div>
-      <div class="paleo-dust" id="paleo-dust" aria-hidden="true"></div>
-      <div class="paleo-strata strata-a" aria-hidden="true"></div>
-      <div class="paleo-strata strata-b" aria-hidden="true"></div>
-      <div class="page-shell paleo-hero-grid">
-        <div class="paleo-copy" data-reveal>
-          <span class="eyebrow">Cyfrowa wyprawa paleontologiczna</span>
-          <h1 id="home-title">Nie ucz się nazw. <em>Odkrywaj ślady.</em></h1>
-          <p>Wchodzisz do świata, w którym wiedza napędza kolekcję. Lekcje i gry dają XP, XP rozgrzewa jaja, duplikaty rozwijają dinozaury do 100 poziomu, a rozwinięta kolekcja przyspiesza dalszą naukę.</p>
-          <div class="hero-actions">
-            <a class="button button-large" href="kursy.html">Rozpocznij wyprawę</a>
-            <a class="button button-ghost button-large" href="wykluwarnia.html">Zobacz kolekcję</a>
-          </div>
-          <dl class="hero-stats">
-            <div><dt data-target="46">46</dt><dd>taksonów do odblokowania</dd></div>
-            <div><dt data-target="7">7</dt><dd>wariantów każdego okazu</dd></div>
-            <div><dt data-target="100">100</dt><dd>poziomów każdej karty</dd></div>
-          </dl>
-        </div>
-
-        <div class="hero-specimen" data-reveal>
-          <div class="specimen-orbit orbit-a" aria-hidden="true"></div>
-          <div class="specimen-orbit orbit-b" aria-hidden="true"></div>
-          <figure class="specimen-card" id="specimen-card">
-            <div class="specimen-radar" aria-hidden="true"></div>
-            <img src="memory/trex.webp" alt="Rekonstrukcja Tyrannosaurus rex"/>
-            <figcaption>
-              <span>OKAZ 001 · PÓŹNA KREDA</span>
-              <strong>Tyrannosaurus rex</strong>
-              <small>Przesuń kursor lub dotknij karty, by odsłonić dane.</small>
-            </figcaption>
-            <div class="specimen-secret" id="specimen-secret">
-              <b>Ślad w kości</b>
-              <p>Grube, głęboko osadzone zęby tyranozaura były przystosowane do bardzo dużych obciążeń.</p>
+  <main id="main" class="home-v5">
+    <section class="home-intro">
+      <div class="page-shell">
+        <div class="home-hero-card" data-reveal>
+          <div class="home-hero-copy">
+            <span class="home-kicker">Dinocademy · paleontologia od dowodu</span>
+            <h1>Przeszłość zostawiła ślady.<br/><em>Naucz się je czytać.</em></h1>
+            <p>Interaktywna nauka paleontologii bez wkuwania list nazw. Kursy, encyklopedia, gry i kolekcja łączą się w jeden system, w którym każda odpowiedź i każde odkrycie buduje Twój profil badacza.</p>
+            <div class="home-actions">
+              <a class="button" href="kursy.html">Rozpocznij naukę</a>
+              <a class="button button-ghost" href="encyklopedia.html">Otwórz encyklopedię</a>
             </div>
-          </figure>
+            <div class="home-hero-meta" aria-label="Dinocademy w liczbach">
+              <span><b>46</b>taksonów</span>
+              <span><b>322</b>karty kolekcji</span>
+              <span><b>7</b>wariantów</span>
+              <span><b>100</b>poziomów karty</span>
+            </div>
+          </div>
+          <div class="home-specimen" aria-label="Okaz: Tyrannosaurus rex">
+            <span class="home-specimen-glow" aria-hidden="true"></span>
+            <span class="home-specimen-ring" aria-hidden="true"></span>
+            <img src="memory/trex.webp" alt="Rekonstrukcja Tyrannosaurus rex"/>
+            <div class="home-fact-card fact-one"><b>Tyrannosaurus rex</b><span>Żył pod sam koniec kredy, około 68–66 mln lat temu.</span></div>
+            <div class="home-fact-card fact-two"><b>Nie tylko zęby</b><span>Budowa czaszki była przystosowana do przenoszenia ogromnych sił podczas ugryzienia.</span></div>
+          </div>
+          <a class="home-scroll-cue" href="#discover" aria-label="Przejdź do kolejnej sekcji">↓</a>
         </div>
       </div>
-      <div class="scroll-cue" aria-hidden="true"><span></span> przewiń przez warstwy czasu</div>
     </section>
 
-    <section class="era-section section" data-reveal>
+    <section class="home-section" id="discover" data-reveal>
       <div class="page-shell">
-        <header class="section-head">
-          <span class="section-kicker">252–66 mln lat temu</span>
-          <h2>Przewiń przez trzy światy.</h2>
-          <p>Każda era odsłania inną warstwę środowiska i inny trop. Kliknij epokę, aby zobaczyć ukrytą ciekawostkę.</p>
-        </header>
-        <div class="era-timeline" role="list">
-          <button class="era-card" data-era="trias" role="listitem" type="button">
-            <span>252–201 mln lat</span><strong>Trias</strong><p>Początek dinozaurów po największym wymieraniu w historii Ziemi.</p><i>01</i>
-          </button>
-          <button class="era-card" data-era="jura" role="listitem" type="button">
-            <span>201–145 mln lat</span><strong>Jura</strong><p>Gigantyczne zauropody, stegozaury i pierwsze ptakopodobne formy.</p><i>02</i>
-          </button>
-          <button class="era-card" data-era="kreda" role="listitem" type="button">
-            <span>145–66 mln lat</span><strong>Kreda</strong><p>Największa różnorodność dinozaurów i ostatni rozdział przed wymieraniem K–Pg.</p><i>03</i>
-          </button>
+        <div class="home-section-head">
+          <div><span class="section-kicker">Jedna platforma, kilka sposobów nauki</span><h2>Wybierz, jak dziś chcesz odkrywać.</h2></div>
+          <p>Każda sekcja korzysta z tego samego konta, XP i postępu. Możesz zacząć od lekcji, a skończyć na mapie odkryć albo w wykluwarni.</p>
         </div>
-        <div class="era-reveal" id="era-reveal" aria-live="polite">
-          <span>TRIAS</span><strong>Pangea nadal łączyła większość lądów.</strong><p>Wczesne dinozaury dzieliły ekosystemy z wieloma innymi liniami archozaurów, które później zniknęły.</p>
+        <div class="home-grid">
+          <article class="home-card home-card-large">
+            <a href="kursy.html">
+              <span class="home-card-arrow">↗</span>
+              <div class="home-card-visual"><img src="images/course-excavation.png" alt="Stanowisko paleontologiczne"/></div>
+              <div class="home-card-body"><span class="home-card-tag">Kursy</span><h3>Od pierwszej kości do rekonstrukcji historii.</h3><p>Lekcje prowadzą krok po kroku przez anatomię, geologię, ewolucję i interpretację dowodów.</p></div>
+            </a>
+          </article>
+          <article class="home-card home-card-medium">
+            <a href="encyklopedia.html">
+              <span class="home-card-arrow">↗</span>
+              <div class="home-card-visual specimen-mini"><img src="memory/triceratops.webp" alt="Triceratops"/></div>
+              <div class="home-card-body"><span class="home-card-tag">Encyklopedia</span><h3>Atlas, który daje kontekst.</h3><p>Porównuj taksony, okresy, klady i miejsca odkryć zamiast czytać oderwane ciekawostki.</p></div>
+            </a>
+          </article>
+          <article class="home-card home-card-third">
+            <a href="gry.html">
+              <span class="home-card-arrow">↗</span>
+              <div class="home-card-visual map"><img src="games/world-map.webp" alt="Mapa świata w grze odkryć"/></div>
+              <div class="home-card-body"><span class="home-card-tag">Gry</span><h3>Sprawdź wiedzę w praktyce.</h3><p>Mapa odkryć, dedukcja, memory i scenariusze, które nagradzają trafne decyzje.</p></div>
+            </a>
+          </article>
+          <article class="home-card home-card-third">
+            <a href="wykluwarnia.html">
+              <span class="home-card-arrow">↗</span>
+              <div class="home-card-visual eggs"><i class="mini-egg"></i><i class="mini-egg"></i><i class="mini-egg"></i></div>
+              <div class="home-card-body"><span class="home-card-tag">Wykluwarnia</span><h3>Każde jajo rośnie razem z Tobą.</h3><p>Wszystkie posiadane jajka równocześnie dostają XP z nauki i gier.</p></div>
+            </a>
+          </article>
+          <article class="home-card home-card-third">
+            <a href="forum.html">
+              <span class="home-card-arrow">↗</span>
+              <div class="home-card-visual specimen-mini"><img src="memory/velociraptor.webp" alt="Velociraptor"/></div>
+              <div class="home-card-body"><span class="home-card-tag">Forum</span><h3>Pytaj, dyskutuj, porównuj źródła.</h3><p>Forum społeczności jest częścią platformy, a nie osobnym dodatkiem.</p></div>
+            </a>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="dig-section section" data-reveal>
-      <div class="page-shell dig-grid">
-        <div>
-          <span class="section-kicker">Interaktywne wykopalisko</span>
-          <h2>Odkop cztery rzeczy, które mówią więcej niż sama kość.</h2>
-          <p>W paleontologii liczy się kontekst. Klikaj znaleziska i odsłaniaj informacje ukryte pod osadem.</p>
-        </div>
-        <div class="dig-site" id="dig-site">
-          <button class="fossil fossil-bone" type="button" data-fact="Kość bez informacji o warstwie, pozycji i otoczeniu traci sporą część wartości naukowej."><span>kość</span></button>
-          <button class="fossil fossil-track" type="button" data-fact="Tropy mogą ujawnić kierunek ruchu, rozstaw kroków i zachowanie, którego szkielet sam nie zachowuje."><span>trop</span></button>
-          <button class="fossil fossil-feather" type="button" data-fact="Pióra pojawiły się u dinozaurów przed aktywnym lotem. Nie były wyłącznie „wynalazkiem ptaków”."><span>pióro</span></button>
-          <button class="fossil fossil-egg" type="button" data-fact="Jaja i gniazda są śladami rozrodu, ale nie każdy fragment skorupy pozwala przypisać gatunek bez dodatkowych danych."><span>jajo</span></button>
-          <div class="dig-fact" id="dig-fact" aria-live="polite"><b>Wybierz znalezisko.</b><p>Warstwa odsłoni jego znaczenie.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="loop-section section" data-reveal>
+    <section class="home-section" data-reveal>
       <div class="page-shell">
-        <header class="section-head">
-          <span class="section-kicker">Pętla progresji</span>
-          <h2>Każda rzecz na stronie napędza następną.</h2>
-        </header>
-        <div class="progress-loop" aria-label="Schemat progresji">
-          <div><span>01</span><strong>Nauka</strong><small>Lekcja / gra</small></div>
-          <i>→</i><div><span>02</span><strong>XP</strong><small>× mnożnik kolekcji</small></div>
-          <i>→</i><div><span>03</span><strong>Jajo</strong><small>aktywna inkubacja</small></div>
-          <i>→</i><div><span>04</span><strong>Wyklucie</strong><small>gatunek + wariant</small></div>
-          <i>→</i><div><span>05</span><strong>Duplikat</strong><small>level karty</small></div>
-          <i>→</i><div><span>06</span><strong>Bonus XP</strong><small>szybszy progres</small></div>
+        <div class="home-statbar" aria-label="System progresji">
+          <div class="home-stat"><b>× XP</b><span>mnożnik rośnie z poziomami kolekcji</span></div>
+          <div class="home-stat"><b>1–100</b><span>poziom każdego wariantu dinozaura</span></div>
+          <div class="home-stat"><b>7×</b><span>Standard, Shiny i pięć mutacji</span></div>
+          <div class="home-stat"><b>∞</b><span>duplikaty dalej wzmacniają kolekcję</span></div>
         </div>
       </div>
     </section>
 
-    <section class="variant-section section" data-reveal>
-      <div class="page-shell">
-        <header class="section-head split-head">
-          <div><span class="section-kicker">Kolekcja żyje</span><h2>Ten sam gatunek. Zupełnie inny okaz.</h2></div>
-          <p>Warianty liczą się jako osobne collectible. Każdy ma własny efekt karty i nieco inne tempo rozwoju.</p>
-        </header>
-        <div class="variant-showcase">
-          <article class="collectible-preview variant-normal"><img src="memory/triceratops.webp" alt="Triceratops standard"><span>STANDARD</span><strong>Triceratops</strong><small>Lv 18</small></article>
-          <article class="collectible-preview variant-shiny"><img src="memory/velociraptor.webp" alt="Welociraptor shiny"><span>SHINY</span><strong>Velociraptor</strong><small>Lv 42</small></article>
-          <article class="collectible-preview variant-bio"><img src="memory/therizinosaurus.webp" alt="Terizinozaur mutacja bio"><span>MUTACJA BIO</span><strong>Therizinosaurus</strong><small>Lv 61</small></article>
-          <article class="collectible-preview variant-tech"><img src="memory/spinosaurus.webp" alt="Spinozaur mutacja cyber"><span>CYBER</span><strong>Spinosaurus</strong><small>Lv 77</small></article>
-          <article class="collectible-preview variant-primal"><img src="memory/trex.webp" alt="Tyranozaur primal"><span>PRIMAL</span><strong>Tyrannosaurus</strong><small>Lv 100</small></article>
-        </div>
-        <a class="text-arrow" href="wykluwarnia.html">Przejdź do wykluwarni →</a>
-      </div>
-    </section>
-
-    <section class="myth-section section" data-reveal>
-      <div class="page-shell myth-grid">
-        <div class="myth-copy"><span class="section-kicker">Pułapka badacza</span><h2>Które z tych zwierząt było dinozaurem?</h2><p>Jedna odpowiedź. Reszta to bliscy lub odlegli krewni, których popkultura często wrzuca do jednego worka.</p></div>
-        <div class="myth-quiz" id="myth-quiz">
-          <button type="button" data-answer="pteranodon">Pteranodon</button>
-          <button type="button" data-answer="triceratops">Triceratops</button>
-          <button type="button" data-answer="mosasaurus">Mosasaurus</button>
-          <button type="button" data-answer="dimetrodon">Dimetrodon</button>
-          <div id="myth-result" aria-live="polite"><b>Wybierz odpowiedź.</b><p>Wynik pojawi się tutaj.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="destination-section section" data-reveal>
-      <div class="page-shell">
-        <header class="section-head"><span class="section-kicker">Wybierz następny krok</span><h2>Każda droga prowadzi głębiej.</h2></header>
-        <div class="destination-grid">
-          <a href="kursy.html"><span>01 · UCZ SIĘ</span><strong>Kursy</strong><p>Od podstaw do wnioskowania z danych kopalnych.</p></a>
-          <a href="encyklopedia.html"><span>02 · ODKRYWAJ</span><strong>Encyklopedia</strong><p>46 taksonów, cechy, czas, region i kontekst.</p></a>
-          <a href="gry.html"><span>03 · TESTUJ</span><strong>Gry</strong><p>Mapa, memory, przetrwanie, dedukcja i więcej.</p></a>
-          <a href="ranking.html"><span>04 · PORÓWNUJ</span><strong>Ranking</strong><p>Level, XP, kolekcja, shiny, mutacje i wyniki.</p></a>
-        </div>
+    <section class="home-section" data-reveal>
+      <div class="page-shell home-myth">
+        <article class="home-note-card">
+          <span class="section-kicker">Notatnik terenowy</span>
+          <h2>Jedna skamieniałość może powiedzieć kilka różnych rzeczy.</h2>
+          <div class="home-note-list" id="evidence-list">
+            <button class="is-active" type="button" data-evidence="bone">Kość — anatomia i funkcja</button>
+            <button type="button" data-evidence="track">Trop — ruch i zachowanie</button>
+            <button type="button" data-evidence="rock">Warstwa — czas i środowisko</button>
+          </div>
+          <div class="home-note-answer" id="evidence-answer"><b>Kość nie jest odpowiedzią sama w sobie.</b> Jej znaczenie wynika z anatomii, miejsca w szkielecie, porównania z innymi okazami i kontekstu geologicznego.</div>
+        </article>
+        <article class="home-quiz-card">
+          <span class="section-kicker">Szybki test</span>
+          <h2>Które z tych zwierząt należało do Dinosauria?</h2>
+          <p>Wygląd i popularna nazwa potrafią mylić. Wybierz odpowiedź.</p>
+          <div class="home-quiz-options" id="myth-quiz">
+            <button type="button" data-answer="pteranodon">Pteranodon</button>
+            <button type="button" data-answer="triceratops">Triceratops</button>
+            <button type="button" data-answer="mosasaurus">Mosasaurus</button>
+            <button type="button" data-answer="dimetrodon">Dimetrodon</button>
+            <div class="home-quiz-result" id="myth-result"><b>Wybierz odpowiedź.</b> Wyjaśnienie pojawi się tutaj.</div>
+          </div>
+        </article>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer"><div class="page-shell"><strong>Dinocademy</strong><span>© 2026 · Nauka, kolekcja, paleontologia.</span></div></footer>
+  <footer class="site-footer"><div class="footer-inner"><div class="footer-brand"><a class="brand" href="index.html">Dinocademy</a><p>Nie uczymy list nazw. Uczymy czytać ślady przeszłości.</p></div><div class="footer-links"><div><strong>Odkrywaj</strong><a href="kursy.html">Kursy</a><a href="encyklopedia.html">Encyklopedia</a><a href="gry.html">Gry</a></div><div><strong>Społeczność</strong><a href="forum.html">Forum</a><a href="wykluwarnia.html">Wykluwarnia</a><a href="ranking.html">Ranking</a></div></div></div><div class="footer-bottom"><span>© 2026 Dinocademy</span></div></footer>
   <script src="assets/home.js"></script>
+  <script src="assets/site-shell.js"></script>
 </body>
 </html>
