@@ -18,4 +18,17 @@
   var result=document.getElementById('myth-result');
   var quiz=[].slice.call(document.querySelectorAll('#myth-quiz [data-answer]'));
   quiz.forEach(function(btn){btn.addEventListener('click',function(){quiz.forEach(function(b){b.disabled=true;b.classList.remove('correct','wrong');});var ok=btn.dataset.answer==='triceratops';btn.classList.add(ok?'correct':'wrong');if(result)result.innerHTML=ok?'<b>Tak — Triceratops był dinozaurem.</b> Pteranodon był pterozaurem, Mosasaurus morskim łuskonośnym, a Dimetrodon synapsydem.':'<b>Nie tym razem.</b> Poprawna odpowiedź to Triceratops. Pozostałe zwierzęta należały do innych linii kręgowców.';});});
+
+
+  var eraDetails={
+    trias:'<b>Trias:</b> pierwsze dinozaury pojawiły się w świecie zdominowanym przez inne linie gadów.',
+    jura:'<b>Jura:</b> zauropody osiągały gigantyczne rozmiary, a Archaeopteryx dokumentuje ważny etap ewolucji ptaków.',
+    kreda:'<b>Kreda:</b> ceratopsy, hadrozaury, tyranozaury i wiele innych grup osiągnęły ogromną różnorodność przed końcem okresu.'
+  };
+  var eraDetail=document.getElementById('era-detail');
+  document.querySelectorAll('[data-era]').forEach(function(btn){btn.addEventListener('click',function(){
+    document.querySelectorAll('[data-era]').forEach(function(b){b.classList.remove('is-active');});
+    btn.classList.add('is-active');
+    if(eraDetail&&eraDetails[btn.dataset.era])eraDetail.innerHTML=eraDetails[btn.dataset.era];
+  });});
 })();

@@ -14,8 +14,10 @@
   box.className = 'pro-panel';
   box.innerHTML = '<p class="pro-panel-loading">Sprawdzanie statusu konta…</p>';
 
+  var slot = document.getElementById('pro-status-slot');
   var main = document.querySelector('#main-content .page-shell') || document.querySelector('#main-content');
-  if (main) main.insertBefore(box, main.firstChild);
+  if (slot) slot.appendChild(box);
+  else if (main) main.insertBefore(box, main.firstChild);
 
   function render(user) {
     if (!user) {
